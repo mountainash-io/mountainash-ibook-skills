@@ -600,7 +600,7 @@ Each guide contains:
 **Contains:**
 - The admonition format and the Markdown-vs-raw-HTML image path rules
 - The placement table (context → pose → per-chapter count)
-- Hard limits: fewer than 10 admonitions per chapter, no back-to-back placement, one welcome and one celebration, 1-3 sentence bodies
+- Hard limits: no back-to-back placement, one welcome and one celebration, 1-3 sentence bodies; total count is an informal guideline scaled to the chapter's concept count (~1 admonition per 2 concepts) and adjusted for reader age
 - Per-pose instructional-design rules for all seven poses
 - The one-time Chapter 1 self-introduction pattern
 - The post-generation validation rule
