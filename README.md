@@ -50,6 +50,20 @@ Graph outputs must not already exist; promote reviewed candidates explicitly. Gr
 
 For local development, the same uvx options accept `--from /absolute/tooling/worktree`; use `--no-cache` while source files change so a cached local wheel is not mistaken for the current implementation. Run retained checks with `uvx --no-cache --python 3.12 --constraints constraints.txt --build-constraints build-constraints.txt --with pytest==9.0.2 --from . python -m pytest tests -q`. This tests a non-editable installed package. Tool CI has one Linux/Python job; consumer CI only validates/builds/publishes prepared files.
 
+## Skill workflow acceptance
+
+The existing book and a real source change are the refresh test inputs. Follow the selected skills' documented phases, prerequisites and handoffs. The [runbook](commands/ibook.md) selects maintenance versus creation/replacement; it does not execute or invent a workflow.
+
+Distinguish three kinds of evidence:
+
+- **Process/gate walkthrough:** shows that the documented entry path selects the right operation and next prerequisite. Stopping at a stale profile is a gate result, not a completed refresh.
+- **Component checks:** installed CLI operations, regression tests, a preselected bounded patch, runnable examples and a site build establish their specific contracts. They do not establish end-to-end skill acceptance.
+- **End-to-end skill test:** the real source change drives the profile skill, validated handoff, content-impact plan, approved selective update, verification and truthful state update on the existing book. No new-book substitution or unpublished manual process supplies missing steps.
+
+Record the target and source revisions, separate book/profile baselines, skill revisions/modes, instructions followed, observed outputs and gate decisions in the existing run report or review PR. Include preservation evidence and unresolved failures. Do not invent another schema, maintained ledger or runner.
+
+If instructions conflict, a handoff is missing, or an operator must improvise process logic, record a **process failure** even if the resulting book builds. Stop before downstream writes, repair the owning instructions and restart from a preserved input. Distinguish authored prose within a documented generation phase from undocumented workflow decisions. Do not claim all skills or a whole milestone passed when only components or a prerequisite gate were exercised.
+
 ## Unified skill installation and Hiivmind incorporation
 
 Install the **full repository**, not just copied `SKILL.md` files: package schemas, protocol provenance and references are part of the contract. Claude Code uses `.claude-plugin/`, Codex uses `.codex-plugin/` plus `.agents/plugins/marketplace.json`, and Gemini uses `gemini-extension.json` with this README as its context. The existing `bk-install-skills` route below remains available and unchanged.

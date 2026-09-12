@@ -1,11 +1,4 @@
-def test_incremental_fixture_preserves_manual_fields(run_validator, profile_fixture, load_json):
-    before = profile_fixture / "before/profile/modules/pkg.core.json"
-    after = profile_fixture / "after/profile/modules/pkg.core.json"
-
-    result = run_validator(profile_fixture / "after/profile")
-
-    assert result.returncode == 0
-    assert load_json(after)["manual"] == load_json(before)["manual"]
+from jsonschema import Draft202012Validator
 
 
 def test_profile_rejects_manifest_module_map_drift(
@@ -87,7 +80,7 @@ def test_incremental_fixture_rejects_manual_field_changes(
 
 
 def test_result_option_validates_transient_result(
-    run_validator, profile_fixture, load_json, write_json, tmp_path
+    run_validator, profile_fixture, load_json, write_json, tmp_path, protocol_root
 ):
     result_path = tmp_path / "completion-result.json"
     write_json(
@@ -115,21 +108,25 @@ def test_result_option_validates_transient_result(
             },
             "inputs": [],
             "outputs": [],
-            "targets": {"requested_modules": [], "effective_modules": []},
-            "warnings": [],
-            "metrics": {
-                "modules_discovered": 2,
-                "modules_profiled": 2,
-                "facets_written": 2,
+            "targets": {
+                "requested_concept_ids": [],
+                "effective_concept_ids": [],
+                "chapter_slugs": [],
+                "enrichment_ids": [],
             },
+            "warnings": [],
+            "metrics": {"active_concepts": 0, "retired_concepts": 0},
             "preserved": [],
         },
     )
+    Draft202012Validator(
+        load_json(protocol_root / "v1/completion-result.schema.json")
+    ).validate(load_json(result_path))
+    original_result = result_path.read_bytes()
 
     result = run_validator(
         profile_fixture / "after/profile", "--result", str(result_path)
     )
 
     assert result.returncode == 0
-    assert result_path.is_file()
-    assert load_json(result_path)["status"] == "success"
+    assert result_path.read_bytes() == original_result

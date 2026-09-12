@@ -12,7 +12,9 @@ Build a documentation-ready inventory before writing prose. Produce evidence-bac
 
 Accept an explicit invocation. Require `project_root`, `run_root`, source target, behavior (`full` or `incremental`), mode (`interactive` or `orchestrated`), package roots, include/exclude globs, audiences, and the profile output root. Accept an existing profile only as an explicit input. Read `contract.json`, the invocation and completion-result protocol schemas under `references/protocol/v1/`, and the canonical profile schemas at `../../src/ibook_tools/profile/schemas/` before processing. Use protocol schemas at their pinned source digest; do not redefine them. Paths here are relative to this skill directory; schema files belong to the Python package and are not copied into projects.
 
-Write only these outputs below the supplied profile root:
+For a direct user-driven request, use `mode: interactive`; use `mode: orchestrated` only for an explicit orchestrated invocation. In either mode, the invocation's common `targets` object contains empty `concept_ids`, `chapter_slugs` and `enrichment_ids` arrays: profiling does not select textbook targets. Its actual source scope belongs in the existing profile invocation parameters, not invented target fields.
+
+The supplied profile root is the directory containing `manifest.json` (for example, `R/docs-site/profile`), not its parent. In the contract paths below, `profile/` denotes that supplied root; never append a second `profile/` directory. Write only:
 
 ```text
 profile/manifest.json
@@ -23,7 +25,7 @@ profile/coverage.md
 
 Write the completion result to the caller-supplied transient result path, outside the profile root. Never write `state.json`, update notes, textbook chapters, or an inferred default path. Keep source paths repository-relative in committed artifacts. Reject an absolute `source.root` in orchestrated output.
 
-Use the pinned `ibook profile validate` command as the machine gate (installation convention in the repository README). Return a structured completion result with the common envelope: invocation ID, skill identity and semantic version, source revision and digest, profile stage, `package-profile.generate` capability, behavior, execution information, input/output digests, profile targets, warnings, metrics, and preserved paths. Use only `success`, `warning`, or `failed`; set `warning` whenever a warning requires review.
+Use the pinned `ibook profile validate` command as the machine gate (installation convention in the repository README). Return the declared `CompletionResultV1` envelope unchanged. The packaged `profile-result.schema.json` specializes that envelope for the profile stage; it is not a replacement protocol. Its textbook target arrays are empty and its concept metrics are zero because this skill does not process concepts. Module/facet counts and effective scope remain in the digested manifest (`counts`, `changed_scopes`); requested source scope remains in the digested invocation. Use only `success`, `warning`, or `failed`; set `warning` whenever a warning requires review.
 
 ## Modes
 
@@ -35,7 +37,7 @@ Use the pinned `ibook profile validate` command as the machine gate (installatio
 4. Discover, classify, profile, facet, and cover the selected scope. Preserve every existing module's `manual` object by value, including fields unknown to the current schema.
 5. Update only the allowed profile paths. Do not ask for approval, ask what to do next, or perform a later textbook stage.
 6. Run `ibook profile validate PROFILE_ROOT` with `--before-profile` when an earlier profile is available. Emit inspectable canonical outputs even on a failed run when they can be safely produced.
-7. Write the `CompletionResultV1` document to the transient result path. Return the result without conversational next-step prompting.
+7. Author the `CompletionResultV1` document at the transient result path, then validate it with `ibook profile validate PROFILE_ROOT --result RESULT_JSON` and the same `--before-profile` when available. `--result` reads and validates this existing file; it does not generate or rewrite it. Return the validated result without conversational next-step prompting.
 
 ### Interactive mode
 
@@ -92,9 +94,19 @@ ibook profile validate PROFILE_ROOT --before-profile BEFORE_ROOT --result RESULT
 
 Fix every invariant error. The validator checks every owned JSON schema, safe repository-relative paths, exact manifest maps, unique IDs and source paths, refreshed source hashes, ignored-module accounting, facet references and audience membership, and manual preservation evidence. Exit with code `0` for a valid profile or `4` for invariant failure. Digest each input, output, and preserved module path in the completion result. Include warnings with `code`, `message`, `path` (or `null`), and `requires_review`; never mark a result successful when review is required.
 
+The agent authors the result, including execution metadata the validator cannot know. Validate the profile first, write the truthful result, then run the `--result` check against that file. If validation fails, correct the result to report failure and the actual errors; never reinterpret a validator exit as a generated completion document.
+
 ## Incremental decision
 
 Use `references/update-algorithm.md`. Resolve the previous committed hash from the manifest, compare committed and uncommitted changes, map files to modules, add direct dependents, and map affected audiences. Choose full refresh when ancestry, package roots, discovery rules, public exports, or coverage cannot be trusted, or when changed source modules exceed `full_refresh_threshold` (default one third). Preserve untargeted module records and their manual objects. Mark untouched stale or orphaned records in coverage rather than silently deleting them.
+
+## Handoff to existing-book refresh
+
+The caller selects this skill with `behavior: incremental` and the mode rule above, using the complete existing invocation contract. `mode: incremental-refresh` is not an alias. The accepted source SHA is the existing profile's source revision; the target is the explicitly selected source snapshot. The book's documentation baseline is separate and must not be changed by profiling.
+
+Before replacing an existing profile, the caller retains an inspectable before-profile snapshot or a recoverable profile revision. Use it for preservation validation and retain it for the subsequent content-impact comparison. Keep transient snapshots/results outside the canonical profile root; this does not extend this skill's allowed outputs.
+
+Return the existing completion result with source provenance, digests of the invocation and manifest carrying requested/effective scope, validation and preservation evidence, and unresolved warnings. The caller may resume textbook refresh only after validation succeeds and review-required warnings are resolved. A full-refresh decision here means a full **profile scan**, never book generation. Do not invoke the next skill implicitly or claim textbook refresh succeeded because profiling completed.
 
 ## Reporting
 
@@ -107,7 +119,7 @@ Hash the exact bytes used for every declared input and output. Use lowercase hex
 
 When a refresh cannot establish ancestry, do not guess at a diff. Run a conservative full refresh, set `previous_hash` to `null` when appropriate, and emit a reviewable warning. When a module is intentionally excluded, add its path and a useful reason to `ignored_paths`, increment `profiles_ignored`, and keep discovered/profiled/ignored counts internally consistent. Never use an ignored record to conceal a discovery failure.
 
-The profile result must identify the invocation and skill version, report `profile` as its stage and `package-profile.generate` as its capability, and use the requested behavior. Report requested and effective module targets in `targets`; leave unrelated textbook target fields out of this profile-specific target object. List every preserved module path in `preserved`, and list only contract paths in `outputs`. If validation fails, include the failure warning and retain inspectable outputs when safe; do not claim success.
+The profile result must identify the invocation and skill version, report `profile` as its stage and `package-profile.generate` as its capability, and use the requested behavior. Preserve the declared envelope: `targets` contains empty `requested_concept_ids`, `effective_concept_ids`, `chapter_slugs` and `enrichment_ids` arrays; `metrics` contains `active_concepts: 0` and `retired_concepts: 0`. Do not insert module fields into that envelope; report them through the existing invocation and manifest. List every preserved module path in `preserved`, and list only contract paths in `outputs`. If validation fails, include the failure warning and retain inspectable outputs when safe; do not claim success.
 
 ## Failure handling
 

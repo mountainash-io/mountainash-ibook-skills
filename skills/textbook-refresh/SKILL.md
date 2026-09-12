@@ -12,15 +12,17 @@ regenerates only the stale sections.
 
 ## Mountainash editorial contract
 
-Before planning a refresh, read the confirmed `docs-site/editorial-brief.md` and approved `docs-site/chapter-plan.md`. If either is missing or awaiting approval, report that gate and do not generate prose. Routine source changes reuse the brief. Audience, scope or editorial-policy changes reopen only the affected questions and require user confirmation before changing the brief.
+This skill maintains the existing book; it is not the creation/replacement workflow. Reuse the confirmed `docs-site/editorial-brief.md` and approved `docs-site/chapter-plan.md` when present. If they are absent, preserve the current book's scope, chapter organisation, appendix choices and reader surfaces as the maintenance boundary. Their absence does not authorise creating a new brief, replanning chapters or rebuilding the book. If the source change requires an audience, scope or structural decision, stop and ask the focused question before changing that boundary.
 
-The graph, CSV, taxonomy, graph reports, source mappings and planning documents remain internal under `docs-site/`, outside `docs-site/site/docs/`. Never sync the graph viewer or graph artifacts into publication. Preserve ordinary chapter runtime assets. FAQ/glossary are confirmed appendices at `docs-site/site/docs/faq.md` and `glossary.md`; do not create a public `docs/learning-graph/` copy. Existing unsupported FAQ JSON stays untouched unless its own reviewed migration is requested.
+Keep canonical graph, CSV, taxonomy, reports and source mappings internal under `docs-site/`. Do not sync them into the published site. Routine refresh does not remove or relocate an existing reader-facing graph, FAQ, glossary, quiz or runtime asset as migration cleanup. Inventory the actual existing FAQ/glossary paths and formats; do not assume the replacement book's appendix paths. Unsupported FAQ JSON stays untouched unless its own reviewed update is requested. If the required change cannot be completed within these boundaries, report the specific unsupported artifact instead of silently omitting it.
 
 Use `ibook graph reconcile EXISTING PROPOSED CANDIDATE` for deterministic graph updates and CIS recomputation. Resolve identity conflicts explicitly; preserve chapter/source/provenance fields. Do not regenerate an enriched canonical graph with bare CSV conversion. Approved chapter reassignment is an editorial change recorded separately.
 
 Prefer Mermaid. MicroSims are optional when interaction adds value. Do not generate quizzes in the Mountainash workflow. Keep the quiz skill and the engine's existing enrichment support available for separately requested workflows.
 
 Refresh is agent-led and finalized via reviewed PRs. Consumer Actions validate/build/publish prepared content only; they never run interviews, agents, reconciliation or unattended refresh proposals. The existing accepted book remains intact while a replacement is reviewed.
+
+The skill instructions are the process under test. Follow their phases and referenced contracts; do not invent a missing handoff or substitute whole-book generation. If a gate cannot be evaluated, instructions conflict, or an operator must supply missing process logic, stop and report that process failure. A successful build, profile validation or preselected block patch is component evidence, not proof that the source-to-book skill workflow succeeded.
 
 **Required input:** `source_repo`, the explicit path to the target source
 repository or Git worktree. Relative paths are anchored to the invocation
@@ -207,7 +209,7 @@ INTENT():
     - "seed"                # first run — enrich learning graph + create refresh-state.json
     - "check"               # dry run — report what's stale without writing
     - "refresh"             # detect + regenerate stale artefacts
-    - "force-refresh"       # ignore state, regenerate all chapters
+    - "force-refresh"       # explicit whole-book request only; never a fallback for a failed gate
 
   invocation_dir = current working directory at invocation
   REQUIRE explicit source_repo input
@@ -227,6 +229,19 @@ INTENT():
     - normalized git -C R rev-parse --show-toplevel equals R
     - git -C R rev-parse --verify HEAD^{commit} succeeds
     - every resolved input/output remains within its intended target directory
+
+  record separately:
+    - selected source snapshot and dirty-file status
+    - book baseline from graph/state
+    - profile source revision and available validation evidence
+    - existing book layout and preservation inputs
+
+  REQUIRE the selected committed source revision is HEAD of the explicit worktree
+  REQUIRE that commit includes the reported source change
+  IF another revision or uncommitted source changes are the intended input:
+    STOP; request an explicit worktree at that committed revision
+    never switch branches, discard dirty work, or imply HEAD includes uncommitted changes
+  preserve unrelated local documentation edits as separate preservation inputs
 ```
 
 ### Input Resolution
@@ -243,10 +258,10 @@ evidence, not a filesystem routing instruction.
 The canonical graph is `R/docs-site/learning-graph/learning-graph.json`.
 Enrich only an internal reviewed candidate. Never synchronize a graph into the published site. Read `metadata.profile_dir` as provenance (`docs-site/profile`, relative to `R`), not a routing instruction. An approved seed/refresh may correct it on the internal graph; check mode never repairs it.
 
-Inventory any existing FAQ Markdown/JSON under `docs-site/learning-graph/` as legacy preservation inputs. The Mountainash appendix is `docs-site/site/docs/faq.md`; no public graph directory is required. Detect the actual heading/paired-marker format and existing JSON shape before planning. Do not create missing companion JSON or overwrite unsupported legacy data. A deliberate appendix migration is separate from routine machine export.
+Inventory existing reader-facing and canonical FAQ Markdown/JSON before planning. Read MkDocs configuration and the actual files to establish their roles; the creation workflow's `docs-site/site/docs/faq.md` is not a required path for an older book. Detect heading/paired-marker format and existing JSON shape. Do not create missing companions, move appendices or overwrite unsupported legacy data. A deliberate appendix migration is separate from routine maintenance.
 
-**Check is read-only:** read inputs, resolve the baseline, detect/map/classify
-changes, and report the plan. Do not generate invocation/patch JSON files,
+**Check is read-only:** read inputs, resolve the baseline and detect source changes. Evaluate the profile gate before mapping/classifying or presenting a content-impact plan. A failed gate reports the exact next prerequisite and stops; it must not produce an authoritative impact plan using stale facts. Once prerequisites pass, map/classify
+changes and report the plan. Do not generate invocation/patch JSON files,
 write a report to disk, repair metadata or copies, retrofit markers, profile,
 build, or update state. If using read-only Python helpers, use `python3 -B`
 to avoid bytecode-cache writes. `force-refresh` still validates paths and
@@ -266,7 +281,11 @@ DETECT(source_repo, baseline_commit):
     REPORT "No changes since last refresh"
     RETURN empty_changeset
 
-  changed_files = git -C source_repo diff --name-only baseline_commit..HEAD -- src/
+  scope = inspected profile/invocation package_roots, include, exclude
+  REQUIRE scope is explicit and its discovery rules are available
+  changed_files = git -C source_repo diff --name-only --no-renames baseline_commit..current_commit
+  changed_files = apply the profile discovery boundary rules to old and new paths
+  # Deleted paths are evaluated against the baseline tree, not current file existence.
   added_files   = filter changed_files where file is new (not in baseline)
   removed_files = filter changed_files where file was deleted
   modified_files = changed_files - added_files - removed_files
@@ -297,36 +316,34 @@ Keep source commits, tool versions, stable concept IDs, and enrichment
 provenance intact unless the existing seed/refresh operation actually updates
 them; relocation alone is not a content refresh.
 
-### Profile Staleness Check
+Retain the book baseline throughout profiling and planning. Do not substitute the profile's newer revision or the target HEAD. If graph metadata and refresh state both declare different book baselines, stop and resolve the discrepancy rather than silently selecting one after a partial update.
 
-Before proceeding, verify the code profile is not stale:
+### Profile freshness and handoff gate
+
+Before mapping, classifying or planning book changes:
 
 ```pseudocode
 profile_commit = profile_dir/manifest.json → source.git.current_hash
 IF profile_commit != current_commit:
-  WARN "Profile was generated at {profile_commit} but source is at {current_commit}"
-  WARN "Consider re-running package-documentation-profile first"
-  ASK user: "Proceed with stale profile, or stop?"
+  REPORT book baseline, profile_commit, current_commit, and detected source paths
+  REPORT "Profile refresh required before content-impact analysis"
+  STOP with the separate profile skill as the next action
+IF profile validation failed, its evidence is unavailable, or review-required warnings remain:
+  REPORT the unresolved profile validation/review prerequisite
+  STOP before content-impact analysis
 ```
 
-The textbook-refresh skill does **not** re-run the profiler. If the profile is
-stale, the user should run `package-documentation-profile` in incremental mode
-first, then re-run this skill. This keeps the two skills decoupled: profiling
-is an analysis step, refreshing is a content-generation step.
+There is no stale-profile override on this maintenance route. `check` never updates the profile, and `refresh` does not invoke the profiler implicitly.
 
-For a separate profile update, invoke the installed
-`package-documentation-profile` skill with explicit inputs, for example:
+The caller next invokes [package-documentation-profile](../package-documentation-profile/SKILL.md) using its complete existing contract and schemas:
 
-```text
-mode: incremental-refresh
-package_path: /absolute/path/to/mountainash-rules
-existing profile directory: /absolute/path/to/mountainash-rules/docs-site/profile
-output path: /absolute/path/to/mountainash-rules/docs-site/profile
-```
+- Use `behavior: incremental`; use `mode: interactive` for a direct user-driven run and `mode: orchestrated` only for an explicit orchestrated invocation. Do not use the unsupported `mode: incremental-refresh`.
+- Keep the same explicit source target `R` and selected source snapshot. Supply the existing profile and `R/docs-site/profile` as the explicit profile output, and a caller-owned transient run/result location outside that profile root.
+- Set `accepted_source_sha` from the existing profile, not from the book baseline; set `target_source_sha` to the selected committed source revision. Take package roots, inclusion/exclusion rules and audiences from the inspected profile/invocation, not a sibling repository.
+- Retain an inspectable before-profile snapshot or recoverable revision for preservation and comparison. Do not overwrite the only copy of the prior facts.
+- Require the profile skill's validation and preservation evidence and resolve review-required warnings. A full profile scan, if selected by its update algorithm, is not permission to regenerate the book.
 
-Use the same normalized target `R` for `package_path` and `R/docs-site/profile`
-for the explicit output. This does not change the profiler's general-purpose
-default and is never run implicitly by textbook-refresh or check mode.
+After that separate skill completes, re-enter this skill at Phase 0 against the same selected source and unchanged book baseline. If the source changed in the meantime, resolve the new target and re-evaluate prerequisites. Profiling success alone does not complete any chapter refresh.
 
 ---
 
@@ -498,6 +515,10 @@ This is expected and not an error — typically chapter 1 concepts.
 For each stale module, determine the nature of the change by comparing old and
 new state. This informs the regeneration strategy.
 
+Establish the comparison inputs explicitly. A saved before-profile is usable as `old_profile` only when its source provenance matches the book baseline. If it does not, recover baseline facts from the source at the book baseline before classification. Never load the newly refreshed profile as both the old and new state. If the baseline facts cannot be recovered, report the gap and stop rather than infer that no documented behaviour changed.
+
+Retain the computed `added`/`removed` symbol sets as `symbol_diffs[module]` alongside the classification string, and pass both to planning. A rename category alone is not enough to populate a graph update.
+
 ```pseudocode
 CLASSIFY(source_module, changeset, old_profile, new_source):
   IF source file IN changeset.added_files:
@@ -552,7 +573,7 @@ CLASSIFY(source_module, changeset, old_profile, new_source):
 Build a concrete plan before writing any files.
 
 ```pseudocode
-PLAN(stale_chapters, classifications, unmapped_files):
+PLAN(stale_chapters, classifications, symbol_diffs, unmapped_files):
   plan = {
     chapters_to_regenerate: [],
     chapters_to_review: [],
@@ -599,8 +620,8 @@ PLAN(stale_chapters, classifications, unmapped_files):
       plan.learning_graph_updates.append({
         action: "update_node_labels",
         module: module,
-        old_symbols: cls.removed,
-        new_symbols: cls.added
+        old_symbols: symbol_diffs[module].removed,
+        new_symbols: symbol_diffs[module].added
       })
 
   IF any classification IN ("new_module", "removed_module"):
@@ -611,8 +632,7 @@ PLAN(stale_chapters, classifications, unmapped_files):
 
 ### Present Plan to User
 
-In **check** mode, present the plan and stop. In **refresh** mode, present and
-ask for confirmation before proceeding.
+In **check** mode, present the plan and stop. In **refresh** mode, present and ask for confirmation before proceeding. Identify the book baseline, selected source, profile revision/validation, owning skill revision, exact affected concept blocks and appendix entries, proposed changes, preservation boundaries and unresolved mappings. Approval covers that plan only; changes to source or target document hashes require re-evaluation. Approval to test a skill is not approval to replace the book or publish it.
 
 ```
 Textbook Refresh Plan for mountainash-data
@@ -734,7 +754,7 @@ RENAME_IN_CHAPTER(chapter_dir, old_name, new_name):
 
 Prepare proposed graph changes from the source-backed plan. Run the pinned `ibook graph reconcile EXISTING PROPOSED CANDIDATE`, then validate the candidate. Reconciliation preserves existing provenance and chapter/source enrichments, recalculating CIS from the proposed topology. It refuses ambiguous labels/IDs and enriched removals; resolve those explicitly on a reviewed copy, never by stripping metadata or guessing from substring matches.
 
-After review, deliberately update candidate `metadata.source_commit` and `metadata.profile_dir` to the selected source basis and record any intentional chapter remapping under the approved chapter plan. Promote only the reviewed internal graph. Do not copy graph data, reports or viewer into `site/docs`.
+Prepare a separate reviewed graph candidate, preserving source provenance and existing chapter assignments. Do not advance the book baseline or promote the candidate over the canonical graph in this phase. Verify proposed mappings with the candidate content in Phase 6; only Phase 7 records the selected source basis and promotes verified graph/state changes. Do not copy graph data, reports or viewer into `site/docs`.
 
 ### FAQ Refresh
 
@@ -756,11 +776,11 @@ The pilot uses `##` category headings, `###` question headings, and JSON
 shape and metadata; do not retrofit FAQ markers, invent IDs/mappings, or
 convert it to satisfy the helper.
 
-For the Mountainash appendix, read `docs-site/site/docs/faq.md` and the current chapters. Identify affected questions through human review, then update only their answers after verifying source accuracy and input hashes. Preserve question/category order and every untouched answer. The brief determines reading depth.
+Read the reader-facing FAQ identified in Phase 0 and the current chapters. Identify affected questions through human review, then update only approved answers after verifying source accuracy and input hashes. Preserve question/category order and every untouched answer. Use the confirmed brief when present; otherwise preserve the existing book's reading depth and appendix choices.
 
 Legacy Markdown/JSON in `docs-site/learning-graph/` is a preservation input, not an obligatory mirrored output. Keep unsupported JSON byte-for-byte unchanged unless a separate reviewed migration explicitly authorizes changing its shape/content. Do not write it merely because chapter prose changed. When an existing project explicitly maintains synchronized legacy FAQ artifacts, verify ordered question/category/answer parity and hashes before any separately approved update; unexplained drift stops that update.
 
-No FAQ is generated when the confirmed brief excludes it. Do not invent a companion JSON file or make the new appendix dependent on the presence of legacy copies.
+Do not introduce an FAQ or companion JSON when the existing maintenance scope does not include one. A new/replacement book's confirmed brief may exclude the appendix; neither route authorises inventing missing copies as a refresh side effect.
 
 The heading-based comparison reads `###` question titles in document order
 under their `##` categories; an answer ends at the next question or category.
@@ -844,10 +864,7 @@ VERIFY(textbook_dir, learning_graph, plan):
   REPORT issues
 ```
 
-For marker-bearing chapters, run the installed helper's `coverage` command
-shown above against the canonical graph and `R/docs-site/site/docs/chapters`;
-do not reimplement that marker/label cross-check inline. Verify FAQ parity
-using the applicable format-specific procedure in Phase 5 before Phase 7.
+For marker-bearing chapters, run the installed helper's `coverage` command shown above against the reviewed graph candidate (or unchanged canonical graph) and candidate chapters; do not reimplement the marker/label cross-check inline. Verify FAQ parity using the applicable format-specific procedure in Phase 5 before Phase 7. Execute affected examples against the selected source, build the site and inspect changed rendered pages. Compare against the pre-refresh snapshot to prove every untargeted block/file remains unchanged. Report failures; do not update source baselines to make a failed run appear current.
 
 ---
 
@@ -857,9 +874,7 @@ Write the updated learning graph and slim `refresh-state.json`.
 
 ### Update Learning Graph
 
-The learning graph is the primary output. It was already updated in Phase 5
-(label renames, source_commit bump). In seed mode, this is where the full
-enrichment is written.
+Phase 5 prepared any graph changes without advancing the canonical book baseline. Only after Phase 6 succeeds, set the verified graph candidate's `metadata.source_commit` to the selected source revision and promote it with the updated refresh state. Preserve prior history. These file writes are not a multi-file transaction: report partial failures, and do not claim success if the graph and state disagree.
 
 ### Update refresh-state.json
 
@@ -1012,7 +1027,7 @@ chapter structure changes (new/removed chapters) are rare.
 
 ### Module renamed (file moved)
 
-Git detects renames via `git diff -M`. The refresh process:
+Phase 1 retains old and new paths as removed/added entries. During mapping, `git diff -M` may supply rename-pair evidence; it does not replace or discard the complete Phase 1 changeset. Confirm the identity match from source before proposing these steps in the approved plan:
 1. Finds affected nodes by old `source_path` in the learning graph
 2. Updates `source_module` and `source_path` on those nodes
 3. Runs find-and-replace for the old module name in chapter content

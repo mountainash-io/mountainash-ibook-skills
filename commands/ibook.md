@@ -11,7 +11,34 @@ This is a passive assessment, not the Python `ibook` CLI and not an orchestrator
 
 Use the explicit source repository or worktree, never infer a sibling from the current directory. Its documentation root is `docs-site/`; its MkDocs project is `docs-site/site/`. Resolve relative paths against the invocation directory once.
 
-Read the following artifacts and their recorded source/approval state. File existence is not completion. A draft brief or proposed chapter plan is **awaiting approval**, not missing and not approved. Outdated profiles are **stale**. A chapter outline is **incomplete content**. Never infer approval from a quality score, commit, filename or presence of headings.
+Establish the requested operation before assessing artifacts. Read their source and approval state; existence is not completion. Do not interpret an existing book's missing new-workflow planning files as a request to replace that book.
+
+## Select the operation
+
+| User intent | Route | Boundary |
+|---|---|---|
+| Source changed; refresh or maintain an existing book | Existing-book refresh below | Preserve its structure and editorial scope |
+| Create a book where none exists | Creation below | Confirm brief and chapter plan before prose |
+| Redesign or replace an existing book | Creation below, only with explicit replacement intent | Keep the accepted book separate until acceptance |
+
+If intent is materially ambiguous, ask which operation is intended. A source change alone never selects replacement, `seed`, or `force-refresh`.
+
+## Existing-book refresh
+
+The source of truth for phases and stop conditions is [textbook-refresh](../skills/textbook-refresh/SKILL.md), especially its profile freshness gate. The [profile skill](../skills/package-documentation-profile/SKILL.md) owns profiling inputs, preservation and validation. This command routes to those instructions; it neither replaces them nor runs them.
+
+1. Identify the explicit target worktree and selected source snapshot. Read the existing book's baseline from its graph/state and the profile's separate source revision.
+2. Recommend `textbook-refresh` in `check` mode. It detects the source delta and checks profile freshness before mapping or classifying book impact.
+3. If the profile is stale, the next action is the separate profile skill with `behavior: incremental`, not chapter generation. Use `mode: interactive` for a direct user-driven run; use `mode: orchestrated` only when an explicit orchestrated invocation is supplied. Preserve the earlier profile for comparison. A full-profile-scan decision does not authorise a book rebuild.
+4. After the profile skill returns a validated result for the selected source, with review-required warnings resolved, recommend re-entering `textbook-refresh` in `check` mode. It presents the bounded impact plan and stops without writing.
+5. Only approval of that concrete impact plan permits `refresh` to generate the affected content, verify preservation and update candidate state. Changed inputs invalidate the plan.
+6. Publication remains a separate acceptance decision.
+
+Reuse an existing confirmed brief/plan when present. If absent, preserve the current book's scope, chapter organisation, appendix choices and reader surfaces; do not send the user through creation to perform routine maintenance. Structural changes or insufficient evidence of the intended scope require a focused decision, not an inferred replacement.
+
+## Creation or explicitly requested replacement
+
+A draft brief or proposed chapter plan is awaiting approval, not missing or approved. Never infer approval from a quality score, commit, filename or presence of headings.
 
 | Order | Skill / operation | Artifact | Gate |
 |---|---|---|---|
@@ -29,13 +56,13 @@ Use `book-installer` only when a missing site scaffold or an actually requested 
 
 ## Recommend one next action
 
-Report: target, source basis, current stage, the first missing/stale/awaiting-approval artifact, and the one next skill or user decision. Show the ordered runbook. If the brief is draft, recommend confirming that brief, not rerunning profiling or pretending generation can begin. If the plan awaits approval, show the plan's open decisions; do not generate chapters.
+Report the requested operation, explicit target, book baseline, profile revision, selected source snapshot, the first unmet gate and one next skill or user decision. Cite the owning skill section. For maintenance, a stale profile routes to profiling even if the book lacks a new-workflow brief. Only on the creation/replacement route do a draft brief or unapproved fresh chapter plan select the corresponding approval step. Never silently switch routes.
 
 ## Standing boundaries
 
-- Reader-facing output is chapters plus confirmed appendices. Core depth is concepts → package use → internals, with all available audience facets considered; neither three fixed tracks nor one chapter per facet is mandatory.
-- Canonical graph data, viewer, reports, source mappings, brief and chapter plan remain outside `site/docs`. Hiding a navigation link is insufficient.
+- The creation/replacement workflow produces chapters plus confirmed appendices. Core depth is concepts → package use → internals, with all available audience facets considered; neither three fixed tracks nor one chapter per facet is mandatory.
+- Canonical graph and planning artifacts remain internal. Routine refresh does not migrate or delete an existing book's reader surfaces as cleanup; that is a separate editorial/publishing change.
 - Keep all skills. Do not invoke quiz generation in this workflow. MicroSims, media, mascots, analytics and announcements are not mandatory steps.
 - Deterministic tools use the pinned uvx installation in the repository README; never copy helpers into books. Frozen `bk` commands remain separate.
-- Routine `textbook-refresh` reuses the confirmed brief. Editorial changes reopen only affected questions and require confirmation.
+- Follow the skill instructions and their handoffs, not an improvised sequence. Report missing or contradictory instructions as a process failure; do not fill the gap silently and call the skill test successful. The README defines workflow acceptance evidence.
 - Agent work is iterative and reviewed through PRs. Actions validate/build/publish prepared files only. Existing accepted books remain unchanged until replacement acceptance.
