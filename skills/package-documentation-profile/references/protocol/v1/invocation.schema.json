@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mountainash:textbook-skills:invocation:1",
+  "title": "InvocationV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "invocation_id", "skill", "stage", "capability", "mode", "behavior", "project_root", "run_root", "inputs", "allowed_outputs", "targets", "parameters"],
+  "properties": {
+    "$schema": {"const": "urn:mountainash:textbook-skills:invocation:1"},
+    "invocation_id": {"type": "string", "minLength": 1},
+    "skill": {"$ref": "#/$defs/skillIdentity"},
+    "stage": {"type": "string", "minLength": 1},
+    "capability": {"type": "string", "minLength": 1},
+    "mode": {"type": "string", "enum": ["interactive", "orchestrated"]},
+    "behavior": {"type": "string", "enum": ["incremental", "full"]},
+    "project_root": {"type": "string", "minLength": 1},
+    "run_root": {"type": "string", "minLength": 1},
+    "inputs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/inputDigest"}},
+    "allowed_outputs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/projectPath"}},
+    "targets": {"$ref": "#/$defs/targets"},
+    "parameters": {"type": "object"}
+  },
+  "$defs": {
+    "skillIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "source_revision", "digest"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "inputDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/projectPath"},
+        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["concept_ids", "chapter_slugs", "enrichment_ids"],
+      "properties": {
+        "concept_ids": {"type": "array", "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+        "chapter_slugs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "enrichment_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "projectPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(?:/|$))[^\\u0000]+$"
+    }
+  }
+}

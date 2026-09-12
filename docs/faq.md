@@ -403,7 +403,7 @@ The learning-graph-generator skill includes four main Python scripts in `docs/le
 
 **taxonomy-distribution.py**: Generates taxonomy distribution report showing concept counts by category
 
-All scripts are run from the `docs/learning-graph/` directory after the learning graph CSV is generated. They require Python 3.x and standard libraries (no pip packages needed for basic functionality). See [Chapter 6](chapters/06-learning-graph-quality-validation/index.md) for usage examples.
+These historical script names now refer to the packaged operations in `mountainash-ibook-tools`. Use the pinned uvx installation in the repository README; do not copy or run project-local Python helpers. The example book's concept labels remain unchanged during this tooling migration.
 
 ### How do I run the learning graph validation scripts?
 
@@ -411,9 +411,10 @@ After generating a learning graph, navigate to the `docs/learning-graph/` direct
 
 ```bash
 cd docs/learning-graph
-python analyze-graph.py learning-graph.csv quality-metrics.md
-python csv-to-json.py learning-graph.csv learning-graph.json
-python taxonomy-distribution.py learning-graph.csv taxonomy-distribution.md
+ibook graph analyze learning-graph.csv /tmp/quality-metrics-candidate.md
+ibook graph convert learning-graph.csv /tmp/proposed-graph.json
+ibook graph reconcile learning-graph.json /tmp/proposed-graph.json /tmp/candidate-graph.json
+ibook graph taxonomy-report learning-graph.csv /tmp/taxonomy-candidate.md
 ```
 
 **Expected outputs**:
@@ -736,7 +737,7 @@ pip install pandas numpy  # For advanced analysis
 **Run from correct directory**: Scripts expect to be run from `docs/learning-graph/`
 ```bash
 cd docs/learning-graph
-python analyze-graph.py learning-graph.csv quality-metrics.md
+ibook graph analyze learning-graph.csv /tmp/quality-metrics-candidate.md
 ```
 
 Most basic scripts use only Python standard library. If you encounter import errors, check the script's requirements or install packages individually. See [Chapter 6](chapters/06-learning-graph-quality-validation/index.md).

@@ -14,27 +14,25 @@ image: img/cover.png
 
 ## Getting Started
 
-This is an intelligent textbook built with MkDocs Material. Use the navigation
-sidebar on the left to explore chapters, the learning graph, MicroSims, and
-supporting reference content.
+Use the navigation sidebar to find chapters and supporting reference content.
+Start with concepts, continue to package use, or follow links into internals at
+the depth you need.
 
 ## Front Matter
 
 - **About** — audience, prerequisites, and how to read the book
-- **Course Description** — the seed document used to generate the learning graph
 
 ## Chapters
 
 The main body of the book lives under [Chapters](chapters/index.md). Each
 chapter has its own folder with a two-digit prefix (e.g. `01-introduction`).
 
-## Learning Graph
+## Appendices
 
-The [Learning Graph](learning-graph/index.md) shows how concepts depend on each
-other. Concepts are introduced in dependency order so prerequisites are always
-covered before they are used.
+The confirmed FAQ and glossary appendices link back to the chapters they support.
+Their navigation entries are added when the pages are complete.
 
 ## MicroSims
 
-Interactive simulations live under [MicroSims](sims/index.md). Each MicroSim
-focuses on one concept and is embeddable as an iframe inside chapter content.
+Optional interactive explanations live under [MicroSims](sims/index.md).
+Use them where interaction helps explain something beyond a simple diagram.

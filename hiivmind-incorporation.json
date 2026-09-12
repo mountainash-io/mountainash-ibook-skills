@@ -1,0 +1,673 @@
+{
+  "profile_revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+  "refresh_revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+  "patch_engine_baseline": "c4d69a9dd4d97b13ee53c27be100afee34531d3a",
+  "retirement": "not yet accepted; standalone installation remains active",
+  "sources": [
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": ".agents/plugins/marketplace.json",
+      "sha256": "603a3b383c9912c5a269989c2109654e565bba3b367110a262bf3fb4d483b45f",
+      "destination": ".agents/plugins/marketplace.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": ".claude-plugin/marketplace.json",
+      "sha256": "88722ff057526162fabff6d00a511414afe8f5bc6773fc61bad9161bd632a13f",
+      "destination": ".claude-plugin/marketplace.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": ".claude-plugin/plugin.json",
+      "sha256": "d97d1af583d92efa1d5e9fbe03b654fc2ed4e24817f23fac00b3d2539b25e5de",
+      "destination": ".claude-plugin/plugin.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": ".codex-plugin/plugin.json",
+      "sha256": "91e2f5ecd732f2820b3f86121fd0e81ed32244f06e4445eb5b511b966a13cdb2",
+      "destination": ".codex-plugin/plugin.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": ".codex/INSTALL.md",
+      "sha256": "fe5e76c52e27873adc83f280c561d34f581ef89da7ad5fe8c1e5e74c5bdf97ee",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": ".github/workflows/test.yml",
+      "sha256": "3ecf87cd8eebb08c93ed8babf50cfdd0e4b92d144056a5a1e2c08ec257e9edc7",
+      "destination": ".github/workflows/test-tools.yml",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": ".gitignore",
+      "sha256": "309d329b5391592911d4b85471c4562e41ed6486f9cff3924a6132ea1268ed9c",
+      "destination": ".gitignore",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "AGENTS.md",
+      "sha256": "88e58277360013c8cb4e297574edfb191c29c4a78d077658c40b4e60c479c4aa",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "CLAUDE.md",
+      "sha256": "ed793cb426ad2fe782479ce1bb0db008da771d6998c78e64139aaab5a94f3a21",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "GEMINI.md",
+      "sha256": "2535634dd327ba6e241193499d6fa3f5fdaf8ed4d827ac7543d90641c2d35f97",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "INSTALL.md",
+      "sha256": "e4a3b4448349fa668eade07d224ccfc0fe4bf745208a12cdbb09a3571b9e38b2",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "LICENSE",
+      "sha256": "b12abff10acf9c8713e8b2f827bdf1fd69517e79e160eb519dc45e1f486c6abd",
+      "destination": "LICENSE.hiivmind",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "PUBLISHING.md",
+      "sha256": "97a682eaf5efa60ed11fb05a16bb3af2a308546f9a5331f9c5d309d0fbc60163",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "README.md",
+      "sha256": "1d8b217f31e2dd2aa7420236d5dc71a8360eaf436dc8e1b93879ba0d7fce668d",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "gemini-extension.json",
+      "sha256": "5de64623e0f4234ec94ac692219305b6d20cdba328b1c4d2f70920039dc92288",
+      "destination": "gemini-extension.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "requirements-dev.txt",
+      "sha256": "b2cf40cfde63ffcd654d233d12aebeb06ea2092d1cbd22aa25c34efacfcfd804",
+      "destination": ".github/workflows/test-tools.yml",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "requirements.txt",
+      "sha256": "117bb7857e2106917057761be56b51e26df4b9c0e3ebdbcf48a992e94534c6ac",
+      "destination": "pyproject.toml",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/SKILL.md",
+      "sha256": "d0fb2d0a276b199193db097856a87f85eaffa23778ee2b9e71fc6cc79ee77e2c",
+      "destination": "skills/package-documentation-profile/SKILL.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/agents/openai.yaml",
+      "sha256": "f125587137e80018afc13421832dcd1af1da61064664afb5f4c6232605af128f",
+      "destination": "skills/package-documentation-profile/agents/openai.yaml",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/contract.json",
+      "sha256": "cef50a1bac5799ba6e03d2c568951de02ea27b212e01bf47460c70f0cdbb8a86",
+      "destination": "skills/package-documentation-profile/contract.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/classification-rubric.md",
+      "sha256": "58ccd13bc8dfaec6cc36c5159a7e9eea7fc72ed856928d3a4f22dea56dccc6e6",
+      "destination": "skills/package-documentation-profile/references/classification-rubric.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/codex-tools.md",
+      "sha256": "53e8e3abc9bf0d1d9277b6569909ac9f4e156ceda9642bbfb81a28521ccaa5b4",
+      "destination": "skills/package-documentation-profile/references/codex-tools.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/gemini-tools.md",
+      "sha256": "58beb32b6143027736389179826d48a6f272aacd93b8aac5087f4007d8d0db6a",
+      "destination": "skills/package-documentation-profile/references/gemini-tools.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/profile-schema.md",
+      "sha256": "ab824f2c8d435fbb73502b62c7d9721ddc9301ce92053a79f893117863eba4cc",
+      "destination": "skills/package-documentation-profile/references/profile-schema.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/protocol/source.json",
+      "sha256": "7bde0deb3b61c2954368862481e97362ef79601d9495aa75338ef7a5194b446d",
+      "destination": "skills/package-documentation-profile/references/protocol/source.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/protocol/v1/completion-result.schema.json",
+      "sha256": "d8d6a06addd90f965f825ed51444f51a82347339b02983bef9d67698861266e8",
+      "destination": "skills/package-documentation-profile/references/protocol/v1/completion-result.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/protocol/v1/invocation.schema.json",
+      "sha256": "ab13d7a98efe4dd42e2e9b7527c0524a2611a16753ccc5c3bcd2cc78b4bd323a",
+      "destination": "skills/package-documentation-profile/references/protocol/v1/invocation.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/protocol/v1/skill-contract.schema.json",
+      "sha256": "746bbb9376260901ebed1539b355e7a4e48c52e9277cbffc4efbcde8f012711e",
+      "destination": "skills/package-documentation-profile/references/protocol/v1/skill-contract.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/references/update-algorithm.md",
+      "sha256": "20993fdc00e8e3a3727baf0faf98e17acd6d083eb2f9c3a194a4184ddf56608c",
+      "destination": "skills/package-documentation-profile/references/update-algorithm.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/schemas/audience-facet.schema.json",
+      "sha256": "9d6014121cb19a80eed22b6155fd3af830ed9ae6491fa37cbf00ce97078090d8",
+      "destination": "src/ibook_tools/profile/schemas/audience-facet.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/schemas/module-profile.schema.json",
+      "sha256": "dbc75fa39c2e726b4a997709dd8318183c7007253b8a05b87a072c5921a7a92e",
+      "destination": "src/ibook_tools/profile/schemas/module-profile.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/schemas/profile-invocation.schema.json",
+      "sha256": "5640d21b5e82596edaf35a5be76326cdf3051470bd7189d033a161c5dab1be5e",
+      "destination": "src/ibook_tools/profile/schemas/profile-invocation.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/schemas/profile-manifest.schema.json",
+      "sha256": "9d3b7476a0023b8718e12207feeb8e662e595b5fe8265e49b060118c02246d92",
+      "destination": "src/ibook_tools/profile/schemas/profile-manifest.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/schemas/profile-result.schema.json",
+      "sha256": "dd1b5c812da16122258fa6f6a972d6de36c25c73b83e2c60746d229e3e33ea26",
+      "destination": "src/ibook_tools/profile/schemas/profile-result.schema.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "skills/package-documentation-profile/scripts/validate_profile.py",
+      "sha256": "9eeeedfa9a0f12cd306f6197ca80b29192059d48d6150b984b709f635f7d3265",
+      "destination": "src/ibook_tools/profile/validate.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/conftest.py",
+      "sha256": "98f5d491db1261cf55323bab9d5d1e93aa669d890f01e675a08d19290ae7abd4",
+      "destination": "tests/package_documentation_profile/conftest.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/coverage.md",
+      "sha256": "a703826cfe68431aa0fe695bdf6342550a6f6b1d8435369df6fdc241238a95ae",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/coverage.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/facets/maintainers.json",
+      "sha256": "e533d3fa35745029ff84085b18e915935dc4588da38e332483083993c74499b7",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/facets/maintainers.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/facets/users.json",
+      "sha256": "adcd6444082ab1fc6a22131a82afaa7152fb9ede067d244548a331bf5b264459",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/facets/users.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/manifest.json",
+      "sha256": "a6cadd52f7b6a583d8b32b76d9584ee42e38c6b6f0eef9b2aa83ad50da9ea5e3",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/manifest.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/modules/pkg.core.json",
+      "sha256": "6753dfacf8d282cd72fd35245d3b02924628fb8817e1c394dd32351082dcbad1",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/modules/pkg.core.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/modules/pkg.utils.json",
+      "sha256": "a8a66511ac16adf3f4903c2e4b7ea80c5dd764d6f8f5209b639bd1c2b146cbf2",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/after/profile/modules/pkg.utils.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/coverage.md",
+      "sha256": "ff7518bbee0e431b9a3251ca8d25db08c92f373c4d8bd7f8d37dd58230345cc3",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/coverage.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/facets/maintainers.json",
+      "sha256": "e533d3fa35745029ff84085b18e915935dc4588da38e332483083993c74499b7",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/facets/maintainers.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/facets/users.json",
+      "sha256": "adcd6444082ab1fc6a22131a82afaa7152fb9ede067d244548a331bf5b264459",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/facets/users.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/manifest.json",
+      "sha256": "6e1a4ea908ed0f4ced7e2170c5419bb7d1f271e7c4cabfe66c99f7c68044469b",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/manifest.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/modules/pkg.core.json",
+      "sha256": "5c15492b29a666b8887b2ed94f688262703092d340fabef9e18b298edec9eb8b",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/modules/pkg.core.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/modules/pkg.utils.json",
+      "sha256": "6791d85d5a80dff30bd629d13d622b5b7716c7df5c6879fb77180b0c4585d7d0",
+      "destination": "tests/package_documentation_profile/fixtures/valid-profile/before/profile/modules/pkg.utils.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/test_contract.py",
+      "sha256": "ce45bc84f783f7285eafda194331177faf19a106a7222d69dff1f03eb4da2af2",
+      "destination": "tests/package_documentation_profile/test_contract.py",
+      "disposition": "protocol digest regression retained; implementation/default-only assertions removed; actual validator behavior covered by test_validate_profile.py"
+    },
+    {
+      "revision": "025ab4a25757f8e75a4ed54855d49bb1a6460d05",
+      "source": "tests/package_documentation_profile/test_validate_profile.py",
+      "sha256": "9e523e75ce62dc19b122fadaa88be285d64cf8e78f10e90ac92d47e03ca4439a",
+      "destination": "tests/package_documentation_profile/test_validate_profile.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": ".agents/plugins/marketplace.json",
+      "sha256": "603a3b383c9912c5a269989c2109654e565bba3b367110a262bf3fb4d483b45f",
+      "destination": ".agents/plugins/marketplace.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": ".claude-plugin/marketplace.json",
+      "sha256": "88722ff057526162fabff6d00a511414afe8f5bc6773fc61bad9161bd632a13f",
+      "destination": ".claude-plugin/marketplace.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": ".claude-plugin/plugin.json",
+      "sha256": "579a808197008e4185aaaee98dc4bb5c9ea3203bab92281a8b748d659e0cd98a",
+      "destination": ".claude-plugin/plugin.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": ".codex-plugin/plugin.json",
+      "sha256": "3839b3d674afb708bf82581503598204dfd3fb33a30e249c8b5dc9ba788be2ef",
+      "destination": ".codex-plugin/plugin.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": ".codex/INSTALL.md",
+      "sha256": "fe5e76c52e27873adc83f280c561d34f581ef89da7ad5fe8c1e5e74c5bdf97ee",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": ".gitignore",
+      "sha256": "309d329b5391592911d4b85471c4562e41ed6486f9cff3924a6132ea1268ed9c",
+      "destination": ".gitignore",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "AGENTS.md",
+      "sha256": "88e58277360013c8cb4e297574edfb191c29c4a78d077658c40b4e60c479c4aa",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "CLAUDE.md",
+      "sha256": "ed793cb426ad2fe782479ce1bb0db008da771d6998c78e64139aaab5a94f3a21",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "GEMINI.md",
+      "sha256": "2535634dd327ba6e241193499d6fa3f5fdaf8ed4d827ac7543d90641c2d35f97",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "INSTALL.md",
+      "sha256": "e4a3b4448349fa668eade07d224ccfc0fe4bf745208a12cdbb09a3571b9e38b2",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "LICENSE",
+      "sha256": "b12abff10acf9c8713e8b2f827bdf1fd69517e79e160eb519dc45e1f486c6abd",
+      "destination": "LICENSE.hiivmind",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "PUBLISHING.md",
+      "sha256": "97a682eaf5efa60ed11fb05a16bb3af2a308546f9a5331f9c5d309d0fbc60163",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "README.md",
+      "sha256": "4d119376612b57d31ec1b278c374eba6bfb4a0d03ec7ffbc7f89a4a5e43e821f",
+      "destination": "README.md",
+      "disposition": "installation, source-target, agent workflow and discovery responsibilities merged into unified README and retained skill contracts; no second plugin identity"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "gemini-extension.json",
+      "sha256": "5de64623e0f4234ec94ac692219305b6d20cdba328b1c4d2f70920039dc92288",
+      "destination": "gemini-extension.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/package-documentation-profile/SKILL.md",
+      "sha256": "0efc1979f7b0de857f8dbdeae62c692c6843b783da3da7c16353229ed4da069e",
+      "destination": "skills/package-documentation-profile/SKILL.md",
+      "disposition": "superseded by composable profile contribution from 025ab4a25757f8e75a4ed54855d49bb1a6460d05"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/package-documentation-profile/agents/openai.yaml",
+      "sha256": "f125587137e80018afc13421832dcd1af1da61064664afb5f4c6232605af128f",
+      "destination": "skills/package-documentation-profile/agents/openai.yaml",
+      "disposition": "superseded by composable profile contribution from 025ab4a25757f8e75a4ed54855d49bb1a6460d05"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/package-documentation-profile/references/classification-rubric.md",
+      "sha256": "58ccd13bc8dfaec6cc36c5159a7e9eea7fc72ed856928d3a4f22dea56dccc6e6",
+      "destination": "skills/package-documentation-profile/references/classification-rubric.md",
+      "disposition": "superseded by composable profile contribution from 025ab4a25757f8e75a4ed54855d49bb1a6460d05"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/package-documentation-profile/references/codex-tools.md",
+      "sha256": "53e8e3abc9bf0d1d9277b6569909ac9f4e156ceda9642bbfb81a28521ccaa5b4",
+      "destination": "skills/package-documentation-profile/references/codex-tools.md",
+      "disposition": "superseded by composable profile contribution from 025ab4a25757f8e75a4ed54855d49bb1a6460d05"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/package-documentation-profile/references/gemini-tools.md",
+      "sha256": "58beb32b6143027736389179826d48a6f272aacd93b8aac5087f4007d8d0db6a",
+      "destination": "skills/package-documentation-profile/references/gemini-tools.md",
+      "disposition": "superseded by composable profile contribution from 025ab4a25757f8e75a4ed54855d49bb1a6460d05"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/package-documentation-profile/references/profile-schema.md",
+      "sha256": "baef789db833f75e6a976029e1730301aef810c1fa1e08deedad9f4c980fd951",
+      "destination": "skills/package-documentation-profile/references/profile-schema.md",
+      "disposition": "superseded by composable profile contribution from 025ab4a25757f8e75a4ed54855d49bb1a6460d05"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/package-documentation-profile/references/update-algorithm.md",
+      "sha256": "fd2585ecc31afa95e3ab2a6ed6fce709c02ed2e6d9582d03e92d9020b46796f4",
+      "destination": "skills/package-documentation-profile/references/update-algorithm.md",
+      "disposition": "superseded by composable profile contribution from 025ab4a25757f8e75a4ed54855d49bb1a6460d05"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/SKILL.md",
+      "sha256": "ebe1fcd8002da3122aa89bcb26d80ce3b969fb9ba821b0943072ac319d089e22",
+      "destination": "skills/textbook-refresh/SKILL.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/references/change-classification.md",
+      "sha256": "b53e26cb6d5d9f28a5c95d0ded8d0e82210dcfa540e5de89194064be5e448f60",
+      "destination": "skills/textbook-refresh/references/change-classification.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/references/refresh-state-schema.md",
+      "sha256": "60921ac81609ca090d8c4fb3459a5c7aa9a2aef30a00129dc1f8ed76b5de1834",
+      "destination": "skills/textbook-refresh/references/refresh-state-schema.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/apply_patch.py",
+      "sha256": "d7b7c1be0e92f7db51e54d66cf952349ee26dc71cb6f12933bc03b47cda1aaed",
+      "destination": "src/ibook_tools/refresh/cli.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/patch_engine/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "destination": "src/ibook_tools/refresh/patch_engine/__init__.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/patch_engine/canonical.py",
+      "sha256": "f5bca6993df62cf86cda5c5c03670a7b65d0fe9dccd63a4a97ec57059ff0d578",
+      "destination": "src/ibook_tools/refresh/patch_engine/canonical.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/patch_engine/enrichments.py",
+      "sha256": "79fc1e378efd3c39ea0383e8ae0d066cde45a08a635451c457bce82ac92c537b",
+      "destination": "src/ibook_tools/refresh/patch_engine/enrichments.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/patch_engine/markers.py",
+      "sha256": "66cc692fa34398037ca30ef06e56e231fc96a0ec5ee8b20ddf0bad80e5277967",
+      "destination": "src/ibook_tools/refresh/patch_engine/markers.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/patch_engine/patches.py",
+      "sha256": "4eac4741d36530d9dd719253bf9df3a49fc3e730726465da5d413d64115e311c",
+      "destination": "src/ibook_tools/refresh/patch_engine/patches.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "destination": "tests/refresh/__init__.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/conftest.py",
+      "sha256": "bb79989ef5187bb36130c021286fdce76ecd3328bf2e5434d22205fb0bdf2651",
+      "destination": "tests/refresh/conftest.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/chapters/assigned/chapters/01-foundations/index.md",
+      "sha256": "660321845a8b090ea0b96f39f0fa67a3943f39e197370f4c9880b10b8a78d509",
+      "destination": "tests/refresh/fixtures/chapters/assigned/chapters/01-foundations/index.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/chapters/assigned/chapters/02-current-behavior/index.md",
+      "sha256": "a52415955485cceb5ca13d498266184eb68ecc7c8f0d4cd5d20abd98c42a43a4",
+      "destination": "tests/refresh/fixtures/chapters/assigned/chapters/02-current-behavior/index.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/chapters/assigned/learning-graph.json",
+      "sha256": "8330f2053b1cbbc1fb6a4f0b8cf15fdb65ea8770c6036104d0f8b11c539bc8aa",
+      "destination": "tests/refresh/fixtures/chapters/assigned/learning-graph.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/content/base/project/textbook/docs/chapters/01-foundations/index.md",
+      "sha256": "f758417d3b2c9e9d716ca4e41b59e3db491c7fd635807440a74b912b0737a6d1",
+      "destination": "tests/refresh/fixtures/content/base/project/textbook/docs/chapters/01-foundations/index.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/content/base/project/textbook/docs/chapters/02-second/index.md",
+      "sha256": "4c953662a34c40db6678dc159c8af3b57dc52a2b7f91805a719c24e5538f8f45",
+      "destination": "tests/refresh/fixtures/content/base/project/textbook/docs/chapters/02-second/index.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/enrichments/faq/project/textbook/docs/faq-chatbot-training.json",
+      "sha256": "d1621383285df68a320ca9ed24e859753fc3fab74d819a8f6e46fd50924545a8",
+      "destination": "tests/refresh/fixtures/enrichments/faq/project/textbook/docs/faq-chatbot-training.json",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/enrichments/faq/project/textbook/docs/faq.md",
+      "sha256": "7cfdd0a13b829a96c3cb95afa61d90416d548ae993ee8461fb570e71df371805",
+      "destination": "tests/refresh/fixtures/enrichments/faq/project/textbook/docs/faq.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/enrichments/glossary/project/textbook/docs/glossary.md",
+      "sha256": "67ffa61244159285cf696c373063dd1dca1bdc74a3fb210ab705be7943d16381",
+      "destination": "tests/refresh/fixtures/enrichments/glossary/project/textbook/docs/glossary.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/enrichments/quiz/project/textbook/docs/chapters/01-example/quiz.md",
+      "sha256": "7f8e4efecb75e217a0e6aa7a161598a3a9ebc64ca65b47be40f9cf6f97245b35",
+      "destination": "tests/refresh/fixtures/enrichments/quiz/project/textbook/docs/chapters/01-example/quiz.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/fixtures/enrichments/reference/project/textbook/docs/chapters/01-example/references.md",
+      "sha256": "7224084f4ad88dd43b8b686b7bd03b3473e85e8c97d60ddfa27de899f17798a2",
+      "destination": "tests/refresh/fixtures/enrichments/reference/project/textbook/docs/chapters/01-example/references.md",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/test_enrichments.py",
+      "sha256": "6e962e9e5cd46b95b5c45a8fcfc0ff3d4372080a2dc41365e8407106e6ef736f",
+      "destination": "tests/refresh/test_enrichments.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/test_markers.py",
+      "sha256": "7de0115c616e6fe790691bf7f35bc1a76a3b93644070a4089abc78fed19b096b",
+      "destination": "tests/refresh/test_markers.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    },
+    {
+      "revision": "b387de547dc9590ef5dcddf895cd911dbb113a74",
+      "source": "skills/textbook-refresh/scripts/tests/test_patches.py",
+      "sha256": "15bd5ab12545ea084f587c2a59f868583e92457f3529a20457ecd507a1368bd1",
+      "destination": "tests/refresh/test_patches.py",
+      "disposition": "incorporated or responsibility merged; Mountainash adaptation"
+    }
+  ]
+}

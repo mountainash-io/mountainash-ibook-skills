@@ -1,0 +1,9 @@
+{
+  "audience": "users",
+  "summary": "Public workflows and APIs.",
+  "concepts": [{"name": "Running the package", "module_ids": ["pkg.core"], "recommended_docs": ["guide"], "evidence": ["src/pkg/core.py"]}],
+  "featured_modules": ["pkg.core"],
+  "hidden_or_internal_modules": ["pkg.utils"],
+  "documentation_plan": ["guide"],
+  "open_questions": []
+}

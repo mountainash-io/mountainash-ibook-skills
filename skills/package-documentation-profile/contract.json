@@ -1,0 +1,21 @@
+{
+  "$schema": "urn:mountainash:textbook-skills:skill-contract:1",
+  "name": "package-documentation-profile",
+  "version": "0.2.0",
+  "capabilities": ["package-profile.generate"],
+  "modes": ["interactive", "orchestrated"],
+  "behaviors": ["full", "incremental"],
+  "inputs": [
+    {"name": "invocation", "schema": "../../src/ibook_tools/profile/schemas/profile-invocation.schema.json", "required": true, "read_only": true},
+    {"name": "package_source", "schema": "urn:mountainash:textbook-skills:invocation:1", "required": true, "read_only": true},
+    {"name": "existing_profile", "schema": "../../src/ibook_tools/profile/schemas/profile-manifest.schema.json", "required": false, "read_only": true}
+  ],
+  "artifact_schema_imports": [],
+  "allowed_outputs": ["profile/manifest.json", "profile/modules/*.json", "profile/facets/*.json", "profile/coverage.md"],
+  "result_schema": "urn:mountainash:textbook-skills:completion-result:1",
+  "validators": ["ibook profile validate"],
+  "warning_codes": ["STALE_PROFILE", "ORPHAN_PROFILE", "IGNORED_PATH", "LOW_CONFIDENCE", "FULL_REFRESH"],
+  "preservation": {"policy": "preserve_untargeted", "unit": "module profile manual object"},
+  "failure": {"canonical_outputs": "inspectable", "result_status": "failed"},
+  "digest_paths": ["profile/manifest.json", "profile/modules/*.json", "profile/facets/*.json", "profile/coverage.md"]
+}

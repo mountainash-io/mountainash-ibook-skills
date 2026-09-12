@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hiivmind:package-documentation-profile:facet:1",
+  "title": "Package audience facet",
+  "type": "object",
+  "required": ["audience", "summary", "concepts", "featured_modules", "hidden_or_internal_modules", "documentation_plan", "open_questions"],
+  "properties": {
+    "audience": {"type": "string", "minLength": 1}, "summary": {"type": "string"},
+    "concepts": {"type": "array", "items": {"type": "object", "required": ["name", "module_ids", "recommended_docs", "evidence"], "properties": {"name": {"type": "string", "minLength": 1}, "module_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "recommended_docs": {"type": "array", "items": {"type": "string"}}, "evidence": {"type": "array"}}, "additionalProperties": true}},
+    "featured_modules": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "hidden_or_internal_modules": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "documentation_plan": {"type": "array", "items": {"type": "string"}}, "open_questions": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

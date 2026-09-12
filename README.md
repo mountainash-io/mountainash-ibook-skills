@@ -1,4 +1,64 @@
-# Agent Skills for Intelligent Textbooks
+# Mountainash iBook skills
+
+Mountainash's documentation toolchain, forked from [Dan McCreary's iBook skills](https://github.com/dmccreary/ibook-skills). Maintained at [mountainash-io/mountainash-ibook-skills](https://github.com/mountainash-io/mountainash-ibook-skills).
+
+The Mountainash workflow produces chapters and confirmed FAQ/glossary appendices from package profiles, a confirmed editorial brief, an internal learning graph, and a user-approved chapter plan. Graphs are internal; quizzes are not part of this workflow. Every upstream skill remains available.
+
+Deterministic Python tools are distributed separately as `mountainash-ibook-tools` (`ibook`), using Python 3.12 and pinned Git revisions through `uvx`. Skills perform the interviews and generation; publishing builds prepared files only.
+
+**Licensing:** upstream notices and skill metadata are preserved. The repository-wide CC BY-NC-SA notice and some per-skill CC BY-NC metadata differ; this fork does not resolve that discrepancy or assert a blanket MIT grant. Imported Hiivmind profile/refresh code retains `LICENSE.hiivmind` (MIT). Mountainash modifications are identified in Git history and `hiivmind-incorporation.json`; independently MIT-licensed application packages remain separate.
+
+**Migration safety:** `scripts/bk*` and their source/resource paths remain frozen. Keep existing installations until the replacement is accepted. The original local checkout may keep its old directory name; set `BK_HOME` to its actual location, not an assumed renamed path.
+
+## Pinned deterministic tools
+
+Linux/Python 3.12 is the verified environment. Select a **full, reviewed Git commit** from the tooling PR or accepted branch; use that same revision for both constraints and the distribution. Do not use `main`, an abbreviated hash or a floating version as the tool pin.
+
+```bash
+set -eu
+: "${IBOOK_REV:?Set IBOOK_REV to the full reviewed 40-hex commit}"
+case "$IBOOK_REV" in *[!0-9a-f]*|"") echo "Invalid revision" >&2; exit 2;; esac
+test "${#IBOOK_REV}" -eq 40
+tooling_inputs=$(mktemp -d)
+trap 'rm -rf "$tooling_inputs"' EXIT
+source_url="https://raw.githubusercontent.com/mountainash-io/mountainash-ibook-skills/$IBOOK_REV"
+curl --fail --silent --show-error --location "$source_url/constraints.txt" -o "$tooling_inputs/constraints.txt"
+curl --fail --silent --show-error --location "$source_url/build-constraints.txt" -o "$tooling_inputs/build-constraints.txt"
+uvx --python 3.12 \
+  --constraints "$tooling_inputs/constraints.txt" \
+  --build-constraints "$tooling_inputs/build-constraints.txt" \
+  --from "git+https://github.com/mountainash-io/mountainash-ibook-skills.git@$IBOOK_REV" \
+  ibook profile validate /absolute/path/to/docs-site/profile
+```
+
+Stop if either constraint download fails; never retry unconstrained. `uvx` does not consume the source repository's lockfile automatically. Replace the final command arguments to run the other operations below; the installation prefix stays identical. All input/output paths are explicit and can contain spaces. No writable skill checkout, `BK_HOME`, or consumer script copies are required.
+
+| Operation | Inputs |
+|---|---|
+| `ibook profile validate PROFILE` | Optional `--before-profile BEFORE`, `--result RESULT` |
+| `ibook graph convert CSV OUTPUT` | Optional `--colors JSON`, `--metadata JSON`, `--taxonomy-names JSON` |
+| `ibook graph taxonomy CSV OUTPUT` | Required `--config JSON` |
+| `ibook graph analyze CSV OUTPUT` | Internal quality report |
+| `ibook graph taxonomy-report CSV OUTPUT` | Optional `--taxonomy-names JSON` |
+| `ibook graph validate GRAPH` | Packaged Draft 7 schema; optional explicit `--schema JSON` |
+| `ibook graph reconcile EXISTING PROPOSED OUTPUT` | Separate candidate; enriched removal/identity conflicts require review |
+| `ibook refresh plan` / `apply` | `--project-root ROOT --invocation JSON --patch-set JSON` |
+| `ibook refresh coverage` | `--graph JSON --chapters DIR` |
+| `ibook refresh faq-export` / `faq-verify` | `--faq MD`; verify also requires `--json JSON`; supported paired-marker format only |
+
+Graph outputs must not already exist; promote reviewed candidates explicitly. Graph errors return 2; profile invariant errors return 4; refresh usage/input/invariant errors return 2 and verification errors return 3. Planning is non-mutating. Refresh is not a multi-file transaction. Unsupported existing FAQ JSON is never replaced by marker export.
+
+For local development, the same uvx options accept `--from /absolute/tooling/worktree`; use `--no-cache` while source files change so a cached local wheel is not mistaken for the current implementation. Run retained checks with `uvx --no-cache --python 3.12 --constraints constraints.txt --build-constraints build-constraints.txt --with pytest==9.0.2 --from . python -m pytest tests -q`. This tests a non-editable installed package. Tool CI has one Linux/Python job; consumer CI only validates/builds/publishes prepared files.
+
+## Unified skill installation and Hiivmind incorporation
+
+Install the **full repository**, not just copied `SKILL.md` files: package schemas, protocol provenance and references are part of the contract. Claude Code uses `.claude-plugin/`, Codex uses `.codex-plugin/` plus `.agents/plugins/marketplace.json`, and Gemini uses `gemini-extension.json` with this README as its context. The existing `bk-install-skills` route below remains available and unchanged.
+
+For local inspection, Claude Code accepts `claude --plugin-dir /absolute/path/to/mountainash-ibook-skills`; Gemini accepts `gemini extensions install /absolute/path/to/mountainash-ibook-skills`; Codex accepts `codex marketplace add /absolute/path/to/mountainash-ibook-skills`, followed by installation through `/plugins`. Consult the installed CLI help if its interface differs. Do not enable duplicate profile/refresh skill identities beside the old Hiivmind plugin: reconcile installations only at the accepted cutover.
+
+`hiivmind-incorporation.json` records every source component and its selected destination/responsibility. Composable profile source is `025ab4a25757f8e75a4ed54855d49bb1a6460d05`; refresh uses `b387de547dc9590ef5dcddf895cd911dbb113a74`, including the patch engine from `c4d69a9dd4d97b13ee53c27be100afee34531d3a`. Profile schemas have one canonical home in `src/ibook_tools/profile/schemas/`; vendored protocol schemas/digests remain with the skill. Generation is an agent workflow, not a pretend deterministic CLI.
+
+Registration/release responsibility moves to this single Mountainash home. No PyPI release, agent scheduler, parallel maintained Hiivmind distribution or new protocol framework is introduced. Preserve the old plugin and repository until incorporation, caller/installation migration and user acceptance are complete, then archive it with its history and MIT notices. Existing accepted books and upstream example content are not regenerated by this tooling migration.
 
 [![MkDocs](https://img.shields.io/badge/Made%20with-MkDocs-526CFE?logo=materialformkdocs)](https://www.mkdocs.org/)
 [![Material for MkDocs](https://img.shields.io/badge/Material%20for%20MkDocs-526CFE?logo=materialformkdocs)](https://squidfunk.github.io/mkdocs-material/)
@@ -51,8 +111,8 @@ Chapter-level quizzes and curated references are actively being generated and ar
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/dmccreary/ibook-skills.git
-cd ibook-skills
+git clone https://github.com/mountainash-io/mountainash-ibook-skills.git
+cd mountainash-ibook-skills
 ```
 
 ### Install Dependencies
@@ -94,7 +154,7 @@ This will build the site and push it to the `gh-pages` branch.
 Set `BK_HOME` to the repository root, then run the installer for your platform:
 
 ```bash
-export BK_HOME="$HOME/path/to/ibook-skills"
+export BK_HOME="$HOME/path/to/mountainash-ibook-skills"
 
 # Every agent present on this machine
 $BK_HOME/scripts/bk-install-skills

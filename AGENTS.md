@@ -299,27 +299,18 @@ mkdocs gh-deploy
 
 ### Working with Learning Graphs
 
-When the learning-graph-generator skill creates files in `/docs/learning-graph/`, you must:
+For Mountainash books, follow `commands/ibook.md`: profiles, confirmed internal brief, internal graph, user-approved chapter plan, complete chapters/appendices, reviewed build and accepted publication.
 
-1. **Run Python scripts in the learning-graph directory:**
-```bash
-cd docs/learning-graph
-python analyze-graph.py learning-graph.csv quality-metrics.md
-python csv-to-json.py learning-graph.csv learning-graph.json
-python taxonomy-distribution.py learning-graph.csv taxonomy-distribution.md
+Use the pinned uvx invocation from README with explicit paths:
+
+```text
+ibook graph analyze docs-site/learning-graph/learning-graph.csv /temporary/quality-metrics.md
+ibook graph convert docs-site/learning-graph/learning-graph.csv /temporary/proposed.json
+ibook graph reconcile docs-site/learning-graph/learning-graph.json /temporary/proposed.json /temporary/candidate.json
+ibook graph validate /temporary/candidate.json
 ```
 
-2. **Update mkdocs.yml navigation** to include new files:
-```yaml
-nav:
-  - Learning Graph:
-    - Introduction: learning-graph/index.md
-    - Course Description Assessment: learning-graph/course-description-assessment.md
-    - Concept Enumeration: learning-graph/list-concepts.md
-    - Graph Quality Analysis: learning-graph/quality-metrics.md
-```
-
-3. **Always verify** `learning-graph.json` is valid JSON before using in visualizations
+Never overwrite an enriched canonical graph with bare conversion. Preserve stable IDs, source/chapter mappings and provenance; ambiguous changes require review. Graph data/viewer/reports and editorial planning stay outside the site source and navigation. No maintenance-script copies, public course requirement or quiz generation in this workflow. Keep the upstream example book and frozen bk commands intact until their own migration.
 
 ## Educational Frameworks
 

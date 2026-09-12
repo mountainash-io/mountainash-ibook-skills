@@ -1,0 +1,20 @@
+{
+  "name": "mountainash-ibook-skills",
+  "interface": {
+    "displayName": "Mountainash iBook Skills Marketplace"
+  },
+  "plugins": [
+    {
+      "name": "mountainash-ibook-skills",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

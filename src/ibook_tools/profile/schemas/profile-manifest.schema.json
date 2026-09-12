@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hiivmind:package-documentation-profile:manifest:1",
+  "title": "Package profile manifest",
+  "type": "object",
+  "required": ["profile_version", "generated_at", "source", "scope", "audiences", "counts", "changed_scopes", "ignored_paths", "profile_files"],
+  "properties": {
+    "profile_version": {"const": "1.0"},
+    "generated_at": {"type": "string", "minLength": 1},
+    "source": {"type": "object", "required": ["root", "git"], "properties": {
+      "root": {"$ref": "#/$defs/relativePath"},
+      "git": {"type": "object", "required": ["previous_hash", "current_hash", "branch", "working_tree_dirty"], "properties": {
+        "previous_hash": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/sha1"}]},
+        "current_hash": {"$ref": "#/$defs/sha1"},
+        "branch": {"type": "string", "minLength": 1},
+        "working_tree_dirty": {"type": "boolean"}
+      }, "additionalProperties": true}
+    }, "additionalProperties": true},
+    "scope": {"type": "object", "required": ["include", "exclude", "package_roots"], "properties": {
+      "include": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}},
+      "exclude": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}},
+      "package_roots": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}}
+    }, "additionalProperties": true},
+    "audiences": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "counts": {"type": "object", "required": ["modules_discovered", "modules_profiled", "profiles_ignored", "facets_written"], "properties": {
+      "modules_discovered": {"type": "integer", "minimum": 0}, "modules_profiled": {"type": "integer", "minimum": 0}, "profiles_ignored": {"type": "integer", "minimum": 0}, "facets_written": {"type": "integer", "minimum": 0}
+    }, "additionalProperties": true},
+    "changed_scopes": {"type": "object", "required": ["files", "modules", "facets"], "properties": {
+      "files": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}}, "modules": {"type": "array", "items": {"type": "string", "minLength": 1}}, "facets": {"type": "array", "items": {"type": "string", "minLength": 1}}
+    }, "additionalProperties": true},
+    "ignored_paths": {"type": "array", "items": {"type": "object", "required": ["path", "reason"], "properties": {"path": {"$ref": "#/$defs/relativePath"}, "reason": {"type": "string", "minLength": 1}}, "additionalProperties": true}},
+    "profile_files": {"type": "object", "required": ["modules", "facets"], "properties": {
+      "modules": {"type": "object", "additionalProperties": {"$ref": "#/$defs/relativePath"}},
+      "facets": {"type": "object", "additionalProperties": {"$ref": "#/$defs/relativePath"}}
+    }, "additionalProperties": true}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "sha1": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "relativePath": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(?:/|$))[^\\u0000]+$"}
+  }
+}

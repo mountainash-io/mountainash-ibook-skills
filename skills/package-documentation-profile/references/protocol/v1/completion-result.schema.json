@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mountainash:textbook-skills:completion-result:1",
+  "title": "CompletionResultV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "invocation_id", "skill", "stage", "capability", "behavior", "status", "execution", "inputs", "outputs", "targets", "warnings", "metrics", "preserved"],
+  "properties": {
+    "$schema": {"const": "urn:mountainash:textbook-skills:completion-result:1"},
+    "invocation_id": {"type": "string", "minLength": 1},
+    "skill": {"$ref": "#/$defs/skillIdentity"},
+    "stage": {"type": "string", "minLength": 1},
+    "capability": {"type": "string", "minLength": 1},
+    "behavior": {"type": "string", "enum": ["incremental", "full"]},
+    "status": {"type": "string", "enum": ["success", "warning", "failed"]},
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model", "attempts", "input_tokens", "output_tokens", "cost"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "attempts": {"type": "integer", "minimum": 1},
+        "input_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "output_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "cost": {"type": ["number", "null"], "minimum": 0}
+      }
+    },
+    "inputs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/inputDigest"}},
+    "outputs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/outputDigest"}},
+    "targets": {"$ref": "#/$defs/resultTargets"},
+    "warnings": {"type": "array", "items": {"$ref": "#/$defs/warning"}},
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active_concepts", "retired_concepts"],
+      "properties": {
+        "active_concepts": {"type": "integer", "minimum": 0},
+        "retired_concepts": {"type": "integer", "minimum": 0}
+      }
+    },
+    "preserved": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/inputDigest"}}
+  },
+  "$defs": {
+    "skillIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "source_revision", "digest"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "inputDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/projectPath"},
+        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "outputDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "change"],
+      "properties": {
+        "path": {"$ref": "#/$defs/projectPath"},
+        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "change": {"type": "string", "enum": ["created", "modified", "deleted", "unchanged"]}
+      }
+    },
+    "resultTargets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested_concept_ids", "effective_concept_ids", "chapter_slugs", "enrichment_ids"],
+      "properties": {
+        "requested_concept_ids": {"type": "array", "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+        "effective_concept_ids": {"type": "array", "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+        "chapter_slugs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "enrichment_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "path", "requires_review"],
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string", "minLength": 1},
+        "path": {"anyOf": [{"$ref": "#/$defs/projectPath"}, {"type": "null"}]},
+        "requires_review": {"type": "boolean"}
+      }
+    },
+    "projectPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(?:/|$))[^\\u0000]+$"
+    }
+  }
+}

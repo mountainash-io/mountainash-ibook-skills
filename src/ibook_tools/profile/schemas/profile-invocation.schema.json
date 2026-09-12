@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hiivmind:package-documentation-profile:invocation-parameters:1",
+  "title": "Package profile invocation parameters",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted_source_sha", "target_source_sha", "package_roots", "include", "exclude", "audiences", "full_refresh_threshold"],
+  "properties": {
+    "accepted_source_sha": {"anyOf": [{"type": "null"}, {"type": "string", "pattern": "^[0-9a-f]{40}$"}]},
+    "target_source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "package_roots": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}},
+    "include": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}},
+    "exclude": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}},
+    "audiences": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "full_refresh_threshold": {"type": "number", "minimum": 0, "maximum": 1}
+  },
+  "$defs": {"relativePath": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(?:/|$))[^\\u0000]+$"}}
+}
