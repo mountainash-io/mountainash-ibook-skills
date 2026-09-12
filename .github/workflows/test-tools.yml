@@ -14,6 +14,7 @@ jobs:
         with:
           version: "0.11.7"
           python-version: "3.12"
+          enable-cache: false
       - name: Exercise installed package and retained behavioral checks
         run: >-
           uvx --no-cache --python 3.12
