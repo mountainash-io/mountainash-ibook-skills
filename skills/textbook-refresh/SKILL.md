@@ -534,39 +534,51 @@ new state. This informs the regeneration strategy.
 
 Establish the comparison inputs explicitly. A saved before-profile is usable as `old_profile` only when its source provenance matches the book baseline. If it does not, recover baseline facts from the source at the book baseline before classification. Never load the newly refreshed profile as both the old and new state. If the baseline facts cannot be recovered, report the gap and stop rather than infer that no documented behaviour changed.
 
-Retain the computed `added`/`removed` symbol sets as `symbol_diffs[module]` alongside the classification string, and pass both to planning. A rename category alone is not enough to populate a graph update.
+Compare the source at the book baseline with the selected source, not just profile symbol names. Retain `added`/`removed` symbol sets as `symbol_diffs[module]` and a **set** of classifications per module: API and behavioral changes can coexist. Record source-backed reasons alongside the classifications. A stable signature, private helper name or unchanged export list does not establish unchanged behavior.
+
+Inspect return values, validation/errors, ordering, filtering, null/sentinel handling and effects on callers, including unchanged dependents. Use syntax-aware comparison to distinguish formatting/comments/docstrings from executable edits, but do not mistake AST differences for proof of changed behavior—or AST similarity for runtime equivalence. Type annotations, decorators and metadata may have runtime consumers. When evidence cannot establish the effect, retain a review requirement rather than guessing. These are agent judgments over source and evidence, not a new deterministic classifier API.
 
 ```pseudocode
-CLASSIFY(source_module, changeset, old_profile, new_source):
+CLASSIFY(source_module, changeset, old_profile, old_source, new_source):
   IF source file IN changeset.added_files:
-    RETURN "new_module"
+    RETURN {"new_module"}
   IF source file IN changeset.removed_files:
-    RETURN "removed_module"
+    RETURN {"removed_module"}
 
-  # Compare old profile against current source
-  old_symbols = set(old_profile.public_api)
+  old_symbols = extract_public_symbols(old_source, using=old_profile.public_api)
   new_symbols = extract_public_symbols(new_source)
-
   added = new_symbols - old_symbols
   removed = old_symbols - new_symbols
   common = old_symbols & new_symbols
+  # Accept only evidence-backed, one-to-one rename pairs; similarity is a clue.
+  renames = verified_rename_pairs(added, removed, old_source, new_source)
+  symbol_diffs[source_module] = {added, removed, renames}
+  unmatched_added = added - {new for (old, new) IN renames}
+  unmatched_removed = removed - {old for (old, new) IN renames}
+  kinds = set()
 
-  IF added AND NOT removed:
-    RETURN "new_symbols"
-  IF removed AND NOT added:
-    RETURN "removed_symbols"
-  IF added AND removed:
-    renames = detect_renames(added, removed, old_profile, new_source)
-    IF renames:
-      RETURN "renamed_symbols"
-    RETURN "mixed_changes"
-  IF common == old_symbols:
-    signature_changed = check_signature_diff(common, old_profile, new_source)
-    IF signature_changed:
-      RETURN "signature_change"
-    RETURN "docstring_only"
+  IF renames:
+    kinds.add("renamed_symbols")
+  IF unmatched_added AND NOT unmatched_removed:
+    kinds.add("new_symbols")
+  IF unmatched_removed AND NOT unmatched_added:
+    kinds.add("removed_symbols")
+  IF unmatched_added AND unmatched_removed:
+    kinds.add("mixed_changes")
+  IF check_signature_diff(common, old_source, new_source):
+    kinds.add("signature_change")
 
-  RETURN "internal_refactor"
+  IF evidence establishes only formatting/comments/docstrings changed:
+    RETURN kinds OR {"docstring_only"}
+
+  # Inspect semantics independently of API shape, even when kinds is nonempty.
+  IF source-backed comparison establishes changed observable behavior:
+    kinds.add("behavior_change")
+  ELSE IF behavioral effect remains unresolved:
+    kinds.add("review_required")
+  ELSE:
+    kinds.add("internal_refactor")
+  RETURN kinds
 ```
 
 ### Change Classification Table
@@ -579,9 +591,11 @@ CLASSIFY(source_module, changeset, old_profile, new_source):
 | `removed_symbols` | Remove/revise sections | Rebuild page | May need concept removal |
 | `renamed_symbols` | Find-and-replace in prose | Rebuild page | Update node labels + source_module |
 | `mixed_changes` | Regenerate affected sections | Rebuild page | Review concepts |
-| `signature_change` | Regenerate code examples | Rebuild page (auto) | No change |
-| `docstring_only` | No change | Rebuild page (auto) | No change |
-| `internal_refactor` | No change | No change | No change |
+| `signature_change` | Update affected examples and parameter explanations; retain accompanying behavioral impacts | Rebuild page (auto) | Review only if concept coverage changes |
+| `behavior_change` | Update affected behavioral explanations and examples, including dependent concepts | Review affected references | Review only if concept coverage changes |
+| `docstring_only` | No source-driven chapter regeneration after proving the edit is nonsemantic | Rebuild page (auto) | No change |
+| `internal_refactor` | Review whether the book teaches the changed implementation; update those sections when needed | Review taught/internal references | No automatic change |
+| `review_required` | Resolve effect and scope before approving affected content work | Unresolved | Unresolved |
 
 ---
 
@@ -597,26 +611,33 @@ PLAN(stale_chapters, classifications, symbol_diffs, unmapped_files):
     api_pages_to_rebuild: [],
     learning_graph_updates: [],
     faq_stale: false,
-    unmapped_new_files: []
+    unmapped_source_files: []
   }
 
   FOR chapter, changes IN stale_chapters:
     actions = []
     FOR change IN changes:
-      cls = classifications[change.source_module]
-      SWITCH cls:
-        "signature_change":
-          actions.append({action: "regenerate_code_examples", concept: change.concept_id})
-        "new_symbols":
-          actions.append({action: "add_new_sections", concept: change.concept_id})
-        "removed_symbols":
-          actions.append({action: "remove_or_revise_sections", concept: change.concept_id})
-        "renamed_symbols":
-          actions.append({action: "find_and_replace", concept: change.concept_id})
-        "mixed_changes":
-          actions.append({action: "regenerate_affected_sections", concept: change.concept_id})
-        "docstring_only", "internal_refactor":
-          SKIP
+      kinds = classifications[change.source_module]
+      FOR cls IN kinds:
+        SWITCH cls:
+          "signature_change":
+            actions.append({action: "regenerate_code_examples", concept: change.concept_id})
+          "behavior_change":
+            actions.append({action: "regenerate_affected_sections", concept: change.concept_id})
+          "new_symbols":
+            actions.append({action: "add_new_sections", concept: change.concept_id})
+          "removed_symbols":
+            actions.append({action: "remove_or_revise_sections", concept: change.concept_id})
+          "renamed_symbols":
+            actions.append({action: "find_and_replace", concept: change.concept_id})
+          "mixed_changes":
+            actions.append({action: "regenerate_affected_sections", concept: change.concept_id})
+          "internal_refactor", "review_required":
+            plan.chapters_to_review.append({chapter, concept: change.concept_id, reason: cls})
+          "new_module", "removed_module":
+            plan.chapters_to_review.append({chapter, concept: change.concept_id, reason: cls})
+          "docstring_only":
+            SKIP
 
     IF actions:
       plan.chapters_to_regenerate.append({
@@ -629,23 +650,26 @@ PLAN(stale_chapters, classifications, symbol_diffs, unmapped_files):
 
   FOR file IN unmapped_files:
     IF file.endswith(".py") AND NOT "__pycache__" IN file:
-      plan.unmapped_new_files.append(file)
+      plan.unmapped_source_files.append(file)
 
   # Learning graph node updates for renames
-  FOR module, cls IN classifications:
-    IF cls == "renamed_symbols":
+  FOR module, kinds IN classifications:
+    IF "renamed_symbols" IN kinds:
       plan.learning_graph_updates.append({
         action: "update_node_labels",
         module: module,
-        old_symbols: symbol_diffs[module].removed,
-        new_symbols: symbol_diffs[module].added
+        renames: symbol_diffs[module].renames
       })
 
-  IF any classification IN ("new_module", "removed_module"):
+  IF any kinds intersects {"new_module", "removed_module"}:
     plan.learning_graph_updates.append({action: "review_concept_coverage"})
 
   RETURN plan
 ```
+
+Treat the direct graph mapping as the start of impact analysis, not proof of complete coverage. Inspect the actual teaching and affected callers: an unchanged module may expose changed behavior through a dependency, and a concept may describe a changed algorithm while its recorded source path points elsewhere. Distinguish an unmapped existing file from a genuinely new module; neither automatically warrants a new chapter.
+
+Before presenting an approvable plan, resolve `chapters_to_review` against the actual content and source evidence. A behavior-preserving refactor may still invalidate an implementation lesson; a private helper's observable effects are not an internal-only exemption. If the effect or mapping remains uncertain, identify the unresolved prerequisite rather than presenting a complete plan. Combine overlapping API/behavior actions into one bounded proposal per affected concept; do not apply multiple independent rewrites to the same block. Preserve added/removed symbol evidence even when behavioral changes also apply.
 
 ### Present Plan to User
 

@@ -1,26 +1,17 @@
 # Change Classification Reference
 
-This reference describes how source code changes are classified and what
-regeneration action each classification triggers.
+Classify source changes from baseline-to-target evidence, then inspect the book's actual teaching. A module can have multiple classifications: API changes do not subsume behavioral changes. The owning skill retains the set plus symbol diffs and source-backed reasons; these are planning judgments, not a new CLI or protocol schema.
 
 ## Classification Hierarchy
 
-```
-Source file changed
-  ├─ File added         → new_module
-  ├─ File deleted       → removed_module
-  └─ File modified
-       ├─ Public API changed
-       │    ├─ Symbols added only      → new_symbols
-       │    ├─ Symbols removed only    → removed_symbols
-       │    ├─ Symbols added+removed
-       │    │    ├─ Rename detected    → renamed_symbols
-       │    │    └─ No rename match    → mixed_changes
-       │    └─ Same symbols, different signatures → signature_change
-       └─ Public API unchanged
-            ├─ Docstrings changed      → docstring_only
-            └─ Internal code changed   → internal_refactor
-```
+For added/removed files, use `new_module` / `removed_module`. For modified files, assess both:
+
+- **API shape:** added/removed/renamed symbols and changed signatures, using the actual source revisions. Preserve every applicable symbol/signature finding.
+- **Semantic effect:** `behavior_change` when observable behavior changed; `internal_refactor` only when behavior is established as preserved; `review_required` when the effect is unresolved.
+
+Use `docstring_only` only after proving that the changes are limited to nonsemantic formatting, comments or docstrings. An unchanged public API is not that proof. Private helpers can change validation, outputs, ordering, filtering, missing-value handling or dependent callers. Syntax-aware comparison helps identify executable edits but does not establish semantic equivalence. Annotations, decorators and metadata require checking their runtime consumers.
+
+Direct graph mappings are starting points. Check affected dependents and the actual implementation lessons even if their recorded source files did not change. Resolve uncertainty before approving affected content, rather than marking it “no impact.”
 
 ## Classifications
 
@@ -103,30 +94,22 @@ graph.
 
 ### renamed_symbols
 
-**Detection:** A symbol was removed AND a new symbol was added with a
-similar name or identical structure (same methods, same parameters).
-
-**Rename detection heuristics:**
-1. Edit distance between old and new name is ≤ 3 characters
-2. Old and new symbols have the same number and types of methods/parameters
-3. The new symbol appears in the same file or a file with a similar path
+**Detection:** Evidence establishes one-to-one old/new symbol pairs. Similar names, structures or paths suggest candidates; they do not prove identity. Record verified pairs alongside the complete added/removed sets. Classify unmatched additions/removals independently as `new_symbols`, `removed_symbols` or `mixed_changes`, retaining any accompanying signature/behavior findings.
 
 **Chapter impact:** Low. Find-and-replace the old name with the new name
 throughout the chapter. No structural changes needed.
 
 **API page impact:** Automatic.
 
-**Learning graph impact:** Update concept label if it references the old name.
+**Learning graph impact:** Propose label changes for verified pairs only; never treat every symbol in a module's added/removed sets as part of a rename.
 
-**Automated action:** String replacement across affected chapters and
-learning graph. No LLM regeneration needed.
+**Automated action:** Propose bounded replacements for verified pairs. Unmatched additions/removals and accompanying semantic changes remain separate impacts in the same combined content proposal.
 
 ---
 
 ### mixed_changes
 
-**Detection:** Both symbols added and removed, but no rename pattern detected.
-This typically indicates a significant API redesign.
+**Detection:** Both unmatched additions and unmatched removals remain after accounting for any verified rename pairs. This classification can coexist with `renamed_symbols`; neither hides the other's changes.
 
 **Chapter impact:** High. Affected sections should be regenerated using the
 new source code as context.
@@ -146,9 +129,7 @@ of full chapter regeneration.
 **Detection:** The same symbols exist in both old and new versions, but their
 signatures differ (different parameters, return types, or method signatures).
 
-**Chapter impact:** Medium. Code examples in the chapter that demonstrate
-the changed signatures need updating. Prose explaining parameters may also
-need revision.
+**Chapter impact:** Update examples and parameter explanations that use the changed signature. Independently retain any `behavior_change` finding; new errors, ordering or output semantics are not covered by a signature-only edit.
 
 **API page impact:** Automatic.
 
@@ -162,33 +143,49 @@ explanations rather than conceptual prose.
 
 ### docstring_only
 
-**Detection:** Source file changed but `public_api` list and all symbol
-signatures are identical. Only docstrings, comments, or type annotations
-changed.
+**Detection:** Source comparison proves only nonsemantic formatting, comments or docstrings changed. Stable symbol names/signatures alone are insufficient. Do not place executable edits here; do not assume type annotation changes are nonsemantic.
 
-**Chapter impact:** None. The chapter teaches concepts, not docstrings.
+**Chapter impact:** No source-driven chapter regeneration. If source inspection reveals independently stale teaching, record it separately rather than disguising an executable change as documentation-only.
 
-**API page impact:** Automatic (mkdocstrings re-renders updated docstrings).
+**API page impact:** Automatic where mkdocstrings renders those source docstrings.
 
 **Learning graph impact:** None.
 
-**Automated action:** No chapter regeneration needed. The API reference pages
-update automatically on next `mkdocs build`.
+**Automated action:** No chapter regeneration for the nonsemantic delta; existing API pages update on the next build.
 
 ---
 
 ### internal_refactor
 
-**Detection:** Changes are in non-public code (private methods, internal
-helpers, implementation details). The public API surface is unchanged.
+**Detection:** Implementation changed, with evidence that observable behavior is preserved. Non-public naming and stable signatures do not establish this.
 
-**Chapter impact:** None.
+**Chapter impact:** Review the actual teaching. Update sections that describe the changed algorithm, dependency, helper or implementation example; retain unaffected concepts. An internals-oriented book can require updates even when users observe identical results.
 
-**API page impact:** None (private symbols are not rendered).
+**API page impact:** Review affected references; do not assume private symbols are absent from every project.
 
-**Learning graph impact:** None.
+**Learning graph impact:** No automatic change.
 
-**Automated action:** No action needed. Log the change for audit purposes.
+**Automated action:** Put affected concepts into review until their teaching is compared. Convert demonstrated stale sections into bounded update proposals; skip only where the content remains accurate.
+
+---
+
+### behavior_change
+
+**Detection:** Source-backed comparison establishes changed observable behavior, including return values, errors/validation, ordering, filtering, null/sentinel semantics or effects on callers. Keep this classification alongside any API additions, removals, renames or signature changes.
+
+**Chapter impact:** Update affected explanations and examples. Include concepts reached through unchanged dependents or implementation lessons whose graph mappings do not directly name the changed file.
+
+**API and graph impact:** Review affected references and concept coverage; do not invent new concepts merely because a private helper was added.
+
+**Action:** Propose one bounded update per affected concept, combining overlapping behavioral and API work. Confirm actual source evidence and preservation boundaries before content approval.
+
+---
+
+### review_required
+
+**Detection:** The behavioral effect or documentation scope cannot be established from available evidence. This is not equivalent to `internal_refactor` or “no impact.”
+
+**Action:** Investigate the missing source fact, caller effect or mapping and state the precise unresolved prerequisite if it remains unavailable. Do not approve affected regeneration or book-baseline promotion on an unresolved finding.
 
 ---
 
@@ -196,8 +193,10 @@ helpers, implementation details). The public API surface is unchanged.
 
 | Classification | Regeneration Scope | Approx Tokens |
 |---------------|-------------------|---------------|
-| `internal_refactor` | None | 0 |
-| `docstring_only` | None (API auto-updates) | 0 |
+| `internal_refactor` | Review taught implementation; update demonstrated stale sections | Scope-dependent |
+| `behavior_change` | Affected explanations and examples, including dependent concepts | Scope-dependent |
+| `review_required` | Investigate before approving content work | Unknown |
+| `docstring_only` | None for proven nonsemantic edits (API auto-updates) | 0 |
 | `renamed_symbols` | String replacement | < 1k |
 | `signature_change` | Code examples in 1-3 sections | 3-8k |
 | `new_symbols` | 1-3 new sections | 5-15k |
@@ -208,13 +207,12 @@ helpers, implementation details). The public API surface is unchanged.
 
 ## Priority Order
 
-When multiple classifications apply to a single chapter (e.g. one module
-had a rename and another had new symbols), process in this order:
+Resolve review requirements first. When multiple classifications affect a chapter, combine overlapping changes into one proposal per concept before applying patches. The following ordering helps compose that proposal; it is not permission for repeated independent rewrites of the same block:
 
 1. `renamed_symbols` — apply string replacements first (cheapest, no conflicts)
 2. `removed_symbols` — remove stale content before adding new content
 3. `signature_change` — update existing code examples
 4. `new_symbols` — add new sections
-5. `mixed_changes` — regenerate remaining sections
+5. `mixed_changes` and `behavior_change` — update affected explanations and examples, retaining all earlier API findings
 
-This order minimises conflicts between regeneration passes.
+Include stale implementation teaching found during `internal_refactor` review in the same bounded proposal. No classification authorizes automatic content writes, chapter replacement or publication.
