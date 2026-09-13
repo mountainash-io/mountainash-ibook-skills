@@ -17,6 +17,29 @@ def test_concept_patch_preserves_every_byte_outside_atomic_block(content_fixture
     assert result.effective_concept_ids == (42,)
 
 
+def test_concept_patch_replaces_complete_fenced_example(content_fixture):
+    prefix = b"# Chapter\n\n<!-- concept:42 -->\n"
+    body = (
+        b"## Backend Protocol\n\n"
+        b"```python\n"
+        b"# The comment is code, not a heading.\n"
+        b"old_expression()\n"
+        b"```\n\n"
+        b"Old explanation.\n\n"
+    )
+    suffix = b"## Key Takeaways\n\nPreserve this closing section.\n"
+    content_fixture.chapter.write_bytes(prefix + body + suffix)
+    _, invocation, patch_set = content_fixture.single_concept_update()
+    replacement = body.replace(b"old_expression()", b"new_expression()").replace(
+        b"Old explanation.", b"Updated explanation."
+    )
+    patch_set["files"][0]["operations"][0]["content"] = replacement.decode()
+
+    apply_patch_set(content_fixture.root, invocation, patch_set)
+
+    assert content_fixture.chapter.read_bytes() == prefix + replacement + suffix
+
+
 def test_targeting_member_of_shared_block_expands_effective_targets(content_fixture):
     _, invocation, patch_set = content_fixture.shared_concept_update(requested=8)
     result = apply_patch_set(content_fixture.root, invocation, patch_set)

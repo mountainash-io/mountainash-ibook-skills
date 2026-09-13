@@ -40,6 +40,49 @@ def test_subheading_within_section_does_not_truncate_block():
     assert text[blocks[0].end :].startswith(b"## Key Takeaways")
 
 
+@pytest.mark.parametrize("fence", [b"```", b"~~~"])
+def test_fenced_code_comments_do_not_end_concept_sections(fence):
+    body = (
+        b"## Expressions\n\n"
+        + fence + b"python\n"
+        b"# Compute survival\n"
+        b"value = old_expression()\n"
+        + fence + b"\n\n"
+        b"Explanation after the example.\n\n"
+    )
+    suffix = b"## Key Takeaways\n\nUnmarked closing material.\n"
+    text = b"<!-- concept:1 -->\n" + body + suffix
+
+    block = parse_concept_blocks(text)[0]
+
+    assert text[block.content_start : block.end] == body
+    assert text[block.end :] == suffix
+
+
+def test_fenced_concept_marker_examples_do_not_affect_coverage(tmp_path):
+    body = (
+        b"## Marker Syntax\n\n"
+        b"```markdown\n"
+        b"<!-- concept:1 -->\n"
+        b"<!-- concept:not-an-id -->\n"
+        b"# Example heading, not a boundary\n"
+        b"```\n\n"
+        b"Explanation after the example.\n"
+    )
+    text = b"<!-- concept:1 -->\n" + body
+    chapter = tmp_path / "01-syntax"
+    chapter.mkdir()
+    (chapter / "index.md").write_bytes(text)
+
+    blocks = parse_concept_blocks(text)
+
+    assert [block.concept_ids for block in blocks] == [(1,)]
+    assert text[blocks[0].content_start : blocks[0].end] == body
+    assert validate_concept_coverage(
+        {"nodes": [{"id": 1, "chapter": "01-syntax"}]}, tmp_path
+    ) == []
+
+
 def test_offsets_are_bytes():
     text = "# Café\n\n<!-- concept:1 -->\n## Sí\n\nBody.\n".encode()
     block = parse_concept_blocks(text)[0]

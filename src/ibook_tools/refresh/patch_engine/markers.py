@@ -124,9 +124,12 @@ def _parse(markdown: bytes, *, reject_duplicates: bool) -> tuple[ConceptBlock, .
     if not isinstance(markdown, bytes):
         raise MarkerInvariantError("markdown must be bytes")
     lines = _lines(markdown)
+    fenced_ranges = fenced_code_ranges(markdown)
     marker_lines: dict[int, int] = {}
     marker_values: dict[int, int] = {}
     for index, (start, end, line) in enumerate(lines):
+        if _inside_any_range(start, fenced_ranges):
+            continue
         match = _MARKER_LINE.match(line)
         if match:
             raw = match.group(1).strip()
@@ -179,7 +182,7 @@ def _parse(markdown: bytes, *, reject_duplicates: bool) -> tuple[ConceptBlock, .
                 continue
             is_introducing_candidate = not seen_non_blank
             seen_non_blank = True
-            if not _HEADING.match(line):
+            if not _HEADING.match(line) or _inside_any_range(line_start, fenced_ranges):
                 continue
             if is_introducing_candidate:
                 introducing_level = _heading_level(line)
@@ -198,7 +201,7 @@ def _parse(markdown: bytes, *, reject_duplicates: bool) -> tuple[ConceptBlock, .
 
 
 def parse_concept_blocks(markdown: bytes) -> tuple[ConceptBlock, ...]:
-    """Parse adjacent marker clusters while preserving exact UTF-8 byte offsets."""
+    """Parse exact UTF-8 byte spans; fenced examples are not markers or headings."""
     return _parse(markdown, reject_duplicates=True)
 
 
