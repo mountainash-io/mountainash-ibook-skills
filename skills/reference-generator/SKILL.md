@@ -9,6 +9,10 @@ metadata:
 
 **Version:** 1.0
 
+## Mountainash inputs
+
+For Mountainash books, use the explicit source/worktree, confirmed `docs-site/editorial-brief.md`, approved `docs-site/chapter-plan.md` and actual chapters under `docs-site/site/docs/chapters/`. These replace the legacy course-description and root `docs/` inputs below. Retain source-backed references and required attribution; verify sources rather than inventing authors or citations to meet a count. Do not generate quizzes or publish the internal graph. Reference additions are prepared content reviewed through PRs, not automatic publication.
+
 ## Overview
 
 Generate high-quality, curated reference lists for educational textbooks. Each chapter receives exactly 10 references, prioritizing Wikipedia articles first for reliability, then crediting the specific textbook authors who pioneered clear or innovative ways of teaching the chapter's concepts, followed by authoritative online resources. References are never just a list of Wikipedia links — the textbook slots exist specifically to give credit to the authors behind influential explanations, analogies, or pedagogical techniques (e.g., a particularly intuitive derivation, a widely-copied diagram, a teaching analogy that became standard). References are stored in separate `references.md` files for token-efficient maintenance by AI agents.
@@ -52,9 +56,9 @@ References are stored in separate `references.md` files (not inline in chapters)
 
 ## Reference Generation Workflow
 
-### Step 1: Analyze the Course Description
+### Step 1: Read Editorial Intent
 
-Read the `/docs/course-description.md` file to determine:
+Read the confirmed `docs-site/editorial-brief.md` and approved `docs-site/chapter-plan.md` to determine:
 
 - **Subject matter** - determines reference topics
 - **Target audience** - guides complexity of descriptions
@@ -64,10 +68,7 @@ Read the `/docs/course-description.md` file to determine:
 
 Locate all chapter directories:
 
-```bash
-# Find chapter folders
-ls docs/chapters/
-```
+Read the chapter directories named in the approved plan under `docs-site/site/docs/chapters/`; do not infer completion from directory presence alone.
 
 For each chapter, read the chapter `index.md` to understand:
 

@@ -3,6 +3,18 @@
 
 > Formerly the standalone skill `init-textbook`.
 
+## Mountainash target layout
+
+For Mountainash repositories, resolve the explicit source/worktree and use `docs-site/site/` as the MkDocs project root for the steps below. Never initialize or rename an existing source branch as part of documentation setup; preserve main/develop routing and URL overrides.
+
+Create internal `docs-site/profile/` and `docs-site/learning-graph/` outside the site source. The brief and chapter plan live at `docs-site/editorial-brief.md` and `docs-site/chapter-plan.md`; the retained brief skill establishes confirmation. Do not generate a public course description or graph section.
+
+Copy only the site runtime templates actually needed. **Exclude `docs/course-description.md` and the entire `docs/learning-graph/` template subtree from the copy in Step 4.** These retained legacy assets are not Mountainash publication inputs. Do not copy maintenance Python/shell helpers. Preserve the mascot renderer and canonical rules; if rendering a project guide, change its non-mascot workflow prose to the confirmed brief/approved plan and Mermaid-first policy without altering the rendered mascot sentinels.
+
+Populate and link FAQ/glossary appendices only after inclusion is confirmed; do not add links to absent placeholder pages. The initial scaffold is not a completed book. Prefer Mermaid, do not add a graph viewer or quizzes in this workflow, and do not require interactive elements.
+
+For this layout, the next steps are the passive `commands/ibook.md` runbook: profiles → confirmed brief → internal graph → approved chapter plan → complete chapters/appendices → strict build and browser review → PR. Do not use the legacy course/quiz feature sequence below as the Mountainash default. Publishing requires explicit acceptance and uses prepared files only.
+
 ## Purpose
 
 This skill drops a complete, sensible default scaffold into an empty (or
@@ -188,9 +200,7 @@ Proceed? (yes/no)
 
 ### Step 4 — Create directories and copy templates
 
-Create the directory tree shown above with `mkdir -p`. Then copy each file
-from `assets/init-textbook/` into the project, performing placeholder
-substitution on the text files.
+Create the requested directory tree with `mkdir -p`. Copy selected files from `assets/init-textbook/`, performing placeholder substitution on text files and applying the Mountainash exclusions above. Never recursively copy the entire asset directory into a Mountainash site.
 
 For text files, do a simple in-place substitution of every `{{VAR}}` token
 (e.g. `{{SITE_NAME}}`, `{{SITE_DESCRIPTION}}`, etc.) with the value gathered

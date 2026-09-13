@@ -1,0 +1,18 @@
+{
+  "name": "mountainash-ibook-skills",
+  "description": "Mountainash documentation skills: profiles, editorial planning, internal graphs, chapters and agent-led refresh.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mountainash",
+    "email": ""
+  },
+  "homepage": "https://github.com/mountainash-io/mountainash-ibook-skills",
+  "repository": "https://github.com/mountainash-io/mountainash-ibook-skills",
+  "keywords": [
+    "documentation",
+    "skills",
+    "package-analysis",
+    "module-profiling",
+    "llm-documentation"
+  ]
+}

@@ -88,12 +88,12 @@ Create draft issues for the standard intelligent textbook development workflow:
 ```bash
 # Foundation
 gh project item-create "$PROJECT_NUMBER" --owner "$REPO_OWNER" \
-  --title "Write course description" \
-  --body "Create docs/course-description.md covering audience, prerequisites, learning objectives (Bloom's Taxonomy), and 10-15 topic areas."
+  --title "Confirm editorial brief" \
+  --body "Establish docs-site/editorial-brief.md from current profiles and all audience facets; confirm scope, depth, appendices and visual policy."
 
 gh project item-create "$PROJECT_NUMBER" --owner "$REPO_OWNER" \
   --title "Generate learning graph" \
-  --body "Enumerate ~200 concepts, map dependencies as a DAG, assign taxonomy categories, and validate with analyze-graph.py."
+  --body "Derive concepts from the confirmed brief, preserve stable IDs and source mappings, and validate using the pinned ibook graph operations."
 
 gh project item-create "$PROJECT_NUMBER" --owner "$REPO_OWNER" \
   --title "Design chapter structure" \

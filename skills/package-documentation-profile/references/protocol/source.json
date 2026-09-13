@@ -1,0 +1,19 @@
+{
+  "source_repository": "https://github.com/discreteds/ibook-skills",
+  "protocol_version": "1",
+  "source_commit": "be2ec592ac2f96264e0e665b81e6b518e84058d3",
+  "files": [
+    {
+      "path": "skill-contract.schema.json",
+      "sha256": "746bbb9376260901ebed1539b355e7a4e48c52e9277cbffc4efbcde8f012711e"
+    },
+    {
+      "path": "invocation.schema.json",
+      "sha256": "ab13d7a98efe4dd42e2e9b7527c0524a2611a16753ccc5c3bcd2cc78b4bd323a"
+    },
+    {
+      "path": "completion-result.schema.json",
+      "sha256": "d8d6a06addd90f965f825ed51444f51a82347339b02983bef9d67698861266e8"
+    }
+  ]
+}

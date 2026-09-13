@@ -164,7 +164,7 @@ docs/sims/graph-viewer/
 | Graph keeps spinning | Physics timeout missing | script.js disables physics after 5s (built-in) |
 | Checkbox toggling slow | Per-item DataSet.update() calls | Use batched array update (built-in) |
 | Graph not loading | Wrong JSON path | script.js expects `../../learning-graph/learning-graph.json` |
-| All nodes render the same size | `learning-graph.json` predates `learning-graph-generator` v1.06 (no `node.cis` field) | Regenerate `learning-graph.json` (re-run `csv-to-json.py` v1.04+) |
+| Missing concept scores | Graph has no `node.cis` fields | Use pinned `ibook graph reconcile GRAPH GRAPH CANDIDATE`, review, then explicitly promote the candidate. This optional viewer is not deployed by the Mountainash chapter workflow. |
 
 ## Dependencies
 

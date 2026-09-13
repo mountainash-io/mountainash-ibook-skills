@@ -1,0 +1,11 @@
+{
+  "profile_version": "1.0",
+  "generated_at": "2026-09-01T00:00:00Z",
+  "source": {"root": ".", "git": {"previous_hash": null, "current_hash": "1111111111111111111111111111111111111111", "branch": "main", "working_tree_dirty": false}},
+  "scope": {"include": ["src/pkg/**"], "exclude": ["**/__pycache__/**"], "package_roots": ["src/pkg"]},
+  "audiences": ["users", "maintainers"],
+  "counts": {"modules_discovered": 2, "modules_profiled": 2, "profiles_ignored": 0, "facets_written": 2},
+  "changed_scopes": {"files": [], "modules": [], "facets": []},
+  "ignored_paths": [],
+  "profile_files": {"modules": {"pkg.core": "modules/pkg.core.json", "pkg.utils": "modules/pkg.utils.json"}, "facets": {"users": "facets/users.json", "maintainers": "facets/maintainers.json"}}
+}

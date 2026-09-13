@@ -1,0 +1,20 @@
+{
+  "name": "mountainash-ibook-skills",
+  "description": "Mountainash documentation skills: profiles, editorial planning, internal graphs, chapters and agent-led refresh.",
+  "owner": {
+    "name": "Mountainash",
+    "email": ""
+  },
+  "plugins": [
+    {
+      "name": "mountainash-ibook-skills",
+      "description": "Build auditable module-by-module package profiles before writing documentation for large projects, with audience facets and git-hash-based incremental refresh.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "Mountainash",
+        "email": ""
+      }
+    }
+  ]
+}

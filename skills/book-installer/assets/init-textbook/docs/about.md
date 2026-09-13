@@ -11,10 +11,9 @@ should be able to do after working through the book.
 
 - Read chapters in order — concepts are introduced in dependency order.
 - Use the search bar (top right) to jump to a specific term.
-- Try the MicroSims as you encounter them; they are the fastest way to build
-  intuition for a new concept.
-- Check the [Learning Graph](learning-graph/index.md) when you want to see how
-  a concept fits into the larger picture.
+- Follow chapter links to shared explanations when entering at a deeper level.
+- Use the FAQ and glossary appendices, when included, to find focused answers.
+- Explore an interactive example when it adds value beyond the surrounding diagrams.
 
 ## Author
 

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hiivmind:package-documentation-profile:result:1",
+  "title": "Package profile completion result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "invocation_id", "skill", "stage", "capability", "behavior", "status", "execution", "inputs", "outputs", "targets", "warnings", "metrics", "preserved"],
+  "properties": {
+    "$schema": {"const": "urn:mountainash:textbook-skills:completion-result:1"}, "invocation_id": {"type": "string", "minLength": 1},
+    "skill": {"$ref": "#/$defs/skillIdentity"}, "stage": {"const": "profile"}, "capability": {"const": "package-profile.generate"}, "behavior": {"enum": ["full", "incremental"]}, "status": {"enum": ["success", "warning", "failed"]},
+    "execution": {"type": "object", "additionalProperties": false, "required": ["provider", "model", "attempts", "input_tokens", "output_tokens", "cost"], "properties": {"provider": {"type": "string", "minLength": 1}, "model": {"type": "string", "minLength": 1}, "attempts": {"type": "integer", "minimum": 1}, "input_tokens": {"type": ["integer", "null"], "minimum": 0}, "output_tokens": {"type": ["integer", "null"], "minimum": 0}, "cost": {"type": ["number", "null"], "minimum": 0}}},
+    "inputs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}}, "outputs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/output"}}, "targets": {"type": "object", "additionalProperties": false, "required": ["requested_concept_ids", "effective_concept_ids", "chapter_slugs", "enrichment_ids"], "properties": {"requested_concept_ids": {"const": []}, "effective_concept_ids": {"const": []}, "chapter_slugs": {"const": []}, "enrichment_ids": {"const": []}}},
+    "warnings": {"type": "array", "items": {"$ref": "#/$defs/warning"}}, "metrics": {"type": "object", "additionalProperties": false, "required": ["active_concepts", "retired_concepts"], "properties": {"active_concepts": {"const": 0}, "retired_concepts": {"const": 0}}}, "preserved": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}}
+  },
+  "$defs": {
+    "skillIdentity": {"type": "object", "additionalProperties": false, "required": ["name", "version", "source_revision", "digest"], "properties": {"name": {"const": "package-documentation-profile"}, "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}, "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(?:/|$))[^\\u0000]+$"},
+    "digest": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": {"path": {"$ref": "#/$defs/path"}, "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "output": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "change"], "properties": {"path": {"$ref": "#/$defs/path"}, "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "change": {"enum": ["created", "modified", "deleted", "unchanged"]}}},
+    "warning": {"type": "object", "additionalProperties": false, "required": ["code", "message", "path", "requires_review"], "properties": {"code": {"type": "string", "minLength": 1}, "message": {"type": "string", "minLength": 1}, "path": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/path"}]}, "requires_review": {"type": "boolean"}}}
+  }
+}

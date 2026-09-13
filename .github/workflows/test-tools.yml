@@ -1,0 +1,23 @@
+name: Installed documentation tools
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.11.7"
+          python-version: "3.12"
+          enable-cache: false
+      - name: Exercise installed package and retained behavioral checks
+        run: >-
+          uvx --no-cache --python 3.12
+          --constraints constraints.txt --build-constraints build-constraints.txt
+          --with pytest==9.0.2 --from .
+          python -m pytest tests -q

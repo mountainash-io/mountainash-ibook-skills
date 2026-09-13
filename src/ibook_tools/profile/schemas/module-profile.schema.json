@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hiivmind:package-documentation-profile:module:1",
+  "title": "Package module profile",
+  "type": "object",
+  "required": ["id", "path", "summary", "role", "visibility", "stability", "audiences", "doc_priority", "confidence", "public_api", "key_classes", "key_functions", "dependencies", "dependents", "extension_points", "lifecycle_notes", "documentation_hooks", "examples", "tests", "risks", "open_questions", "evidence", "source_hash", "manual"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1}, "path": {"$ref": "#/$defs/relativePath"}, "summary": {"type": "string"},
+    "role": {"type": "string", "enum": ["public-api", "api-builder", "protocol", "backend", "model", "orchestration", "io", "integration", "test-support", "docs-example", "legacy", "experimental"]},
+    "visibility": {"type": "string", "enum": ["public", "semi-public", "internal", "private"]},
+    "stability": {"type": "string", "enum": ["stable", "evolving", "experimental", "deprecated", "unknown"]},
+    "audiences": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "doc_priority": {"type": "string", "enum": ["essential", "useful", "reference-only", "internal-note", "skip-with-reason"]},
+    "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+    "public_api": {"$ref": "#/$defs/stringArray"}, "key_classes": {"$ref": "#/$defs/stringArray"}, "key_functions": {"$ref": "#/$defs/stringArray"},
+    "dependencies": {"$ref": "#/$defs/stringArray"}, "dependents": {"$ref": "#/$defs/stringArray"}, "extension_points": {"$ref": "#/$defs/stringArray"}, "lifecycle_notes": {"$ref": "#/$defs/stringArray"}, "documentation_hooks": {"$ref": "#/$defs/stringArray"}, "examples": {"$ref": "#/$defs/stringArray"}, "tests": {"type": "array", "items": {"$ref": "#/$defs/relativePath"}}, "risks": {"$ref": "#/$defs/stringArray"}, "open_questions": {"$ref": "#/$defs/stringArray"},
+    "evidence": {"type": "array", "items": {"type": "object", "required": ["kind", "path", "detail"], "properties": {"kind": {"type": "string", "minLength": 1}, "path": {"$ref": "#/$defs/relativePath"}, "detail": {"type": "string"}}, "additionalProperties": true}},
+    "source_hash": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "manual": {"type": "object", "required": ["notes", "editorial_status", "owner", "manual_summary"], "properties": {"notes": {"type": "string"}, "editorial_status": {"type": "string"}, "owner": {"type": "string"}, "manual_summary": {"type": "string"}}, "additionalProperties": true}
+  },
+  "additionalProperties": true,
+  "$defs": {"stringArray": {"type": "array", "items": {"type": "string"}}, "relativePath": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(?:/|$))[^\\u0000]+$"}}
+}

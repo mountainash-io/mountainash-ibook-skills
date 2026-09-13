@@ -1,163 +1,70 @@
 ---
 name: ibook
-description: Show the ordered runbook of skills for building a complete intelligent textbook from a course description. Use when the user invokes $ibook, types /ibook, asks what intelligent-textbook skill to run next, or requests a read-only assessment of textbook pipeline progress.
+description: Guide Mountainash documentation work through the owning skills, focused decisions and authorized continuation. Keep checks read-only and preserve content approval gates.
 ---
 
-# ibook — Intelligent Textbook Build Runbook
+# Mountainash documentation runbook
 
-Present the ordered sequence of skills required to build a complete intelligent
-textbook from a course description. This is a **passive runbook**: it tells the
-user which skill to run next and why, but it does **not** auto-run any skill.
-The user invokes each skill manually so they stay in control of every quality
-gate.
+This is an agent runbook, not the Python `ibook` CLI or a new deterministic orchestrator. Use the owning skills to carry out the requested operation and coordinate authorized handoffs. A bare `/ibook`, request to show the runbook or read-only check authorizes assessment only, not writes. A maintenance request permits routine work within its agreed scope, not unapproved destructive preparation, content generation, commits or publication.
 
-## What this command does
+## Establish the target
 
-1. **Detect current state** — check which pipeline artifacts already exist in
-   the project (read-only) to determine how far along the book is.
-2. **Show "you are here"** — mark completed phases, the current phase, and the
-   remaining phases.
-3. **Recommend the next skill** — name the single next skill to invoke, its
-   prerequisites, and the quality gate that must pass before moving on.
-4. **List the full ordered runbook** so the user can see the whole path.
+Use the explicit source repository or worktree, never infer a sibling from the current directory. Its documentation root is `docs-site/`; its MkDocs project is `docs-site/site/`. Resolve relative paths against the invocation directory once.
 
-## Step 1: Detect current state (read-only)
+Establish the requested operation before assessing artifacts. Read their source and approval state; existence is not completion. Do not interpret an existing book's missing new-workflow planning files as a request to replace that book.
 
-Run the following block exactly as written, as one shell command, from the
-project root (the directory containing `mkdocs.yml`). Do **not** rewrite,
-consolidate, or replace these checks, and do **not** modify anything.
+## Select the operation
 
-```bash
-# Foundation
-test -f mkdocs.yml                                   && echo "✓ scaffold (mkdocs.yml)"
-test -f docs/course-description.md                   && echo "✓ course description"
-# Knowledge model
-test -f docs/learning-graph/learning-graph.json      && echo "✓ learning graph"
-# Structure + content
-find docs/chapters -type f -path '*/index.md' -print -quit 2>/dev/null | grep -q . && echo "✓ chapters exist"
-# Supporting content
-test -f docs/glossary.md                             && echo "✓ glossary"
-test -f docs/faq.md                                  && echo "✓ faq"
-find docs/chapters -type f -path '*/quiz.md' -print -quit 2>/dev/null | grep -q . && echo "✓ quizzes exist"
-# Visualizations
-find docs/sims -type f -path '*/main.html' -print -quit 2>/dev/null | grep -q . && echo "✓ microsims exist"
-# Metrics hub + publish
-test -f docs/learning-graph/book-metrics.json        && echo "✓ book-metrics.json (hub)"
-test -f README.md                                    && echo "✓ README"
-true
-```
+| User intent | Route | Boundary |
+|---|---|---|
+| Source changed; refresh or maintain an existing book | Existing-book refresh below | Preserve its structure and editorial scope |
+| Create a book where none exists | Creation below | Confirm brief and chapter plan before prose |
+| Redesign or replace an existing book | Creation below, only with explicit replacement intent | Keep the accepted book separate until acceptance |
 
-Treat only printed `✓` markers as completed artifacts. Use those results to
-locate the user in the pipeline and recommend the next uncompleted required
-step. Do not infer that an artifact is absent using a rewritten command.
+If intent is materially ambiguous, ask which operation is intended. A source change alone never selects replacement, `seed`, or `force-refresh`.
 
-## Step 2: Present the ordered runbook
+## Existing-book refresh
 
-The pipeline has **8 phases**. Foundation (Phase 0) runs once; later phases
-respect the data-flow hand-offs. The user invokes each skill by mentioning its
-`$skill-name` or selecting it in the Codex Desktop Skills interface. **Bold
-gates** must pass before continuing.
+The source of truth for phases, adaptation and safety gates is [textbook-refresh](../skills/textbook-refresh/SKILL.md). The [profile skill](../skills/package-documentation-profile/SKILL.md) owns profiling inputs, preservation and validation. Follow those instructions rather than duplicating their contracts here; the invoking agent owns the conversation and explicit stage transitions.
 
-### Phase 0 — Project foundation (run once, in an empty repo)
+1. Identify the explicit target worktree and selected source snapshot. Read the existing book's baseline from its graph/state and the profile's separate source revision.
+2. Assess the source delta and profile gate through `textbook-refresh`'s read-only analysis before mapping or classifying book impact.
+3. When profiling is required and authorized, invoke the separate profile skill with `behavior: incremental`, not chapter generation. Use `mode: interactive` for a direct user-driven run; use `mode: orchestrated` only when an explicit orchestrated invocation is supplied. Preserve the earlier profile for comparison. For a check-only request, explain and obtain authorization before leaving read-only assessment. A full-profile-scan decision does not authorise a book rebuild.
+4. Investigate a failed prerequisite and recommend a bounded remedy using the refresh skill's Adaptive maintenance guidance. Ask for material choices, not workflow mechanics. After authorized preparation and a validated profile result with review-required warnings resolved, re-enter refresh analysis, reusing still-valid work, and present the bounded impact plan.
+5. Only approval of that concrete impact plan permits `refresh` to generate the affected content, verify preservation and update candidate state. Re-evaluate affected work when inputs change; do not repeat unchanged approvals or discard unrelated progress.
+6. Publication remains a separate acceptance decision.
 
-| Order | Skill | Produces | Notes |
-|-------|-------|----------|-------|
-| 0.1 | `book-installer` → init-textbook (feature 0) | `mkdocs.yml`, `docs/` tree, license, starter `index.md`/`about.md`/`course-description.md`, social hook | Run **first**, in a near-empty directory. Refuses if `mkdocs.yml` already exists. |
-| 0.2 | `book-installer` (other features) | Optional features layered onto the scaffold (math, mascot, learning-graph-viewer, document-status, etc.) | Run **many times**, as needed. Install **learning-graph-viewer** before Phase 1 visualizations and **book-metrics** before Phase 7. |
+Reuse an existing confirmed brief/plan when present. If absent, preserve the current book's scope, chapter organisation, appendix choices and reader surfaces; do not send the user through creation to perform routine maintenance. Structural changes or insufficient evidence of the intended scope require a focused decision, not an inferred replacement.
 
-> **Why Phase 0 is special:** the feature-0 scaffold creates the core files
-> every later skill assumes exist (`mkdocs.yml`, `docs/course-description.md`,
-> `docs/learning-graph/`, `docs/chapters/`, `docs/sims/`). The rest of
-> `book-installer` is a dispatcher that layers optional features on top.
-> Skipping Phase 0 breaks every downstream skill, because they read and write
-> into this structure.
+## Creation or explicitly requested replacement
 
-### Phase 1 — Knowledge model
+A draft brief or proposed chapter plan is awaiting approval, not missing or approved. Never infer approval from a quality score, commit, filename or presence of headings.
 
-| Order | Skill | Reads | Writes | **Gate** |
-|-------|-------|-------|--------|----------|
-| 1.1 | `course-description-analyzer` | user input / draft | `docs/course-description.md` + assessment | **Quality score ≥ 85** before continuing |
-| 1.2 | `learning-graph-generator` | `docs/course-description.md` | `docs/learning-graph/learning-graph.json` (+ CSV, taxonomy, quality metrics) | **DAG valid — zero circular dependencies** |
+| Order | Skill / operation | Artifact | Gate |
+|---|---|---|---|
+| 1 | `package-documentation-profile` | `docs-site/profile/{manifest.json,modules/,facets/,coverage.md}` | Selected source revision, valid composable profiles, manual fields preserved |
+| 2 | `course-description-analyzer` | `docs-site/editorial-brief.md` | User confirms audience/scope, all-facet rationale, depth and appendix decisions |
+| 3 | `learning-graph-generator` | `docs-site/learning-graph/` | Internal graph validates; reconciled stable IDs, enrichment and scores; conflicts resolved |
+| 4 | `book-chapter-generator` | `docs-site/chapter-plan.md` | User approves fresh chapter/section structure before prose |
+| 5 | `chapter-content-generator` | `docs-site/site/docs/chapters/` | Every approved chapter complete, source-backed, correctly ordered |
+| 6 | `faq-generator`, `glossary-generator` | `docs-site/site/docs/faq.md`, `glossary.md` | Confirmed appendices complete with verified chapter/section links |
+| 7 | `reference-generator`, optional visual skills | Verified references and necessary visuals | Mermaid preferred; included MicroSims actually implemented and visually checked |
+| 8 | Strict MkDocs build and review | Candidate site and reviewed PR | No deployed internal graph, course or quiz output; actual browser proof |
+| 9 | Existing paired publishing process | Accepted main/develop sites | Explicit content/deployment acceptance; prepared-files publishing only |
 
-### Phase 2 — Chapter structure
+Use `book-installer` only when a missing site scaffold or an actually requested feature requires it. Do not replace an existing site configuration. A missing scaffold does not prevent a profile or brief interview.
 
-| Order | Skill | Reads | Writes | **Gate** |
-|-------|-------|-------|--------|----------|
-| 2.1 | `book-chapter-generator` | `learning-graph.json`, `course-description.md` | `docs/chapters/*/index.md` (outlines only) | **Edge-direction validation** — prerequisites must point the right way |
+## Carry the operation forward
 
-### Phase 3 — Chapter content
+Report the requested operation, explicit target, separate book/profile baselines, selected source snapshot and observed gate evidence, with detail proportional to the decision. Continue authorized stages rather than merely recommending the next skill. When a material decision is needed, explain the issue, recommendation and consequences; after the answer, perform and verify the authorized work and resume at the earliest valid point. For read-only assessment, stop with findings and the proposed transition, without writes. For a deferral or genuine missing prerequisite, identify what remains blocked and what permits resumption.
 
-| Order | Skill | Reads | Writes | **Gate** |
-|-------|-------|-------|--------|----------|
-| 3.1 | `chapter-content-generator` | chapter outlines, `learning-graph.json`, glossary (optional) | populated `docs/chapters/*/index.md` | **Edge-direction validation** (again) before writing |
-| 3.2 | `book-media-generator` → chapter-images *(optional)* | chapter markdown | freely-licensed images + attribution | Enrich text-heavy chapters |
+For maintenance, a stale profile routes to profiling even if the book lacks a new-workflow brief. Only on the creation/replacement route do a draft brief or unapproved fresh chapter plan select the corresponding approval step. Never silently switch routes, infer consent in unattended work or claim a profile update completed the book.
 
-### Phase 4 — Visualizations (interleave with or follow Phase 3)
+## Standing boundaries
 
-| Order | Skill | Use for |
-|-------|-------|---------|
-| 4.1 | `microsim-generator` | Interactive sims (p5.js, Chart.js, Plotly, vis-network, Mermaid, timeline, map, Venn, …) — routes by type |
-| 4.2 | `microsim-generator` → infographic-overlay | Labeled diagrams: callout markers or grid zones over a scientific illustration |
-| 4.3 | `microsim-generator` → causal-loop | Full systems-thinking **article** with multiple linked feedback loops |
-| 4.4 | `microsim-generator` → verified-infographic | Fact-checked statistics poster (claims verified against sources first) |
-| 4.5 | `microsim-generator` → concept-classifier | Scenario-classification quiz MicroSim |
-| 4.6 | `microsim-utils` | **QA each new sim**: `layout-reviewer` (Claude Vision) then `iframe-tester` (Playwright); also screenshots + index page |
-
-### Phase 5 — Supporting content
-
-| Order | Skill | Reads | Writes | **Gate / prereq** |
-|-------|-------|-------|--------|-------------------|
-| 5.1 | `glossary-generator` | concept list | `docs/glossary.md` | After learning-graph concept list is final |
-| 5.2 | `faq-generator` | content, learning graph, glossary | `docs/faq.md` | **≥ 30% of chapters written** + glossary exists |
-| 5.3 | `quiz-generator` | chapter content, learning graph | `docs/chapters/*/quiz.md` | After chapter content exists (≥ 1000 words/chapter) |
-| 5.4 | `reference-generator` | chapter titles/content | `docs/chapters/*/references.md` | After chapters are finalized |
-
-### Phase 6 — Metrics & quality assurance
-
-| Order | Skill | Produces | Notes |
-|-------|-------|----------|-------|
-| 6.1 | `book-installer` → book-metrics | **`docs/learning-graph/book-metrics.json`** | The **single source of truth** for all counts. Phase 7 skills read this — generate it here so README, LinkedIn, and press release report identical numbers. |
-| 6.2 | `microsim-utils` → diagram-reports | diagram/MicroSim audit report | Confirms visualization coverage |
-| 6.3 | `microsim-utils` → standardization | quality scores | Bulk audit of all sims |
-
-### Phase 7 — Publish & announce
-
-| Order | Skill | Reads | Produces | Notes |
-|-------|-------|-------|----------|-------|
-| 7.1 | `book-publisher` → readme | `book-metrics.json` | `README.md` | Reads the metrics hub — never recounts |
-| 7.2 | `book-installer` → google-analytics (feature 25) | `mkdocs.yml` | GA4 wired into `mkdocs.yml` | First-time analytics setup |
-| 7.3 | **Deploy** | — | live GitHub Pages site | `mkdocs gh-deploy` |
-| 7.4 | `book-publisher` → linkedin-post | `book-metrics.json` | LinkedIn post | Reads the same hub |
-| 7.5 | `book-publisher` → press-release | `book-metrics.json` | AP-style press release | Reads the same hub |
-| 7.6 | `book-media-generator` → pptx-lecture *(optional)* | chapters | `.pptx` lecture deck | For classroom delivery |
-| 7.7 | `book-media-generator` → story *(optional)* | topic | graphic-novel narrative + panels | Enrichment for a Stories section |
-
-## Step 3: Recommend the next action
-
-After detecting state, tell the user the **one** next skill to run and the gate
-it must clear, e.g.:
-
-> You have a learning graph but no chapters yet. **Next: run
-> `book-chapter-generator`** (Phase 2.1). It reads `learning-graph.json` and
-> writes chapter outlines. Gate: the edge-direction validation must pass before
-> it writes any files.
-
-## The minimal viable path
-
-If the user wants the shortest route to a deployable book, collapse to:
-
-`book-installer` (feature 0 scaffold) → `course-description-analyzer` (≥85) →
-`learning-graph-generator` (DAG) → `book-chapter-generator` →
-`chapter-content-generator` → `glossary-generator` → `quiz-generator` →
-`book-installer` (book-metrics) → `book-publisher` (readme) → **deploy**.
-
-## Rules for this command
-
-- **Never auto-run a skill.** Recommend; the user invokes.
-- **Respect the gates.** If a gate artifact is missing or failing (e.g. no
-  `book-metrics.json` before Phase 7), say so and point back to the step that
-  produces it.
-- **Phase 0 is mandatory.** If `mkdocs.yml` is absent, the only valid next step
-  is `book-installer` feature 0 (the init-textbook scaffold).
-- Keep the "you are here" summary short; write each recommended skill as
-  `$skill-name` so the user can invoke it directly.
+- The creation/replacement workflow produces chapters plus confirmed appendices. Core depth is concepts → package use → internals, with all available audience facets considered; neither three fixed tracks nor one chapter per facet is mandatory.
+- Canonical graph and planning artifacts remain internal. Routine refresh does not migrate or delete an existing book's reader surfaces as cleanup; that is a separate editorial/publishing change.
+- Keep all skills. Do not invoke quiz generation in this workflow. MicroSims, media, mascots, analytics and announcements are not mandatory steps.
+- Deterministic tools use the pinned uvx installation in the repository README; never copy helpers into books. Frozen `bk` commands remain separate.
+- Follow the owning skills' contracts and adaptive guidance. An unfamiliar situation is not itself a process failure. Investigate and resolve what is safely within scope; pause dependent work for a genuine missing capability, fact, authority or contract conflict. Propose contract changes separately rather than bypassing gates. The README defines workflow acceptance evidence.
+- Agent work is iterative and reviewed through PRs. Actions validate/build/publish prepared files only. Existing accepted books remain unchanged until replacement acceptance.

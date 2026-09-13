@@ -1,0 +1,31 @@
+{
+  "id": "pkg.core",
+  "path": "src/pkg/core.py",
+  "summary": "Core package behavior with refreshed evidence.",
+  "role": "public-api",
+  "visibility": "public",
+  "stability": "stable",
+  "audiences": ["users", "maintainers"],
+  "doc_priority": "essential",
+  "confidence": "high",
+  "public_api": ["run", "configure"],
+  "key_classes": [],
+  "key_functions": ["run", "configure"],
+  "dependencies": [],
+  "dependents": ["pkg.utils"],
+  "extension_points": [],
+  "lifecycle_notes": [],
+  "documentation_hooks": [],
+  "examples": [],
+  "tests": ["tests/test_core.py"],
+  "risks": [],
+  "open_questions": [],
+  "evidence": [{"kind": "symbol", "path": "src/pkg/core.py", "detail": "configure"}],
+  "source_hash": "2222222222222222222222222222222222222222",
+  "manual": {
+    "notes": "Keep the migration note.",
+    "editorial_status": "reviewed",
+    "owner": "docs-team",
+    "manual_summary": "Explain the stable entry point first."
+  }
+}

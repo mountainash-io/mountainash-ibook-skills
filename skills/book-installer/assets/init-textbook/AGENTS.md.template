@@ -127,5 +127,15 @@ reference-generator           per-chapter references
 book-installer                site features (mascot, graph viewer, analytics)
 ```
 
-`docs/course-description.md` is the seed for everything downstream. If it is
-still the scaffold template, fill it in before running the generators.
+For a Mountainash-workflow book, follow the passive `commands/ibook.md`
+runbook in the installed Mountainash tooling repository, not a path in this
+book, instead of the sequence above: profiles → confirmed
+`docs-site/editorial-brief.md` → internal graph → user-approved
+`docs-site/chapter-plan.md` → complete chapters/confirmed appendices →
+strict build and browser review → PR. Quizzes and a published learning-graph
+section are not part of that surface. The pipeline above remains the default
+for other course-style books.
+
+For other course-style books, `docs/course-description.md` is the seed for
+everything downstream. If it is still the scaffold template, fill it in before
+running their generators.

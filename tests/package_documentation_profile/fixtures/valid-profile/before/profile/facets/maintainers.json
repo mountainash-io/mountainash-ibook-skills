@@ -1,0 +1,9 @@
+{
+  "audience": "maintainers",
+  "summary": "Architecture, dependencies, and change risks.",
+  "concepts": [{"name": "Core dependency flow", "module_ids": ["pkg.core", "pkg.utils"], "recommended_docs": ["architecture"], "evidence": ["src/pkg/utils.py"]}],
+  "featured_modules": ["pkg.core", "pkg.utils"],
+  "hidden_or_internal_modules": [],
+  "documentation_plan": ["architecture"],
+  "open_questions": []
+}

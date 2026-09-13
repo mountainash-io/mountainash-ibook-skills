@@ -27,3 +27,9 @@ mcp-servers/**/venv/
 # either file.
 .claude-pending-commit.txt
 .claude-pending-files.txt
+
+# Installed-tool development outputs, never source.
+.venv/
+.pytest_cache/
+dist/
+build/
