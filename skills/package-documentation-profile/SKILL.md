@@ -32,7 +32,7 @@ Use the pinned `ibook profile validate` command as the machine gate (installatio
 ### Orchestrated mode
 
 1. Read the complete invocation and every referenced schema. Verify the invocation capability, skill identity, mode, behavior, allowed outputs, and profile target paths.
-2. Verify the target source SHA and each expected input digest before scanning. Refuse a mismatched target rather than silently profiling another revision.
+2. Verify the target source SHA and each expected input digest before scanning. Refuse a mismatched target rather than silently profiling another revision. Perform the relevant preflight below; return unresolved ownership or scope decisions to the invoking agent without prompting.
 3. Load the existing manifest when incremental behavior is requested. Classify full versus incremental scope using the update algorithm and the one-third threshold. Include direct local dependents and topology-triggered changes.
 4. Discover, classify, profile, facet, and cover the selected scope. Preserve every existing module's `manual` object by value, including fields unknown to the current schema.
 5. Update only the allowed profile paths. Do not ask for approval, ask what to do next, or perform a later textbook stage.
@@ -55,13 +55,19 @@ LOAD_AND_VERIFY(path, marker):
   DISPLAY loaded path and marker
 ```
 
-Load `references/profile-schema.md` before discovering fields, `references/classification-rubric.md` before assigning classifications, and `references/update-algorithm.md` before an incremental decision. Load all JSON schemas before writing JSON. Run the validator after all writes, not before.
+Load `references/profile-schema.md` before discovering fields, `references/classification-rubric.md` before assigning classifications, and `references/update-algorithm.md` before an incremental decision. Load all JSON schemas before writing JSON. Run final profile validation after all writes; preflight does not require an old profile to satisfy the current schema before it can be refreshed.
 
 ## Workflow
 
 ### 1. Establish intent and baseline
 
 Read the explicit invocation. Record the requested behavior, package roots, include/exclude rules, audiences, accepted source SHA, target source SHA, and profile root. Inspect repository metadata and record the committed `git.current_hash`, branch or detached state, and dirty-file status. Keep dirty files visible without claiming that the profile represents a clean commit. Detect language, package manager, source layout, tests, examples, configuration, and existing docs under the explicit root.
+
+Before an expensive scan, inspect the supplied profile root and the inputs needed for this operation for cheap, predictable blockers. Compare existing files with the allowed output contract, establish preservation inputs and notice ownership conflicts such as an inherited README. Do not require an exhaustive documentation inventory. Inspect a conflicting artifact's purpose and references as needed; its name alone does not justify deletion or relocation.
+
+Resolve routine issues within authorized profile outputs using the existing conventions and update algorithm. For a material scope or ownership choice, explain the evidence, recommend a disposition and describe its consequences. In interactive mode, ask only for the unresolved judgment; in orchestrated mode, return the actionable issue through the existing result/warning contract to the invoking agent. Pause dependent work rather than completing an expensive scan behind a known unresolved blocker. Do not invent a status or warning taxonomy.
+
+Preparation outside the allowed outputs belongs to the maintenance agent under appropriate user authorization, not this profile writer. Retaining an unexpected artifact in the profile root leaves its validator conflict unresolved; hiding it or weakening validation is not a repair. After authorized preparation, recheck affected inputs and resume with valid prior work and decisions. A deferral remains an explicit unresolved prerequisite, not a successful profile.
 
 ### 2. Discover modules and evidence
 
@@ -92,7 +98,7 @@ ibook profile validate PROFILE_ROOT
 ibook profile validate PROFILE_ROOT --before-profile BEFORE_ROOT --result RESULT_JSON
 ```
 
-Fix every invariant error. The validator checks every owned JSON schema, safe repository-relative paths, exact manifest maps, unique IDs and source paths, refreshed source hashes, ignored-module accounting, facet references and audience membership, and manual preservation evidence. Exit with code `0` for a valid profile or `4` for invariant failure. Digest each input, output, and preserved module path in the completion result. Include warnings with `code`, `message`, `path` (or `null`), and `requires_review`; never mark a result successful when review is required.
+Fix invariant errors within authorized outputs; escalate those requiring a scope or ownership decision rather than modifying out-of-contract artifacts. The validator checks every owned JSON schema, safe repository-relative paths, exact manifest maps, unique IDs and source paths, refreshed source hashes, ignored-module accounting, facet references and audience membership, and manual preservation evidence. Exit with code `0` for a valid profile or `4` for invariant failure. Digest each input, output, and preserved module path in the completion result. Include warnings with `code`, `message`, `path` (or `null`), and `requires_review`; never mark a result successful when review is required.
 
 The agent authors the result, including execution metadata the validator cannot know. Validate the profile first, write the truthful result, then run the `--result` check against that file. If validation fails, correct the result to report failure and the actual errors; never reinterpret a validator exit as a generated completion document.
 
@@ -106,7 +112,7 @@ The caller selects this skill with `behavior: incremental` and the mode rule abo
 
 Before replacing an existing profile, the caller retains an inspectable before-profile snapshot or a recoverable profile revision. Use it for preservation validation and retain it for the subsequent content-impact comparison. Keep transient snapshots/results outside the canonical profile root; this does not extend this skill's allowed outputs.
 
-Return the existing completion result with source provenance, digests of the invocation and manifest carrying requested/effective scope, validation and preservation evidence, and unresolved warnings. The caller may resume textbook refresh only after validation succeeds and review-required warnings are resolved. A full-refresh decision here means a full **profile scan**, never book generation. Do not invoke the next skill implicitly or claim textbook refresh succeeded because profiling completed.
+Return the existing completion result with source provenance, digests of the invocation and manifest carrying requested/effective scope, validation and preservation evidence, and unresolved warnings. On a blocked or failed run, identify the actual prerequisite and recommended remedy through that contract, distinguishing attempted work from verified outputs. The invoking maintenance agent owns any interview, authorized preparation and explicit resumption; the user should not need to coordinate skill invocations. The caller resumes textbook refresh only after validation succeeds and review-required warnings are resolved. A full-refresh decision here means a full **profile scan**, never book generation. Do not invoke the next skill implicitly or claim textbook refresh succeeded because profiling completed.
 
 ## Reporting
 

@@ -22,7 +22,7 @@ Prefer Mermaid. MicroSims are optional when interaction adds value. Do not gener
 
 Refresh is agent-led and finalized via reviewed PRs. Consumer Actions validate/build/publish prepared content only; they never run interviews, agents, reconciliation or unattended refresh proposals. The existing accepted book remains intact while a replacement is reviewed.
 
-The skill instructions are the process under test. Follow their phases and referenced contracts; do not invent a missing handoff or substitute whole-book generation. If a gate cannot be evaluated, instructions conflict, or an operator must supply missing process logic, stop and report that process failure. A successful build, profile validation or preselected block patch is component evidence, not proof that the source-to-book skill workflow succeeded.
+Follow the phases and referenced contracts, adapting to the project's actual layout and editorial intent through the guidance below. An unfamiliar case or absent recipe is not itself a process failure. If a required capability, source fact or authority is missing, or contracts genuinely conflict, pause the dependent operation and identify the precise prerequisite; do not bypass it or substitute whole-book generation. A successful build, profile validation or preselected block patch is component evidence, not proof that the source-to-book skill workflow succeeded.
 
 **Required input:** `source_repo`, the explicit path to the target source
 repository or Git worktree. Relative paths are anchored to the invocation
@@ -41,6 +41,23 @@ directory, then normalized once. The target must already contain
 > `chapter-content-generator` (produces the chapter content this skill updates)
 > `learning-graph-generator` (produces the learning graph this skill enriches)
 > `faq-generator` (produces the FAQ this skill refreshes)
+
+
+## Adaptive maintenance
+
+The maintenance agent owns progress across the skills, not just the next-step recommendation. Inspect prerequisites relevant to the next operation and catch cheap blockers before expensive work—for example, conflicting contents of the profile output root before a source scan. Inspect other artifacts when they become relevant; a profile refresh does not require a census of the whole book.
+
+Resolve ordinary choices from the agreed intent and existing conventions. Correct mistakes within authorized outputs without ceremonial approval. Treat existing layouts and manual content as inputs to understand, not defects to normalize.
+
+When alternatives materially affect content, reader experience, ownership, destructive changes or scope, investigate and ask a focused question: what is the issue, what do you recommend, and what would change? Combine related decisions, accept free-form answers and explain consequences proportionately. Keep detailed hashes and provenance in the conversation or existing run/review records, not a new approval checklist. Investigation is not permission to delete; an already authorized routine step does not need fresh approval because it uses another tool.
+
+Choose the disposition from the evidence: preserve, update, relocate, consolidate, retire or defer. An unexpected profile README warrants checking its purpose and references, not automatic removal; keeping it in a disallowed location leaves the validator conflict unresolved. A legacy appendix may need a bounded edit rather than conversion. Propose a contract change separately if the existing permissions or available capabilities cannot support the desired result; user approval alone does not supply a missing converter.
+
+Carry out authorized preparation as maintenance work, without enlarging any component's output permissions. Preserve recoverable originals before destructive changes and protect concurrent edits. Do not hide artifacts or relax validation to obtain a pass. Read-only requests remain read-only: explain and obtain authorization for any transition to writes. In unattended execution, return the unresolved decision to the invoking agent; never infer consent.
+
+After a decision, perform the authorized work, verify it and continue from the earliest still-valid point. Re-evaluate affected inputs and decisions without discarding unrelated progress or repeating an unchanged approval. The invoking agent owns conversations and explicit stage handoffs; a noninteractive component returns actionable evidence under its existing result contract. If the user defers, identify what remains blocked and what would permit resumption, then stop that work rather than asking again.
+
+Distinguish proposed, attempted, verified and accepted work. Preserve separate source, profile and book provenance throughout recovery. Preparation or a newly validated profile is not a refreshed book, and a partial recovery is not publication acceptance.
 
 ---
 
@@ -260,7 +277,7 @@ Enrich only an internal reviewed candidate. Never synchronize a graph into the p
 
 Inventory existing reader-facing and canonical FAQ Markdown/JSON before planning. Read MkDocs configuration and the actual files to establish their roles; the creation workflow's `docs-site/site/docs/faq.md` is not a required path for an older book. Detect heading/paired-marker format and existing JSON shape. Do not create missing companions, move appendices or overwrite unsupported legacy data. A deliberate appendix migration is separate from routine maintenance.
 
-**Check is read-only:** read inputs, resolve the baseline and detect source changes. Evaluate the profile gate before mapping/classifying or presenting a content-impact plan. A failed gate reports the exact next prerequisite and stops; it must not produce an authoritative impact plan using stale facts. Once prerequisites pass, map/classify
+**Check is read-only:** read inputs, resolve the baseline and detect source changes. Evaluate the profile gate before mapping/classifying or presenting a content-impact plan. A failed gate pauses the dependent analysis and reports the exact prerequisite; investigate and recommend a remedy under Adaptive maintenance, but do not write or produce an authoritative impact plan using stale facts. Once prerequisites pass, map/classify
 changes and report the plan. Do not generate invocation/patch JSON files,
 write a report to disk, repair metadata or copies, retrofit markers, profile,
 build, or update state. If using read-only Python helpers, use `python3 -B`
@@ -327,15 +344,15 @@ profile_commit = profile_dir/manifest.json → source.git.current_hash
 IF profile_commit != current_commit:
   REPORT book baseline, profile_commit, current_commit, and detected source paths
   REPORT "Profile refresh required before content-impact analysis"
-  STOP with the separate profile skill as the next action
+  PAUSE content-impact analysis; the maintenance agent owns the explicit profile handoff below
 IF profile validation failed, its evidence is unavailable, or review-required warnings remain:
   REPORT the unresolved profile validation/review prerequisite
-  STOP before content-impact analysis
+  PAUSE content-impact analysis; investigate the prerequisite without bypassing it
 ```
 
-There is no stale-profile override on this maintenance route. `check` never updates the profile, and `refresh` does not invoke the profiler implicitly.
+There is no stale-profile override on this maintenance route. `check` never updates the profile, and profiling is a separate explicit component invocation, not an implicit write inside `refresh`. The maintenance agent performs that handoff when the user's maintenance scope authorizes profiling. For a read-only check, explain the proposed transition and obtain authorization before any preparation or profile writes. Do not ask the user to invoke the next skill themselves or repeat permission already granted.
 
-The caller next invokes [package-documentation-profile](../package-documentation-profile/SKILL.md) using its complete existing contract and schemas:
+For a stale profile, invoke [package-documentation-profile](../package-documentation-profile/SKILL.md) using its complete existing contract and schemas. For missing validation evidence, validate the existing profile first; for failures or review-required warnings, investigate and resolve the actual prerequisite rather than rescanning by default:
 
 - Use `behavior: incremental`; use `mode: interactive` for a direct user-driven run and `mode: orchestrated` only for an explicit orchestrated invocation. Do not use the unsupported `mode: incremental-refresh`.
 - Keep the same explicit source target `R` and selected source snapshot. Supply the existing profile and `R/docs-site/profile` as the explicit profile output, and a caller-owned transient run/result location outside that profile root.
@@ -343,7 +360,7 @@ The caller next invokes [package-documentation-profile](../package-documentation
 - Retain an inspectable before-profile snapshot or recoverable revision for preservation and comparison. Do not overwrite the only copy of the prior facts.
 - Require the profile skill's validation and preservation evidence and resolve review-required warnings. A full profile scan, if selected by its update algorithm, is not permission to regenerate the book.
 
-After that separate skill completes, re-enter this skill at Phase 0 against the same selected source and unchanged book baseline. If the source changed in the meantime, resolve the new target and re-evaluate prerequisites. Profiling success alone does not complete any chapter refresh.
+After a validated profile handoff with review-required warnings resolved, re-enter at Phase 0 against the same selected source and unchanged book baseline, reusing unaffected inspection and comparison work. If the source or other relevant inputs changed, re-evaluate the affected prerequisites and plan. Continue to the concrete content-impact approval gate without asking the user to coordinate re-entry. If a decision is deferred or recovery fails, report the remaining prerequisite and completed work truthfully; profiling success alone does not complete any chapter refresh.
 
 ---
 
@@ -632,7 +649,7 @@ PLAN(stale_chapters, classifications, symbol_diffs, unmapped_files):
 
 ### Present Plan to User
 
-In **check** mode, present the plan and stop. In **refresh** mode, present and ask for confirmation before proceeding. Identify the book baseline, selected source, profile revision/validation, owning skill revision, exact affected concept blocks and appendix entries, proposed changes, preservation boundaries and unresolved mappings. Approval covers that plan only; changes to source or target document hashes require re-evaluation. Approval to test a skill is not approval to replace the book or publish it.
+In **check** mode, present the plan and stop without writing. In **refresh** mode, obtain approval of the concrete plan before proceeding; reuse approval when that same plan and its inputs remain valid. Identify the book baseline, selected source, profile revision/validation, owning skill revision, exact affected concept blocks and appendix entries, proposed changes, preservation boundaries and unresolved mappings. Approval covers that plan only; changes to source or target document hashes require re-evaluation of affected work and renewed approval when the approved changes or their consequences differ. Approval to test a skill is not approval to replace the book or publish it.
 
 ```
 Textbook Refresh Plan for mountainash-data

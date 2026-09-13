@@ -52,7 +52,7 @@ For local development, the same uvx options accept `--from /absolute/tooling/wor
 
 ## Skill workflow acceptance
 
-The existing book and a real source change are the refresh test inputs. Follow the selected skills' documented phases, prerequisites and handoffs. The [runbook](commands/ibook.md) selects maintenance versus creation/replacement; it does not execute or invent a workflow.
+The existing book and a real source change are the refresh test inputs. Follow the selected skills' phases, prerequisites and contracts. The [runbook](commands/ibook.md) guides the invoking agent through maintenance versus creation/replacement and authorized stage handoffs; it is not a new CLI orchestrator. Bare runbook requests and checks remain read-only. The [refresh skill's adaptive guidance](skills/textbook-refresh/SKILL.md#adaptive-maintenance) covers proportional investigation, focused interviews and continuation without making the user coordinate skills.
 
 Distinguish three kinds of evidence:
 
@@ -62,7 +62,9 @@ Distinguish three kinds of evidence:
 
 Record the target and source revisions, separate book/profile baselines, skill revisions/modes, instructions followed, observed outputs and gate decisions in the existing run report or review PR. Include preservation evidence and unresolved failures. Do not invent another schema, maintained ledger or runner.
 
-If instructions conflict, a handoff is missing, or an operator must improvise process logic, record a **process failure** even if the resulting book builds. Stop before downstream writes, repair the owning instructions and restart from a preserved input. Distinguish authored prose within a documented generation phase from undocumented workflow decisions. Do not claim all skills or a whole milestone passed when only components or a prerequisite gate were exercised.
+An unfamiliar layout or absent recipe is not itself a process failure. Exercise the agent's judgment: ordinary work should proceed without unnecessary questions; consequential differences should produce an evidence-backed recommendation, a focused decision and verified continuation or a clear deferral. Use safe copies for representative recovery exercises, including an unexpected profile artifact and a different editorial/layout choice. Observe the conversation, actual changes, preservation and relevant tool results—not assertions that pin instruction wording.
+
+If a required capability, source fact or authority is unavailable, or contracts genuinely conflict, record the precise limitation and pause dependent work. Do not infer consent, hide artifacts, weaken validation or invent a successful conversion. Resume from the earliest still-valid point after an authorized remedy, retaining unaffected work and separate source/profile/book provenance. A recovery exercise is not end-to-end refresh acceptance; do not claim all skills, a whole milestone or publication passed when only components or a prerequisite gate were exercised.
 
 ## Unified skill installation and Hiivmind incorporation
 

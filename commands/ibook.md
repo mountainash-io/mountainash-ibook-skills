@@ -1,11 +1,11 @@
 ---
 name: ibook
-description: Show the read-only Mountainash documentation runbook and the next unmet artifact or approval gate. Never auto-run a skill.
+description: Guide Mountainash documentation work through the owning skills, focused decisions and authorized continuation. Keep checks read-only and preserve content approval gates.
 ---
 
 # Mountainash documentation runbook
 
-This is a passive assessment, not the Python `ibook` CLI and not an orchestrator. Read existing artifacts; recommend the next skill and its gate. Do not write files, run generation, commit, install, or publish from this command.
+This is an agent runbook, not the Python `ibook` CLI or a new deterministic orchestrator. Use the owning skills to carry out the requested operation and coordinate authorized handoffs. A bare `/ibook`, request to show the runbook or read-only check authorizes assessment only, not writes. A maintenance request permits routine work within its agreed scope, not unapproved destructive preparation, content generation, commits or publication.
 
 ## Establish the target
 
@@ -25,13 +25,13 @@ If intent is materially ambiguous, ask which operation is intended. A source cha
 
 ## Existing-book refresh
 
-The source of truth for phases and stop conditions is [textbook-refresh](../skills/textbook-refresh/SKILL.md), especially its profile freshness gate. The [profile skill](../skills/package-documentation-profile/SKILL.md) owns profiling inputs, preservation and validation. This command routes to those instructions; it neither replaces them nor runs them.
+The source of truth for phases, adaptation and safety gates is [textbook-refresh](../skills/textbook-refresh/SKILL.md). The [profile skill](../skills/package-documentation-profile/SKILL.md) owns profiling inputs, preservation and validation. Follow those instructions rather than duplicating their contracts here; the invoking agent owns the conversation and explicit stage transitions.
 
 1. Identify the explicit target worktree and selected source snapshot. Read the existing book's baseline from its graph/state and the profile's separate source revision.
-2. Recommend `textbook-refresh` in `check` mode. It detects the source delta and checks profile freshness before mapping or classifying book impact.
-3. If the profile is stale, the next action is the separate profile skill with `behavior: incremental`, not chapter generation. Use `mode: interactive` for a direct user-driven run; use `mode: orchestrated` only when an explicit orchestrated invocation is supplied. Preserve the earlier profile for comparison. A full-profile-scan decision does not authorise a book rebuild.
-4. After the profile skill returns a validated result for the selected source, with review-required warnings resolved, recommend re-entering `textbook-refresh` in `check` mode. It presents the bounded impact plan and stops without writing.
-5. Only approval of that concrete impact plan permits `refresh` to generate the affected content, verify preservation and update candidate state. Changed inputs invalidate the plan.
+2. Assess the source delta and profile gate through `textbook-refresh`'s read-only analysis before mapping or classifying book impact.
+3. When profiling is required and authorized, invoke the separate profile skill with `behavior: incremental`, not chapter generation. Use `mode: interactive` for a direct user-driven run; use `mode: orchestrated` only when an explicit orchestrated invocation is supplied. Preserve the earlier profile for comparison. For a check-only request, explain and obtain authorization before leaving read-only assessment. A full-profile-scan decision does not authorise a book rebuild.
+4. Investigate a failed prerequisite and recommend a bounded remedy using the refresh skill's Adaptive maintenance guidance. Ask for material choices, not workflow mechanics. After authorized preparation and a validated profile result with review-required warnings resolved, re-enter refresh analysis, reusing still-valid work, and present the bounded impact plan.
+5. Only approval of that concrete impact plan permits `refresh` to generate the affected content, verify preservation and update candidate state. Re-evaluate affected work when inputs change; do not repeat unchanged approvals or discard unrelated progress.
 6. Publication remains a separate acceptance decision.
 
 Reuse an existing confirmed brief/plan when present. If absent, preserve the current book's scope, chapter organisation, appendix choices and reader surfaces; do not send the user through creation to perform routine maintenance. Structural changes or insufficient evidence of the intended scope require a focused decision, not an inferred replacement.
@@ -54,9 +54,11 @@ A draft brief or proposed chapter plan is awaiting approval, not missing or appr
 
 Use `book-installer` only when a missing site scaffold or an actually requested feature requires it. Do not replace an existing site configuration. A missing scaffold does not prevent a profile or brief interview.
 
-## Recommend one next action
+## Carry the operation forward
 
-Report the requested operation, explicit target, book baseline, profile revision, selected source snapshot, the first unmet gate and one next skill or user decision. Cite the owning skill section. For maintenance, a stale profile routes to profiling even if the book lacks a new-workflow brief. Only on the creation/replacement route do a draft brief or unapproved fresh chapter plan select the corresponding approval step. Never silently switch routes.
+Report the requested operation, explicit target, separate book/profile baselines, selected source snapshot and observed gate evidence, with detail proportional to the decision. Continue authorized stages rather than merely recommending the next skill. When a material decision is needed, explain the issue, recommendation and consequences; after the answer, perform and verify the authorized work and resume at the earliest valid point. For read-only assessment, stop with findings and the proposed transition, without writes. For a deferral or genuine missing prerequisite, identify what remains blocked and what permits resumption.
+
+For maintenance, a stale profile routes to profiling even if the book lacks a new-workflow brief. Only on the creation/replacement route do a draft brief or unapproved fresh chapter plan select the corresponding approval step. Never silently switch routes, infer consent in unattended work or claim a profile update completed the book.
 
 ## Standing boundaries
 
@@ -64,5 +66,5 @@ Report the requested operation, explicit target, book baseline, profile revision
 - Canonical graph and planning artifacts remain internal. Routine refresh does not migrate or delete an existing book's reader surfaces as cleanup; that is a separate editorial/publishing change.
 - Keep all skills. Do not invoke quiz generation in this workflow. MicroSims, media, mascots, analytics and announcements are not mandatory steps.
 - Deterministic tools use the pinned uvx installation in the repository README; never copy helpers into books. Frozen `bk` commands remain separate.
-- Follow the skill instructions and their handoffs, not an improvised sequence. Report missing or contradictory instructions as a process failure; do not fill the gap silently and call the skill test successful. The README defines workflow acceptance evidence.
+- Follow the owning skills' contracts and adaptive guidance. An unfamiliar situation is not itself a process failure. Investigate and resolve what is safely within scope; pause dependent work for a genuine missing capability, fact, authority or contract conflict. Propose contract changes separately rather than bypassing gates. The README defines workflow acceptance evidence.
 - Agent work is iterative and reviewed through PRs. Actions validate/build/publish prepared files only. Existing accepted books remain unchanged until replacement acceptance.
