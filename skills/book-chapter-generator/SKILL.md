@@ -27,7 +27,7 @@ Write only the internal `docs-site/chapter-plan.md` while approval is pending. I
 
 - Status `proposed`, source/profile/graph basis and the confirmed brief it implements.
 - A coverage account for every available facet: where its needs are served, linked, or intentionally excluded by the brief. Consider custom audiences as well as users, maintainers, backend architecture and broader positioning.
-- Fresh ordered chapters with stable slugs, reader-facing titles, purpose, audiences served, prerequisites, sections, primary concept IDs, source references and reusable existing material.
+- Fresh ordered chapters with stable slugs, reader-facing titles, purpose, audiences served, prerequisites, sections, primary concept IDs, source references and reusable existing material. Sections are topical; do not plan summary, learning-objective or key-takeaway sections (see the documentation register in `chapter-content-generator`).
 - Reasons for each chapter boundary versus keeping material as sections. Neither one chapter per facet nor three rigid audience tracks is required.
 - Core depth progression: understand concepts → use the package → understand/modify internals. Readers can enter at the level they need through clear signposts and links to shared explanations.
 - Appendix decisions from the brief, chapter/section link destinations, and proposed visuals. Prefer Mermaid; justify any interaction separately. No quizzes or public graph section.

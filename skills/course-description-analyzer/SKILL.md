@@ -25,10 +25,11 @@ Present a source-grounded proposal and ask only unresolved editorial questions:
 2. How should the book serve conceptual newcomers, package users and people modifying internals? Consider all facets, including architecture and positioning where available; explain included and deferred audience needs. Do not force one primary audience or one chapter per facet.
 3. What prerequisite knowledge and explanation depth should each audience need? Readers may enter at their required depth; link shared explanations instead of repeating them.
 4. Confirm **FAQ and glossary appendices**, included by default, with links to relevant chapters/sections. Record any requested exclusion explicitly.
-5. Confirm the visual policy: simple Mermaid first; MicroSims only where interaction adds distinct explanatory value. No quizzes in the Mountainash workflow.
-6. For a replacement, identify accurate prose/examples/appendix entries worth reusing. Propose a fresh structure, not inheritance of the old course outline.
+5. Confirm the register: package documentation by default (self-describing pages, no course preamble, learning objectives or recap sections). Record any deliberate alternative.
+6. Confirm the visual policy: simple Mermaid first; MicroSims only where interaction adds distinct explanatory value. No quizzes in the Mountainash workflow.
+7. For a replacement, identify accurate prose/examples/appendix entries worth reusing. Propose a fresh structure, not inheritance of the old course outline.
 
-Record the proposed decisions at `docs-site/editorial-brief.md`, outside the published site. Include title/purpose, source revision and dirty-state caveats, profile basis, audience/facet rationale, prerequisites, scope/exclusions, depth progression, reuse policy, appendices, visuals and open questions. Use the retained template under `assets/` as a field guide, not as evidence of approval.
+Record the proposed decisions at `docs-site/editorial-brief.md`, outside the published site. Include title/purpose, source revision and dirty-state caveats, profile basis, audience/facet rationale, prerequisites, scope/exclusions, depth progression, register, reuse policy, appendices, visuals and open questions. Use the retained template under `assets/` as a field guide, not as evidence of approval.
 
 ## Confirmation gate
 

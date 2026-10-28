@@ -26,7 +26,7 @@ repo_url: 'https://github.com/{{GITHUB_USERNAME}}/{{REPO_NAME}}'
 edit_uri: 'blob/main/docs'
 
 # Copyright
-copyright: 'Copyright &copy; {{YEAR}} {{SITE_AUTHOR}}. Licensed under <a href="license/">CC BY-NC-SA 4.0</a> for non-commercial use.'
+copyright: 'Copyright &copy; {{YEAR}} {{COPYRIGHT_HOLDER}}. Licensed under the <a href="{{LICENSE_URL}}">{{LICENSE_NAME}}</a>.'
 
 # Navigation
 # IMPORTANT: do NOT add `navigation.tabs` — these books use side navigation
@@ -45,9 +45,6 @@ nav:
   #     - FAQ: faq.md
   #     - Glossary: glossary.md
   # Internal graph/brief/plan artifacts must never be placed in docs/.
-
-  - MicroSims:
-      - List of MicroSims: sims/index.md
 
   - License: license.md
   - Contact: contact.md
