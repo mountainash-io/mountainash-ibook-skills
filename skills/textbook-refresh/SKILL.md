@@ -18,6 +18,8 @@ Keep canonical graph, CSV, taxonomy, reports and source mappings internal under 
 
 Use `ibook graph reconcile EXISTING PROPOSED CANDIDATE` for deterministic graph updates and CIS recomputation. Resolve identity conflicts explicitly; preserve chapter/source/provenance fields. Do not regenerate an enriched canonical graph with bare CSV conversion. Approved chapter reassignment is an editorial change recorded separately.
 
+Regenerated content follows the documentation register in `chapter-content-generator`: self-describing package documentation without course preamble, learning objectives or recap sections. An older book may still carry course-register boilerplate (`## Summary` openers with "You will learn…", `## Key Takeaways` recaps, learner or course vocabulary). Keep the register of regenerated blocks consistent with the brief. Removing that boilerplate from untargeted regions is an editorial change: when the user or brief asks for it, plan it as a bounded register pass with its regions excluded from the untargeted byte comparison. Never strip it silently as part of an unrelated patch.
+
 Prefer Mermaid. MicroSims are optional when interaction adds value. Do not generate quizzes in the Mountainash workflow. Keep the quiz skill and the engine's existing enrichment support available for separately requested workflows.
 
 Refresh is agent-led and finalized via reviewed PRs. Consumer Actions validate/build/publish prepared content only; they never run interviews, agents, reconciliation or unattended refresh proposals. The existing accepted book remains intact while a replacement is reviewed.
@@ -738,7 +740,7 @@ REGENERATE_CHAPTER(chapter_dir, plan_entry, learning_graph):
       source_module = node.source_module,
       source_code = source_code,
       chapter_context = extract_surrounding_context(content, start),
-      reading_level = "college",
+      register = brief.register,  # documentation register unless the brief says otherwise
       action = plan_entry.actions[concept_id]
     )
 
@@ -772,7 +774,7 @@ fall back to full-section regeneration:
 2. Filter to only the changed concepts
 3. Read the full chapter content
 4. Regenerate the entire chapter body while preserving the structure
-   (title, summary, concepts list, prerequisites)
+   (title, concepts list, prerequisites), and apply the documentation register
 
 This is more expensive (~3000-5000 words per chapter vs ~300-500 per section)
 but correct.
@@ -1006,8 +1008,8 @@ Registration is handled by...
   that introduces that concept
 - Markers use the learning graph concept ID (integer), not the label
 - Markers must appear in the same order as the concept coverage list
-- The final concept's section extends to either the next `##` heading at the
-  same or higher level, or to the "Key Takeaways" section
+- Each concept block ends at the next concept marker or the end of the file,
+  so chapter-level material after the last marker belongs to the final block
 
 ### Retrofitting Markers
 

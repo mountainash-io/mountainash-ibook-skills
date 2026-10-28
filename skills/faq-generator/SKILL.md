@@ -20,6 +20,7 @@ Write `docs-site/site/docs/faq.md` and present it under Appendices in navigation
 - Answer from current source and completed chapters. Do not invent guarantees, commands, examples or troubleshooting fixes. A genuine knowledge gap belongs in the internal review report, not a fabricated answer.
 - Preserve useful curated questions, order and untouched answers during refresh. Reuse existing accurate explanations selectively. Resolve duplicates and contradictory answers explicitly.
 - Link answers to actual relevant chapters or sections. Anchor links are allowed when verified against built destinations; otherwise use stable chapter links. Prefer a short answer plus a link over repeating the whole explanation.
+- Write questions and answers in the documentation register defined by `chapter-content-generator`: package users and maintainers asking about the package, not students asking about a course. `references/faq-template.md` shows the heading layout only.
 - Do not generate quizzes or mandatory interactive elements. A Mermaid diagram can explain an answer where useful.
 
 ## FAQ format safety

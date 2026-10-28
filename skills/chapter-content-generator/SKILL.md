@@ -13,7 +13,7 @@ metadata:
 
 Resolve the explicit source repository/worktree. Read its confirmed `docs-site/editorial-brief.md`, user-approved `docs-site/chapter-plan.md`, profile manifest/all available facets/relevant modules, internal graph under `docs-site/learning-graph/`, and actual source/examples/tests. Missing or draft approval is a stop gate, not permission to infer consent or generate a sample.
 
-Read `references/reading-levels.md` for depth adaptation. For a chosen non-text element, read the applicable format guidance in `references/content-element-types.md`; its legacy interactivity requirements do not override this workflow's Mermaid-first policy. Reuse accurate old explanations/examples deliberately, checking them against current source. Do not inherit the old course outline.
+Depth comes from the brief's audience and depth decisions. `references/reading-levels.md` is a legacy vocabulary-density aid only; its grade-level default and end-of-section takeaways do not apply. For a chosen non-text element, read the applicable format guidance in `references/content-element-types.md`; its legacy interactivity requirements and Bloom/learning-objective specification fields do not override this workflow's Mermaid-first policy or the documentation register below. Reuse accurate old explanations/examples deliberately, checking them against current source. Do not inherit the old course outline.
 
 ## Ordering and elaboration
 
@@ -39,6 +39,16 @@ Retain the upstream starting guidance, subject to the brief and actual explanati
 | C | < 0.2 | 120–200 | Precise explanation; example when useful |
 
 Keep this planning table internal. Do not pad to meet quotas or normalize chapter lengths to an identical size. Record justified departures from the guidance. Never make MicroSims compulsory to satisfy an element count. Missing/stale scores require enrichment-preserving reconciliation, not bare CSV replacement. All-one scores alone do not prove staleness.
+
+## Documentation register
+
+The book is package documentation, not a course. Every published page is self-describing reference and explanation. Apply this register unless the confirmed brief records a deliberately different one.
+
+- Open each chapter by stating what its subject is and does. No `## Summary` opener, "This chapter covers/introduces…", "You will learn…", "By the end of this chapter…" or list of what the reader will be able to do.
+- No recap or course scaffolding: no `## Key Takeaways`, "In this chapter we learned", review questions or "Next, you will…" bridges. Point to a related page with a plain link.
+- Address the reader as someone using, operating or modifying the package. Keep course, lesson, student, learner, instructor, grading and capstone vocabulary, Bloom levels and learning objectives out of published content.
+- Let headings carry the structure; do not narrate the page's own organisation ("first we…, then we…", "this section is grouped into three themes").
+- Diagram specifications and other authoring notes stay out of the published page. A retained `<details>` specification describes what the diagram shows, not a learning objective.
 
 ## Writing
 

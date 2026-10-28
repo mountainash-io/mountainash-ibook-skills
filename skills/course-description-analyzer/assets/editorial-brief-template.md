@@ -20,6 +20,10 @@ Profile basis: [manifest and available facets].
 
 [Concepts → package use → internals, with case-by-case chapter/section organization proposed later. State entry assumptions and linking policy.]
 
+## Register
+
+Package documentation: self-describing pages with no course preamble, learning objectives or recap sections. [Record any deliberate alternative.]
+
 ## Reuse
 
 [Accurate existing prose, examples and appendix material to verify and selectively reuse. Do not inherit the old course structure.]

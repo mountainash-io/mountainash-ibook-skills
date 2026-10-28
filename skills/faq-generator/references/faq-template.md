@@ -1,61 +1,48 @@
 ---
 title: Frequently Asked Questions
-description: The most frequently asked questions about this book or chapter organized by category of question.
+description: Frequently asked questions about the package, organized by category.
 node: Categories use level 2 markdown headers.  Questions use level 3 markdown headers.
-category_count: 10
-question_count: 100
 ---
 # Frequently Asked Questions
 
-## Getting Started Questions
+## Getting Started
 
-### What is this course about?
+### What problem does this package solve?
 
-This course teaches you..
+[One or two sentences on the package's purpose, then a link to the chapter that explains it.]
 
-### Do I need my own GitHub account?
+### How do I install it?
 
-Yes.  We use this to store your capstone project the instructor and your peer students to review.
-
-### What software do I need?
-
-This course uses Visual Studio Code and Claude Code.
-
-### Grading
-
-### How will my grade be determined?
-
-Your grade is based on the following criteria:
-
-- Homework: 25%
-- Midterm: 25%
-- Capstone Project: 25%
-- Final Exam: 25%
+[Supported installation command and Python/runtime requirements, from the package metadata.]
 
 ---
 
-## Technical Detail Questions
+## Usage
+
+### How do I [common task]?
+
+[Short, source-backed answer with a minimal example and a link to the explaining section.]
 
 ---
 
-## Best Practice Questions
+## Behaviour and Boundaries
+
+### Why does [observed behaviour] happen?
+
+[The actual rule from source, its precedence or failure mode, and a link.]
 
 ---
 
-## Common Challenges Questions
+## Troubleshooting
+
+### What does [error message] mean?
+
+[Cause and verified fix.]
 
 ---
 
-## Capstone Projects Questions
+## Extending and Internals
 
-### Where do we get a list of capstone project ideas?
+### How do I add [extension point]?
 
-Your instructor will provide this list during class.
-
----
-
-## Advanced Topics Questions
-
-### Will we cover bi-temporal graph modeling?
-
-No.  This is beyond the scope of this course.
+[Supported extension mechanism, its contract and a link to the internals chapter.]
