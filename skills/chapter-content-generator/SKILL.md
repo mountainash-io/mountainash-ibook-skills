@@ -47,6 +47,7 @@ The book is package documentation, not a course. Every published page is self-de
 - Open each chapter by stating what its subject is and does. No `## Summary` opener, "This chapter covers/introduces…", "You will learn…", "By the end of this chapter…" or list of what the reader will be able to do.
 - No recap or course scaffolding: no `## Key Takeaways`, "In this chapter we learned", review questions or "Next, you will…" bridges. Point to a related page with a plain link.
 - Address the reader as someone using, operating or modifying the package. Keep course, lesson, student, learner, instructor, grading and capstone vocabulary, Bloom levels and learning objectives out of published content.
+- No disclaimer or negative-scope sections on any published page ("What This Manual Is Not", "Out of scope", "This page does not cover…"). The documentation describes what the package is and does. Where another package owns a concern, say so where that concern comes up, with a link.
 - Let headings carry the structure; do not narrate the page's own organisation ("first we…, then we…", "this section is grouped into three themes").
 - Diagram specifications and other authoring notes stay out of the published page. A retained `<details>` specification describes what the diagram shows, not a learning objective.
 

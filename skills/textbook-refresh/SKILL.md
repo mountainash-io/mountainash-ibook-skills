@@ -18,7 +18,7 @@ Keep canonical graph, CSV, taxonomy, reports and source mappings internal under 
 
 Use `ibook graph reconcile EXISTING PROPOSED CANDIDATE` for deterministic graph updates and CIS recomputation. Resolve identity conflicts explicitly; preserve chapter/source/provenance fields. Do not regenerate an enriched canonical graph with bare CSV conversion. Approved chapter reassignment is an editorial change recorded separately.
 
-Regenerated content follows the documentation register in `chapter-content-generator`: self-describing package documentation without course preamble, learning objectives or recap sections. An older book may still carry course-register boilerplate (`## Summary` openers with "You will learn…", `## Key Takeaways` recaps, learner or course vocabulary). Keep the register of regenerated blocks consistent with the brief. Removing that boilerplate from untargeted regions is an editorial change: when the user or brief asks for it, plan it as a bounded register pass with its regions excluded from the untargeted byte comparison. Never strip it silently as part of an unrelated patch.
+Regenerated content follows the documentation register in `chapter-content-generator`: self-describing package documentation without course preamble, learning objectives or recap sections. An older book may still carry course-register boilerplate (`## Summary` openers with "You will learn…", `## Key Takeaways` recaps, learner or course vocabulary, "What This Manual Is Not"/scope disclaimers, Learning Graph or MicroSims navigation sections, or a license that differs from the package's). Keep the register of regenerated blocks consistent with the brief. Removing that boilerplate from untargeted regions is an editorial change: when the user or brief asks for it, plan it as a bounded register pass with its regions excluded from the untargeted byte comparison. Never strip it silently as part of an unrelated patch.
 
 Prefer Mermaid. MicroSims are optional when interaction adds value. Do not generate quizzes in the Mountainash workflow. Keep the quiz skill and the engine's existing enrichment support available for separately requested workflows.
 
@@ -903,6 +903,19 @@ VERIFY(textbook_dir, learning_graph, plan):
     FOR link IN links:
       IF NOT file_exists(resolve_relative(link, chapter)):
         issues.append(f"Chapter {chapter}: broken link {link}")
+
+  # 6. Embedded assets: every iframe/image source resolves to a built file.
+  #    A specified-but-unbuilt MicroSim renders as an empty 404 frame; it is a
+  #    defect to report and remove, not finished content.
+  FOR page IN published_pages:
+    FOR src IN extract_iframe_and_image_sources(page):
+      IF NOT file_exists(resolve_relative(src, page)):
+        issues.append(f"{page}: embedded asset {src} not found")
+
+  # 7. License: the site's license page, footer and graph metadata state the
+  #    package's license (LICENSE/NOTICE, pyproject `license`).
+  IF site_license(textbook_dir) != package_license(source_repo):
+    issues.append("site license does not match the package license")
 
   REPORT issues
 ```

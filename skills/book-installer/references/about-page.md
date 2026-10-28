@@ -7,6 +7,10 @@ description: Generates a professional about.md page for intelligent textbooks wi
 
 This guide generates a comprehensive `docs/about.md` page designed to establish credibility with curriculum staff, school administrators, and educators evaluating the textbook for adoption.
 
+## Mountainash package documentation
+
+For a Mountainash package book, the about page states authorship, the relationship to the code repository and the package license (Section 7) in the documentation register (`chapter-content-generator`). Omit the motivational statistics, citation formats and course framing below, and do not add a "What This Manual Is Not" or scope-disclaimer section.
+
 ## What This Guide Creates
 
 1. **docs/about.md** - Professional about page with all sections below
@@ -288,17 +292,14 @@ McCreary, D. ({{YEAR}}). Chapter 1: {{FIRST_CHAPTER_TITLE}}. In
 
 ### Section 7: License
 
+State the license of the package the book documents. Read it from the package (`LICENSE`, `NOTICE`, `pyproject.toml` `license`), never from a template default:
+
 ```markdown
 ## License
 
-This work is released under the
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-License (CC BY-NC-SA 4.0)](license.md). You are free to share and adapt the
-material for non-commercial purposes as long as you give appropriate credit
-and share your adaptations under the same license.
+`{{REPO_NAME}}` and this documentation are licensed under the
+[{{LICENSE_NAME}}](license.md). Copyright {{YEAR}} {{COPYRIGHT_HOLDER}}.
 ```
-
-If the project uses a different license, read `docs/license.md` or `LICENSE` and adjust accordingly.
 
 ### Section 8: Footnote References
 
