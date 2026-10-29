@@ -49,10 +49,11 @@ A draft brief or proposed chapter plan is awaiting approval, not missing or appr
 | 5 | `chapter-content-generator` | `docs-site/site/docs/chapters/` | Every approved chapter complete, source-backed, correctly ordered |
 | 6 | `faq-generator`, `glossary-generator` | `docs-site/site/docs/faq.md`, `glossary.md` | Confirmed appendices complete with verified chapter/section links |
 | 7 | `reference-generator`, optional visual skills | Verified references and necessary visuals | Mermaid preferred; included MicroSims actually implemented and visually checked |
-| 8 | Strict MkDocs build and review | Candidate site and reviewed PR | No deployed internal graph, course or quiz output; actual browser proof |
-| 9 | Existing paired publishing process | Accepted main/develop sites | Explicit content/deployment acceptance; prepared-files publishing only |
+| 8 | `book-installer` home and About guides (`references/home-page-template.md`, `references/about-page.md`) | `docs-site/site/docs/index.md`, `about.md` | Written after the chapters and profile facets they draw on; home page example run; every claim sourced; scaffold stubs replaced; `textbook-refresh` `landing_state` recorded |
+| 9 | Strict MkDocs build and review | Candidate site and reviewed PR | No deployed internal graph, course or quiz output; actual browser proof |
+| 10 | Existing paired publishing process | Accepted main/develop sites | Explicit content/deployment acceptance; prepared-files publishing only |
 
-Use `book-installer` only when a missing site scaffold or an actually requested feature requires it. Do not replace an existing site configuration. A missing scaffold does not prevent a profile or brief interview.
+Use `book-installer` for a missing site scaffold, for step 8, or for an actually requested feature. Do not replace an existing site configuration. A missing scaffold does not prevent a profile or brief interview.
 
 ## Carry the operation forward
 
@@ -62,7 +63,7 @@ For maintenance, a stale profile routes to profiling even if the book lacks a ne
 
 ## Standing boundaries
 
-- The creation/replacement workflow produces chapters plus confirmed appendices. Core depth is concepts → package use → internals, with all available audience facets considered; neither three fixed tracks nor one chapter per facet is mandatory.
+- The creation/replacement workflow produces chapters, the home and About pages, and confirmed appendices. Core depth is concepts → package use → internals, with all available audience facets considered; neither three fixed tracks nor one chapter per facet is mandatory.
 - Canonical graph and planning artifacts remain internal. Routine refresh does not migrate or delete an existing book's reader surfaces as cleanup; that is a separate editorial/publishing change.
 - Keep all skills. Do not invoke quiz generation in this workflow. MicroSims, media, mascots, analytics and announcements are not mandatory steps.
 - Deterministic tools use the pinned uvx installation in the repository README; never copy helpers into books. Frozen `bk` commands remain separate.

@@ -21,6 +21,9 @@ Write `docs-site/site/docs/faq.md` and present it under Appendices in navigation
 - Preserve useful curated questions, order and untouched answers during refresh. Reuse existing accurate explanations selectively. Resolve duplicates and contradictory answers explicitly.
 - Link answers to actual relevant chapters or sections. Anchor links are allowed when verified against built destinations; otherwise use stable chapter links. Prefer a short answer plus a link over repeating the whole explanation.
 - Write questions and answers in the documentation register defined by `chapter-content-generator`: package users and maintainers asking about the package, not students asking about a course. `references/faq-template.md` shows the heading layout only.
+- Code in an answer follows the `## Code examples` rules in `chapter-content-generator`: runnable usage of the public API with output copied from a real run, never a copy of the package's source or a private name. Save each snippet and run it against the selected source before publishing the answer.
+- Answers name what users need, not private internals. Where an internal detail is the honest answer to a maintainer question, describe its observable effect and link to the chapter section that explains it.
+- Apply the `## Plain prose` pass from `chapter-content-generator` to every question and answer: sentence-case headings, no dashes, no puffery or filler. Keep the published copy, the canonical copy and any JSON in parity after the pass.
 - Do not generate quizzes or mandatory interactive elements. A Mermaid diagram can explain an answer where useful.
 
 ## FAQ format safety
