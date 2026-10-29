@@ -87,7 +87,7 @@ Book Installer Features (most → least common):
 33. Document status indicators - colored dots in nav showing page lifecycle state
 34. Kanban board - GitHub Projects board for tracking textbook development
 35. Mascot chapter updater - retrofit existing chapters with mascot admonitions
-36. About page - professional about.md with motivation, author bio, and citations
+36. About page - about.md explaining why the package exists, its design ideas and who maintains it
 37. Slide generator - install slide-viewer MicroSim and generate slides.md decks for chapters
 38. Reading level analysis - Flesch-Kincaid grade level report for all chapters
 39. Generate all supplementary content - glossary, FAQ, per-chapter quizzes & references, book metrics, diagram reports, about page, landing page, README
@@ -705,9 +705,9 @@ Each guide contains:
 **Action:** Read kanban-board.md, verify gh auth with project scope, create the GitHub Project, link to repo, populate milestones, create docs/project-management.md, update nav and README
 
 ### Example 13: Generate About Page
-**User:** "create an about page" or "add about.md with author bio and citations"
+**User:** "create an about page" or "add about.md explaining why the package exists"
 **Routing:** Keywords "about page", "about", "author bio", "citation" → `references/about-page.md`
-**Action:** Read about-page.md, gather project variables from mkdocs.yml/course-description.md, generate docs/about.md with all sections (motivation, author bio, citation formats), add to navigation
+**Action:** Read about-page.md, gather project variables from mkdocs.yml/course-description.md, generate docs/about.md (why it exists, what it adds, design ideas, where it fits, maintainers, license), add to navigation
 
 ### Example 14: Add Mascots to an Existing Chapter
 **User:** "add Sparky admonitions to chapter 2" or "place the mascot in docs/chapters/02-ohms-law/index.md"

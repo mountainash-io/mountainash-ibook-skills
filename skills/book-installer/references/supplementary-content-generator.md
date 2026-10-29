@@ -58,12 +58,7 @@ If not already present (or user chose overwrite), invoke the `about-page` refere
 Read references/about-page.md and execute its workflow for this project.
 ```
 
-The about page should include:
-- Book motivation and intended audience
-- Author / contributor bio
-- How to cite the book (APA, MLA, BibTeX)
-- License statement
-- Acknowledgements section (if applicable)
+The about page sets the scene alongside the home page: why the package exists, what it adds to its foundations, its design ideas, where it fits, who maintains it, and the license. Every claim comes from the README, design documents, profile or source; see `about-page.md`.
 
 Add to `mkdocs.yml` nav if not already present:
 ```yaml
