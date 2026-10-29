@@ -175,48 +175,45 @@ Recommended specifications:
 
 ### Step 8: Create the Home Page (docs/index.md)
 
-Create or update `docs/index.md` with proper frontmatter:
+The home page is the package's landing page. A reader arriving from search or PyPI should learn in one screen what problem the package solves, see it working, and find a reason to keep reading. Build it from these sections, in order:
+
+1. **Core use case.** One or two paragraphs under the H1: the everyday problem, then how the package solves it. Name only what most users need; never internals.
+2. **A first example.** One short, runnable usage example of the public API that exercises the core use case end to end, including any input file the reader would write. Run it, and show its real output in comments. Follow the `## Code examples` rules in the chapter-content-generator skill.
+3. **Why use it.** A modest pitch, one short paragraph per audience, drawn from the package profile's audience facets (`docs-site/profile/facets/*.json`): read each facet's `summary` and `documentation_plan`, and the `broader-hype` facet's before/after and "for free" points. Open each paragraph with the reader ("If you write applications, ..."). Skip internal-only audiences such as maintainers. Every claim must be checked against the source; the pitch comes from concrete benefits, not adjectives.
+4. **Where to go next.** Links to the first chapter a new user should read, the package overview and About.
+
+Keep any version or migration notice as an admonition above the use case. Apply the humanizer pass from the chapter-content-generator skill: sentence-case headings, no dashes, no bold inline headers, no puffery.
 
 ```markdown
 ---
-title: {{BOOK_TITLE}}
-description: {{BOOK_DESCRIPTION}}
+title: {{PACKAGE_TITLE}}
+description: {{PACKAGE_DESCRIPTION}}
 image: /img/cover.png
 og:image: /img/cover.png
 twitter:image: /img/cover.png
-hide:
-  - toc
 ---
-<style>
-.md-content__inner h1 {display: none !important;}
-</style>
 
-# Welcome
+# {{PACKAGE_TITLE}}
 
-Welcome to **{{BOOK_TITLE}}**.
+{{CORE_USE_CASE}}
 
-{{INTRODUCTORY_PARAGRAPH}}
+## A first example
 
-## About This Book
+{{INPUT_FILE_IF_ANY}}
 
-{{BOOK_DESCRIPTION_EXPANDED}}
+{{RUNNABLE_USAGE_EXAMPLE_WITH_REAL_OUTPUT}}
 
-## Who This Book Is For
+{{ONE_PARAGRAPH_ON_WHAT_THE_EXAMPLE_SHOWED}}
 
-{{TARGET_AUDIENCE_DESCRIPTION}}
+## Why use it
 
-## How to Use This Book
+{{ONE_PARAGRAPH_PER_AUDIENCE_FROM_PROFILE_FACETS}}
 
-Use the navigation menu to explore:
+## Where to go next
 
-- **Chapters** - Main educational content
-- **Learning Graph** - Interactive concept visualization
-- **Simulations** - Interactive MicroSims for hands-on learning
-- **Glossary** - Key terms and definitions
-
-## Getting Started
-
-Start with [Chapter 1](chapters/01/index.md) to begin your learning journey.
+- [Chapters](chapters/index.md): {{FIRST_CHAPTER_POINTER}}
+- [Package overview](course-description.md): scope, capabilities and ecosystem context.
+- [About](about.md): authorship, license and the relationship to the code repository.
 ```
 
 ### Frontmatter Fields Explained
@@ -256,48 +253,42 @@ Or with a link wrapper:
 [![{{BOOK_TITLE}}](./img/cover.png){ width="100%" }](chapters/01/index.md)
 ```
 
-## Complete Example: docs/index.md
+## Complete example: docs/index.md
 
-```markdown
+From the mountainash-settings book (abridged):
+
+````markdown
 ---
-title: Automating Instructional Design
-description: Learn to transform learning objectives into interactive MicroSims using AI-assisted tools
-image: /img/cover.png
-og:image: /img/cover.png
-twitter:image: /img/cover.png
-hide:
-  - toc
+title: 'Mountainash Settings'
+description: 'Documentation for mountainash-settings: typed configuration for Python applications built on Pydantic v2'
 ---
-<style>
-.md-content__inner h1 {display: none !important;}
-</style>
 
-# Welcome
+# Mountainash Settings
 
-Welcome to **Automating Instructional Design**, a hands-on course for educators and training professionals.
+Most applications read configuration from several places at once: a YAML file checked into the repo, environment variables set by the deployment, and passwords that must never sit in either. mountainash-settings puts all of that behind one typed class. You declare the fields once with Pydantic, point the class at your files, and get back a validated object with secrets already filled in.
 
-<figure markdown>
-  ![Automating Instructional Design](./img/cover.png){ width="100%" }
-</figure>
+## A first example
 
-## About This Course
-
-This intermediate-level course teaches you how to leverage AI-assisted tools to transform learning objectives into interactive educational simulations called MicroSims. Bridge the gap between abstract pedagogical goals and concrete, interactive learning experiences.
-
-## Who This Course Is For
-
-- K-12 Teachers
-- Corporate Training Specialists
-- Higher Education Faculty
-- Instructional Designers
-- Curriculum Developers
-
-No programming experience required.
-
-## Getting Started
-
-Start with [Chapter 1: Foundations of Learning Objective Analysis](chapters/01/index.md).
+```python
+settings = get_settings(
+    settings_class=AppConfig,
+    config_files="app.yaml",
+    env_prefix="APP_",
+    secret_store=store,
+)
+print(settings.DB_HOST, settings.DB_PORT)  # db.internal 6543
 ```
+
+## Why use it
+
+If you write applications, you stop hand-merging dictionaries from `yaml.safe_load`, `os.environ` and a vault client. ...
+
+If you connect to many systems, a connection profile declares a driver's parameters once, and `emit()` renders the exact keyword arguments it expects. ...
+
+## Where to go next
+
+- [Chapters](chapters/index.md): start with MountainAsh base settings to define your own class.
+````
 
 ## Troubleshooting
 

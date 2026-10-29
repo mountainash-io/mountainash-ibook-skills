@@ -271,11 +271,11 @@ If the home page is a stub (< 30 lines) or the user chose overwrite, generate it
 Read references/home-page-template.md and execute its workflow for this project.
 ```
 
-When writing the landing page, incorporate:
-- The cover image at `docs/img/cover.png`
-- A summary stat block: number of chapters, MicroSims, glossary terms, FAQ entries
-- Quick-links to Glossary, FAQ, and About in the intro prose or a callout box
-- Any course prerequisites or target audience statement from `docs/course-description.md`
+When writing the landing page, follow Step 8 of `home-page-template.md`: core use case, a runnable first example, a short "Why use it" pitch per audience drawn from the profile facets, and where to go next. Also incorporate:
+- The cover image at `docs/img/cover.png`, when it exists
+- Links to the FAQ and About pages in the "Where to go next" list
+
+Do not add content-count stat blocks or audience lists copied from `docs/course-description.md`; the landing page sells the package, not the book's size.
 
 If a full landing page already exists and the user chose skip, leave it untouched.
 
