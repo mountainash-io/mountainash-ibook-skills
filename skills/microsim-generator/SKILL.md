@@ -715,7 +715,9 @@ playwright install chromium
 
 ## Step 7: Update Navigation
 
-**MANDATORY after creating new sims.** Do NOT manually edit the MicroSims section of mkdocs.yml.
+**Mountainash package documentation: skip this step.** Those sites have no MicroSims nav section; a sim is reached from the chapter that embeds it. Never embed an iframe for a sim that is not built.
+
+Otherwise **mandatory after creating new sims.** Do NOT manually edit the MicroSims section of mkdocs.yml.
 
 ```bash
 python3 $UTILS/update-mkdocs-nav.py \

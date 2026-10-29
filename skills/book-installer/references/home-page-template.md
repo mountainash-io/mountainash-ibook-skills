@@ -175,48 +175,63 @@ Recommended specifications:
 
 ### Step 8: Create the Home Page (docs/index.md)
 
-Create or update `docs/index.md` with proper frontmatter:
+The home page is the package's landing page, and the one page that has to set the scene. A reader arriving from search or PyPI should see, before any code, what problem the package solves and that it is meant for them. It must not read like the middle of a chapter: no field-level mechanics up front. Build it from these sections, in order:
+
+1. **Tagline.** One bold line under the H1 that says what the package is and the range it covers.
+2. **Scene.** Two short paragraphs. First the everyday problem, told as the situation readers recognise (how it starts simple and then sprawls). Then what the package does about it, in plain terms. Name only what most users need; never internals.
+3. **Who it's for.** One card per audience, up front, using Material grid cards (`<div class="grid cards" markdown>`). Draw the audiences and benefits from the package profile's facets (`docs-site/profile/facets/*.json`): each facet's `summary` and `documentation_plan`, and the `broader-hype` facet's before/after and "for free" points. Rename audiences to how readers describe themselves, skip internal-only audiences such as maintainers, and end each card with a link to the chapter that audience needs first. Check every claim against the source; the pitch comes from concrete benefits, not adjectives.
+4. **See it work.** One short, runnable usage example of the public API that exercises the core use case end to end, including any input file the reader would write. Run it, show its real output in comments, and close with one sentence on what it showed. Follow the `## Code examples` rules in the chapter-content-generator skill.
+5. **Where to go next.** The first chapter a new user should read, what it assumes the reader already knows, and About. Do not publish or link a separate package overview page: the home page, About and the chapter list already cover scope, audience and ecosystem.
+
+Put version or migration notices at the bottom as an admonition, not above the scene. Apply the humanizer pass from the chapter-content-generator skill: sentence-case headings, no dashes, no bold inline-header lists, no puffery. Card titles are the one place bold labels belong.
 
 ```markdown
 ---
-title: {{BOOK_TITLE}}
-description: {{BOOK_DESCRIPTION}}
+title: {{PACKAGE_TITLE}}
+description: {{PACKAGE_DESCRIPTION}}
 image: /img/cover.png
 og:image: /img/cover.png
 twitter:image: /img/cover.png
-hide:
-  - toc
 ---
-<style>
-.md-content__inner h1 {display: none !important;}
-</style>
 
-# Welcome
+# {{PACKAGE_TITLE}}
 
-Welcome to **{{BOOK_TITLE}}**.
+**{{TAGLINE}}**
 
-{{INTRODUCTORY_PARAGRAPH}}
+{{THE_PROBLEM_AS_READERS_LIVE_IT}}
 
-## About This Book
+{{WHAT_THE_PACKAGE_DOES_ABOUT_IT}}
 
-{{BOOK_DESCRIPTION_EXPANDED}}
+## Who it's for
 
-## Who This Book Is For
+<div class="grid cards" markdown>
 
-{{TARGET_AUDIENCE_DESCRIPTION}}
+-   **{{AUDIENCE_NAME}}**
 
-## How to Use This Book
+    ---
 
-Use the navigation menu to explore:
+    {{WHAT_THIS_AUDIENCE_GETS}}
 
-- **Chapters** - Main educational content
-- **Learning Graph** - Interactive concept visualization
-- **Simulations** - Interactive MicroSims for hands-on learning
-- **Glossary** - Key terms and definitions
+    [{{FIRST_STEP_LABEL}}]({{CHAPTER_LINK}})
 
-## Getting Started
+</div>
 
-Start with [Chapter 1](chapters/01/index.md) to begin your learning journey.
+## See it work
+
+{{INPUT_FILE_IF_ANY}}
+
+{{RUNNABLE_USAGE_EXAMPLE_WITH_REAL_OUTPUT}}
+
+{{ONE_SENTENCE_ON_WHAT_THE_EXAMPLE_SHOWED}}
+
+## Where to go next
+
+- {{FIRST_CHAPTER_POINTER_AND_PREREQUISITES}}
+- The [chapter list](chapters/index.md) shows everything the documentation covers.
+- [About](about.md) has authorship, the license and the link to the code repository.
+
+!!! note "{{VERSION_NOTICE_TITLE_IF_ANY}}"
+    {{VERSION_NOTICE}}
 ```
 
 ### Frontmatter Fields Explained
@@ -256,48 +271,55 @@ Or with a link wrapper:
 [![{{BOOK_TITLE}}](./img/cover.png){ width="100%" }](chapters/01/index.md)
 ```
 
-## Complete Example: docs/index.md
+## Complete example: docs/index.md
 
-```markdown
----
-title: Automating Instructional Design
-description: Learn to transform learning objectives into interactive MicroSims using AI-assisted tools
-image: /img/cover.png
-og:image: /img/cover.png
-twitter:image: /img/cover.png
-hide:
-  - toc
----
-<style>
-.md-content__inner h1 {display: none !important;}
-</style>
+From the mountainash-settings book (abridged):
 
-# Welcome
+````markdown
+# Mountainash Settings
 
-Welcome to **Automating Instructional Design**, a hands-on course for educators and training professionals.
+**Typed configuration for Python, from a single script to a fleet of services.**
 
-<figure markdown>
-  ![Automating Instructional Design](./img/cover.png){ width="100%" }
-</figure>
+Configuration always starts small: a dictionary loaded from a YAML file. Then staging needs a different host. The deployment overrides a port through an environment variable. A database password turns up that must never be committed. Before long, three services parse the same file three different ways, and nobody is sure which value actually wins.
 
-## About This Course
+mountainash-settings is the one place all of that comes together. You describe your settings once, as a typed Pydantic class. Files, environment variables and your secret store all feed into it, in an order you can predict, and every part of your code gets the same validated answer.
 
-This intermediate-level course teaches you how to leverage AI-assisted tools to transform learning objectives into interactive educational simulations called MicroSims. Bridge the gap between abstract pedagogical goals and concrete, interactive learning experiences.
+## Who it's for
 
-## Who This Course Is For
+<div class="grid cards" markdown>
 
-- K-12 Teachers
-- Corporate Training Specialists
-- Higher Education Faculty
-- Instructional Designers
-- Curriculum Developers
+-   **Application developers**
 
-No programming experience required.
+    ---
 
-## Getting Started
+    Replace hand-merged YAML, `os.environ` lookups and vault calls with one class that loads YAML, TOML, JSON and `.env` files and validates the result.
 
-Start with [Chapter 1: Foundations of Learning Objective Analysis](chapters/01/index.md).
+    [Define a settings class](chapters/02-mountainash-base-settings/index.md)
+
+-   **Teams connecting to many systems**
+
+    ---
+
+    Declare a database's or SDK's parameters once as a connection profile, then render the exact keyword arguments its driver expects. Every registered profile gets a ready-made pytest suite.
+
+    [Build connection profiles](chapters/06-connection-profiles/index.md)
+
+</div>
+
+## See it work
+
+```python
+settings = get_settings(
+    settings_class=AppConfig,
+    config_files="app.yaml",
+    env_prefix="APP_",
+    secret_store=store,
+)
+print(settings.DB_HOST, settings.DB_PORT)  # db.internal 6543
 ```
+
+The host came from the file, the port from the environment and the password from the secret store.
+````
 
 ## Troubleshooting
 

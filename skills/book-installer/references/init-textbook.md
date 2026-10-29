@@ -11,6 +11,10 @@ Create internal `docs-site/profile/` and `docs-site/learning-graph/` outside the
 
 Copy only the site runtime templates actually needed. **Exclude `docs/course-description.md` and the entire `docs/learning-graph/` template subtree from the copy in Step 4.** These retained legacy assets are not Mountainash publication inputs. Do not copy maintenance Python/shell helpers. Preserve the mascot renderer and canonical rules; if rendering a project guide, change its non-mascot workflow prose to the confirmed brief/approved plan and Mermaid-first policy without altering the rendered mascot sentinels.
 
+The site carries the package's license, not a documentation-specific one. Resolve it from the package before Step 3: the SPDX `license` in `pyproject.toml` (or the `LICENSE` heading) gives `LICENSE_NAME`/`LICENSE_URL`, and the copyright line in `NOTICE` or `LICENSE` gives `COPYRIGHT_HOLDER` and `YEAR`. Ask only when the package declares no license. Do not copy `docs/img/license.png` (a CC BY-NC-SA badge) into a Mountainash site.
+
+Navigation holds the home, about, chapters, confirmed appendices, license and contact pages. Do not add Learning Graph or MicroSims sections, and do not copy `docs/sims/index.md`; a built MicroSim is reached from the chapter that embeds it.
+
 Populate and link FAQ/glossary appendices only after inclusion is confirmed; do not add links to absent placeholder pages. The initial scaffold is not a completed book. Prefer Mermaid, do not add a graph viewer or quizzes in this workflow, and do not require interactive elements.
 
 For this layout, the next steps are the passive `commands/ibook.md` runbook: profiles → confirmed brief → internal graph → approved chapter plan → complete chapters/appendices → strict build and browser review → PR. Do not use the legacy course/quiz feature sequence below as the Mountainash default. Publishing requires explicit acceptance and uses prepared files only.
@@ -27,7 +31,7 @@ project starts from the same baseline as everything else in the workspace.
 
 The scaffold is intentionally **minimal-but-complete**: it ships only the
 features that every recent textbook ends up using anyway (search, code copy,
-admonitions, math via arithmatex, side navigation, CC BY-NC-SA license, the
+admonitions, math via arithmatex, side navigation, the package's own license, the
 intelligent-textbook URI scheme, **a `cover.png` plus the social-override
 hook that swaps in that cover for the home page**). Everything else — mascots, slide viewer, learning
 graph viewer, custom 404, Cairo-based per-page social cards, glightbox image
@@ -81,7 +85,7 @@ Relative to the project root the user is in:
     ├── about.md                   # audience + how to read
     ├── course-description.md      # seed for learning-graph-generator
     ├── contact.md                 # LinkedIn contact info
-    ├── license.md                 # CC BY-NC-SA 4.0 deed
+    ├── license.md                 # package license (LICENSE_NAME, COPYRIGHT_HOLDER)
     ├── chapters/
     │   └── index.md               # "list of chapters" landing page
     ├── learning-graph/
@@ -93,7 +97,7 @@ Relative to the project root the user is in:
     ├── js/                        # empty — populated by book-installer features
     └── img/
         ├── cover.png              # generic 1731×909 cover (replace with book-specific art)
-        └── license.png            # CC BY-NC-SA 4.0 badge image
+        └── license.png            # CC BY-NC-SA 4.0 badge (copy only for a CC BY-NC-SA package)
 ```
 
 All template files use `{{PLACEHOLDER}}` markers that the skill substitutes
@@ -114,7 +118,10 @@ defaults where possible and let the user accept them with a single yes.
 | `LINKEDIN_URL` | "https://www.linkedin.com/in/danmccreary/" | Author's LinkedIn — optional override |
 | `PRIMARY_COLOR` | "indigo" | Material palette primary — common picks: indigo, blue, green, brown, deep orange |
 | `ACCENT_COLOR` | "orange" | Material palette accent |
-| `YEAR` | current year (2026) | For the copyright line |
+| `YEAR` | copyright years from `NOTICE`/`LICENSE`, else current year | For the copyright line |
+| `LICENSE_NAME` | package `LICENSE` / `pyproject.toml` `license` | e.g. "Apache License, Version 2.0" |
+| `LICENSE_URL` | canonical URL for that license | e.g. `https://www.apache.org/licenses/LICENSE-2.0` |
+| `COPYRIGHT_HOLDER` | copyright line in `NOTICE`/`LICENSE`, else `SITE_AUTHOR` | e.g. "Mountain Ash Solutions Pty. Ltd." |
 
 If the user is in a hurry and says "use defaults", accept the inferred values
 and proceed. Always confirm the substituted values back to the user in a
@@ -193,6 +200,8 @@ About to scaffold:
   PRIMARY_COLOR     = indigo
   ACCENT_COLOR      = orange
   YEAR              = 2026
+  LICENSE_NAME      = Apache License, Version 2.0
+  COPYRIGHT_HOLDER  = Dan McCreary
 
 Site URL will be: https://dmccreary.github.io/quantum-computing/
 Proceed? (yes/no)
@@ -207,7 +216,7 @@ For text files, do a simple in-place substitution of every `{{VAR}}` token
 in Step 2. Use a small inline `sed` or Python step — do not require any
 external dependencies.
 
-For `docs/img/license.png` and `docs/img/cover.png`, copy the binaries as-is
+For `docs/img/cover.png` (and `docs/img/license.png`, only when the package license is CC BY-NC-SA 4.0), copy the binaries as-is
 (no substitution). Exclude image files from the substitution pass — running a
 text rewriter over a PNG corrupts it.
 
@@ -572,7 +581,7 @@ book-installer/
             │   └── extra.css
             └── img/
                 ├── cover.png                  # generic 1731×909 cover image (replace with book-specific art)
-                └── license.png                # CC BY-NC-SA 4.0 badge
+                └── license.png                # CC BY-NC-SA 4.0 badge (copy only for a CC BY-NC-SA package)
 ```
 
 ## Examples
@@ -587,7 +596,7 @@ book-installer/
 3. Ensure the repo exists and is on branch `main` (`git init -b main` if no `.git/` yet).
 4. Ask the user for `SITE_NAME` and `SITE_DESCRIPTION`; offer to default the rest.
 5. Echo the resolved table; wait for confirmation.
-6. Create directories, copy + substitute templates, copy `license.png`.
+6. Create directories, copy + substitute templates (copy `license.png` only for a CC BY-NC-SA package).
 7. Suggest `mkdocs build --strict`.
 8. If a GitHub remote exists, check that its default branch isn't `gh-pages`.
 9. Print the next-steps menu pointing at `book-installer`.

@@ -4,8 +4,7 @@
 
 ## Audience
 
-Describe the intended reader: their background, prerequisites, and what they
-should be able to do after working through the book.
+Describe the intended reader and the background the documentation assumes.
 
 ## How to Use This Book
 
@@ -18,3 +17,7 @@ should be able to do after working through the book.
 ## Author
 
 {{SITE_AUTHOR}}
+
+## License
+
+`{{REPO_NAME}}` and this documentation are licensed under the [{{LICENSE_NAME}}](license.md).

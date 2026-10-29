@@ -58,12 +58,7 @@ If not already present (or user chose overwrite), invoke the `about-page` refere
 Read references/about-page.md and execute its workflow for this project.
 ```
 
-The about page should include:
-- Book motivation and intended audience
-- Author / contributor bio
-- How to cite the book (APA, MLA, BibTeX)
-- License statement
-- Acknowledgements section (if applicable)
+The about page sets the scene alongside the home page: why the package exists, what it adds to its foundations, its design ideas, where it fits, who maintains it, and the license. Every claim comes from the README, design documents, profile or source; see `about-page.md`.
 
 Add to `mkdocs.yml` nav if not already present:
 ```yaml
@@ -271,11 +266,11 @@ If the home page is a stub (< 30 lines) or the user chose overwrite, generate it
 Read references/home-page-template.md and execute its workflow for this project.
 ```
 
-When writing the landing page, incorporate:
-- The cover image at `docs/img/cover.png`
-- A summary stat block: number of chapters, MicroSims, glossary terms, FAQ entries
-- Quick-links to Glossary, FAQ, and About in the intro prose or a callout box
-- Any course prerequisites or target audience statement from `docs/course-description.md`
+When writing the landing page, follow Step 8 of `home-page-template.md`: tagline and scene first, audience cards drawn from the profile facets, then a runnable example and where to go next. The home page sets the scene; it must not read like a chapter. Also incorporate:
+- The cover image at `docs/img/cover.png`, when it exists
+- Links to the FAQ and About pages in the "Where to go next" list
+
+Do not add content-count stat blocks or audience lists copied from `docs/course-description.md`; the landing page sells the package, not the book's size.
 
 If a full landing page already exists and the user chose skip, leave it untouched.
 

@@ -13,7 +13,7 @@ metadata:
 
 Resolve the explicit source repository/worktree. Read its confirmed `docs-site/editorial-brief.md`, user-approved `docs-site/chapter-plan.md`, profile manifest/all available facets/relevant modules, internal graph under `docs-site/learning-graph/`, and actual source/examples/tests. Missing or draft approval is a stop gate, not permission to infer consent or generate a sample.
 
-Read `references/reading-levels.md` for depth adaptation. For a chosen non-text element, read the applicable format guidance in `references/content-element-types.md`; its legacy interactivity requirements do not override this workflow's Mermaid-first policy. Reuse accurate old explanations/examples deliberately, checking them against current source. Do not inherit the old course outline.
+Depth comes from the brief's audience and depth decisions. `references/reading-levels.md` is a legacy vocabulary-density aid only; its grade-level default and end-of-section takeaways do not apply. For a chosen non-text element, read the applicable format guidance in `references/content-element-types.md`; its legacy interactivity requirements and Bloom/learning-objective specification fields do not override this workflow's Mermaid-first policy or the documentation register below. Reuse accurate old explanations/examples deliberately, checking them against current source. Do not inherit the old course outline.
 
 ## Ordering and elaboration
 
@@ -40,6 +40,18 @@ Retain the upstream starting guidance, subject to the brief and actual explanati
 
 Keep this planning table internal. Do not pad to meet quotas or normalize chapter lengths to an identical size. Record justified departures from the guidance. Never make MicroSims compulsory to satisfy an element count. Missing/stale scores require enrichment-preserving reconciliation, not bare CSV replacement. All-one scores alone do not prove staleness.
 
+## Documentation register
+
+The book is package documentation, not a course. Every published page is self-describing reference and explanation. Apply this register unless the confirmed brief records a deliberately different one.
+
+- Open each chapter by stating what its subject is and does. No `## Summary` opener, "This chapter covers/introduces…", "You will learn…", "By the end of this chapter…" or list of what the reader will be able to do.
+- No recap or course scaffolding: no `## Key Takeaways`, "In this chapter we learned", review questions or "Next, you will…" bridges. Point to a related page with a plain link.
+- Address the reader as someone using, operating or modifying the package. Keep course, lesson, student, learner, instructor, grading and capstone vocabulary, Bloom levels and learning objectives out of published content.
+- No disclaimer or negative-scope sections on any published page ("What This Manual Is Not", "Out of scope", "This page does not cover…"). The documentation describes what the package is and does. Where another package owns a concern, say so where that concern comes up, with a link.
+- Introductions name what most users need. Chapter leads, the home page, the package overview and the chapter list describe the capabilities a typical user reaches for. They are not an inventory of every feature, and they never name private internals: underscore names, internal helpers or modules, or mechanics a user never touches. Those belong, if anywhere, in the body section that needs them.
+- Let headings carry the structure; do not narrate the page's own organisation ("first we…, then we…", "this section is grouped into three themes").
+- Diagram specifications and other authoring notes stay out of the published page. A retained `<details>` specification describes what the diagram shows, not a learning objective.
+
 ## Writing
 
 Work chapter by chapter unless the user's execution preference says otherwise. Complete every chapter in the approved plan, not just a sample or placeholder outline.
@@ -52,6 +64,26 @@ Work chapter by chapter unless the user's execution preference says otherwise. C
 - Preserve concept boundaries as `<!-- concept:N -->` markers. If several concepts share one atomic explanation, follow the refresh engine's shared-marker format. Verify assigned coverage with `ibook refresh coverage --graph GRAPH --chapters CHAPTERS`.
 - Keep internal concept/scoring tables, graph data/reports/viewer, brief and plan outside the site source. Do not publish course-generation artifacts or quizzes.
 - If a project already defines a mascot, read its rendered `CONTENT-GENERATION-GUIDE.md` placement rules before using it. Do not modify the frozen canonical renderer/rules or invent a required mascot.
+
+## Code examples
+
+A code block shows a reader using the package. It is never a copy or paraphrase of the package's own source.
+
+- Import from the package's public exports. Define the reader's own classes (subclasses, declarations, protocol implementations), call public API and show the result. Do not paste method bodies, internal class definitions or private helpers to explain behaviour.
+- When behaviour matters (precedence, resolution order, errors), demonstrate it with a usage example and its observable output. If it cannot be observed from outside, explain it in prose and cite the source path rather than quoting it.
+- Describe the shape of a public type in prose or a short field table, not by pasting its class body.
+- Every example runs. Execute it against the selected source in the package environment, and copy shown output and exceptions from the real run.
+- Keep each example short and specific to its section; do not repeat setup an earlier block already showed.
+
+## Plain prose
+
+Before a page is complete, run a humanizer pass over its prose: the `humanizer` skill in file mode when it is installed, otherwise the same rules applied directly. Keep the technical register neutral, with no personality injection, and never add facts. The final text has:
+
+- no em or en dashes, and no ` -- ` used as a dash;
+- sentence-case headings, keeping proper nouns and code identifiers;
+- no significance puffery, "serves as"/"stands as" copula avoidance, rule-of-three padding, bold inline-header lists, filler phrases, signposting ("let's look at"), or generic closing lines ("this is what makes X powerful").
+
+A renamed heading changes its anchor: update every link to it.
 
 ## Visuals and supporting content
 
