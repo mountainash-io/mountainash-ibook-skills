@@ -175,14 +175,15 @@ Recommended specifications:
 
 ### Step 8: Create the Home Page (docs/index.md)
 
-The home page is the package's landing page. A reader arriving from search or PyPI should learn in one screen what problem the package solves, see it working, and find a reason to keep reading. Build it from these sections, in order:
+The home page is the package's landing page, and the one page that has to set the scene. A reader arriving from search or PyPI should see, before any code, what problem the package solves and that it is meant for them. It must not read like the middle of a chapter: no field-level mechanics up front. Build it from these sections, in order:
 
-1. **Core use case.** One or two paragraphs under the H1: the everyday problem, then how the package solves it. Name only what most users need; never internals.
-2. **A first example.** One short, runnable usage example of the public API that exercises the core use case end to end, including any input file the reader would write. Run it, and show its real output in comments. Follow the `## Code examples` rules in the chapter-content-generator skill.
-3. **Why use it.** A modest pitch, one short paragraph per audience, drawn from the package profile's audience facets (`docs-site/profile/facets/*.json`): read each facet's `summary` and `documentation_plan`, and the `broader-hype` facet's before/after and "for free" points. Open each paragraph with the reader ("If you write applications, ..."). Skip internal-only audiences such as maintainers. Every claim must be checked against the source; the pitch comes from concrete benefits, not adjectives.
-4. **Where to go next.** Links to the first chapter a new user should read, the package overview and About.
+1. **Tagline.** One bold line under the H1 that says what the package is and the range it covers.
+2. **Scene.** Two short paragraphs. First the everyday problem, told as the situation readers recognise (how it starts simple and then sprawls). Then what the package does about it, in plain terms. Name only what most users need; never internals.
+3. **Who it's for.** One card per audience, up front, using Material grid cards (`<div class="grid cards" markdown>`). Draw the audiences and benefits from the package profile's facets (`docs-site/profile/facets/*.json`): each facet's `summary` and `documentation_plan`, and the `broader-hype` facet's before/after and "for free" points. Rename audiences to how readers describe themselves, skip internal-only audiences such as maintainers, and end each card with a link to the chapter that audience needs first. Check every claim against the source; the pitch comes from concrete benefits, not adjectives.
+4. **See it work.** One short, runnable usage example of the public API that exercises the core use case end to end, including any input file the reader would write. Run it, show its real output in comments, and close with one sentence on what it showed. Follow the `## Code examples` rules in the chapter-content-generator skill.
+5. **Where to go next.** The first chapter a new user should read, the package overview and About.
 
-Keep any version or migration notice as an admonition above the use case. Apply the humanizer pass from the chapter-content-generator skill: sentence-case headings, no dashes, no bold inline headers, no puffery.
+Put version or migration notices at the bottom as an admonition, not above the scene. Apply the humanizer pass from the chapter-content-generator skill: sentence-case headings, no dashes, no bold inline-header lists, no puffery. Card titles are the one place bold labels belong.
 
 ```markdown
 ---
@@ -195,25 +196,42 @@ twitter:image: /img/cover.png
 
 # {{PACKAGE_TITLE}}
 
-{{CORE_USE_CASE}}
+**{{TAGLINE}}**
 
-## A first example
+{{THE_PROBLEM_AS_READERS_LIVE_IT}}
+
+{{WHAT_THE_PACKAGE_DOES_ABOUT_IT}}
+
+## Who it's for
+
+<div class="grid cards" markdown>
+
+-   **{{AUDIENCE_NAME}}**
+
+    ---
+
+    {{WHAT_THIS_AUDIENCE_GETS}}
+
+    [{{FIRST_STEP_LABEL}}]({{CHAPTER_LINK}})
+
+</div>
+
+## See it work
 
 {{INPUT_FILE_IF_ANY}}
 
 {{RUNNABLE_USAGE_EXAMPLE_WITH_REAL_OUTPUT}}
 
-{{ONE_PARAGRAPH_ON_WHAT_THE_EXAMPLE_SHOWED}}
-
-## Why use it
-
-{{ONE_PARAGRAPH_PER_AUDIENCE_FROM_PROFILE_FACETS}}
+{{ONE_SENTENCE_ON_WHAT_THE_EXAMPLE_SHOWED}}
 
 ## Where to go next
 
-- [Chapters](chapters/index.md): {{FIRST_CHAPTER_POINTER}}
-- [Package overview](course-description.md): scope, capabilities and ecosystem context.
-- [About](about.md): authorship, license and the relationship to the code repository.
+- {{FIRST_CHAPTER_POINTER}}
+- The [package overview](course-description.md) covers scope and ecosystem context.
+- [About](about.md) has authorship, the license and the link to the code repository.
+
+!!! note "{{VERSION_NOTICE_TITLE_IF_ANY}}"
+    {{VERSION_NOTICE}}
 ```
 
 ### Frontmatter Fields Explained
@@ -258,16 +276,37 @@ Or with a link wrapper:
 From the mountainash-settings book (abridged):
 
 ````markdown
----
-title: 'Mountainash Settings'
-description: 'Documentation for mountainash-settings: typed configuration for Python applications built on Pydantic v2'
----
-
 # Mountainash Settings
 
-Most applications read configuration from several places at once: a YAML file checked into the repo, environment variables set by the deployment, and passwords that must never sit in either. mountainash-settings puts all of that behind one typed class. You declare the fields once with Pydantic, point the class at your files, and get back a validated object with secrets already filled in.
+**Typed configuration for Python, from a single script to a fleet of services.**
 
-## A first example
+Configuration always starts small: a dictionary loaded from a YAML file. Then staging needs a different host. The deployment overrides a port through an environment variable. A database password turns up that must never be committed. Before long, three services parse the same file three different ways, and nobody is sure which value actually wins.
+
+mountainash-settings is the one place all of that comes together. You describe your settings once, as a typed Pydantic class. Files, environment variables and your secret store all feed into it, in an order you can predict, and every part of your code gets the same validated answer.
+
+## Who it's for
+
+<div class="grid cards" markdown>
+
+-   **Application developers**
+
+    ---
+
+    Replace hand-merged YAML, `os.environ` lookups and vault calls with one class that loads YAML, TOML, JSON and `.env` files and validates the result.
+
+    [Define a settings class](chapters/02-mountainash-base-settings/index.md)
+
+-   **Teams connecting to many systems**
+
+    ---
+
+    Declare a database's or SDK's parameters once as a connection profile, then render the exact keyword arguments its driver expects. Every registered profile gets a ready-made pytest suite.
+
+    [Build connection profiles](chapters/06-connection-profiles/index.md)
+
+</div>
+
+## See it work
 
 ```python
 settings = get_settings(
@@ -279,15 +318,7 @@ settings = get_settings(
 print(settings.DB_HOST, settings.DB_PORT)  # db.internal 6543
 ```
 
-## Why use it
-
-If you write applications, you stop hand-merging dictionaries from `yaml.safe_load`, `os.environ` and a vault client. ...
-
-If you connect to many systems, a connection profile declares a driver's parameters once, and `emit()` renders the exact keyword arguments it expects. ...
-
-## Where to go next
-
-- [Chapters](chapters/index.md): start with MountainAsh base settings to define your own class.
+The host came from the file, the port from the environment and the password from the secret store.
 ````
 
 ## Troubleshooting

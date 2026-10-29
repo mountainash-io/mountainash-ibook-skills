@@ -271,7 +271,7 @@ If the home page is a stub (< 30 lines) or the user chose overwrite, generate it
 Read references/home-page-template.md and execute its workflow for this project.
 ```
 
-When writing the landing page, follow Step 8 of `home-page-template.md`: core use case, a runnable first example, a short "Why use it" pitch per audience drawn from the profile facets, and where to go next. Also incorporate:
+When writing the landing page, follow Step 8 of `home-page-template.md`: tagline and scene first, audience cards drawn from the profile facets, then a runnable example and where to go next. The home page sets the scene; it must not read like a chapter. Also incorporate:
 - The cover image at `docs/img/cover.png`, when it exists
 - Links to the FAQ and About pages in the "Where to go next" list
 
