@@ -120,6 +120,7 @@ Ephemeral state that doesn't belong in the learning graph:
 - **Refresh history** — audit log of past refreshes with token costs
 - **Tool versions** — detect when the generator was upgraded
 - **FAQ/learning-graph content hashes** — detect drift
+- **Landing page hashes and inputs** — detect manual edits to the home and About pages, and which inputs they were written from
 
 The `refresh-state.json` is a slim operational file, not a knowledge structure.
 
@@ -157,7 +158,7 @@ Before writing output, verify:
 | **2: Map** | Cross-reference changed files against enriched learning graph nodes | Refresh/Check |
 | **3: Classify** | Categorise each change (signature, new symbol, removal, etc.) | Refresh/Check |
 | **4: Plan** | Build a regeneration plan with affected artefacts | Refresh/Check |
-| **5: Regenerate** | Update stale chapters, FAQ, learning graph | Refresh only |
+| **5: Regenerate** | Update stale chapters, FAQ, learning graph, home and About pages | Refresh only |
 | **6: Verify** | Check concept coverage, content hashes, link integrity | Refresh only |
 | **7: Update State** | Write updated learning graph + refresh-state.json | Refresh/Seed |
 
@@ -613,6 +614,7 @@ PLAN(stale_chapters, classifications, symbol_diffs, unmapped_files):
     api_pages_to_rebuild: [],
     learning_graph_updates: [],
     faq_stale: false,
+    landing_pages_to_refresh: [],
     unmapped_source_files: []
   }
 
@@ -665,6 +667,21 @@ PLAN(stale_chapters, classifications, symbol_diffs, unmapped_files):
 
   IF any kinds intersects {"new_module", "removed_module"}:
     plan.learning_graph_updates.append({action: "review_concept_coverage"})
+
+  # Home and About pages (see "Landing and About pages" in Phase 5)
+  FOR page, recorded IN refresh_state.landing_state:
+    reasons = []
+    FOR input_path, input_hash IN recorded.inputs:
+      IF sha256(Read(input_path)) != input_hash:
+        reasons.append({input_changed: input_path})
+    FOR symbol IN recorded.public_symbols:
+      IF symbol IN any renamed/removed/signature-changed symbol_diffs:
+        reasons.append({symbol_changed: symbol})
+    IF behavior_change touches a module behind a claim on the page:
+      reasons.append({claim_review: module})
+    IF reasons:
+      plan.landing_pages_to_refresh.append({page, reasons,
+        manual_edit: sha256(Read(page)) != recorded.content_hash})
 
   RETURN plan
 ```
@@ -852,6 +869,20 @@ even if the CLI exits successfully. Unsupported export must never be applied.
 Use heading-based comparison for this pilot and report the marker helper as
 unsupported, not successful. Do not add a converter or CLI wrapper.
 
+### Landing and About pages
+
+The home page (`index.md`) and About page (`about.md`) set the scene for the whole book, so they go stale in ways chapter markers cannot see: an audience facet changes, the README's pitch moves, a design principle is revised, or a public name used in the home page example is renamed. Phase 4 lists them in `landing_pages_to_refresh` with the reasons.
+
+For each listed page:
+
+1. If `manual_edit` is true, the page was edited by hand since the last refresh. Show the diff against the recorded version and propose edits; never overwrite it wholesale.
+2. Re-read the guide that owns the page: `book-installer/references/home-page-template.md` for the home page, `book-installer/references/about-page.md` for About. The page structure and sourcing rules there are binding.
+3. Update only the sections the reasons touch. A changed audience facet affects the "Who it's for" cards; a renamed symbol affects the example; a revised principle affects one design idea. Keep the scene, tagline and untouched sections as they are unless a reason invalidates them.
+4. Re-run the home page example against the selected source and update its output comments from the real run. Re-check every behavioural claim on a touched section against the source.
+5. Record the new inputs, public symbols and content hash in Phase 7.
+
+A refresh with no recorded `landing_state` (an older book) seeds it: read both pages, record their inputs from the guides' source lists and the public names used in their code blocks, and report any claim that no longer matches the source as `review_required` instead of rewriting.
+
 ### API Pages
 
 API reference pages do not need regeneration — mkdocstrings reads directly
@@ -917,6 +948,17 @@ VERIFY(textbook_dir, learning_graph, plan):
   IF site_license(textbook_dir) != package_license(source_repo):
     issues.append("site license does not match the package license")
 
+  # 8. Landing pages: the home page example runs and its output comments
+  #    match the run; every link on the home and About pages resolves; the
+  #    public names they use still exist.
+  FOR page IN ["index.md", "about.md"]:
+    FOR example IN extract_python_blocks(page):
+      IF run(example).output != output_comments(example):
+        issues.append(f"{page}: example output does not match its comments")
+    FOR link IN extract_markdown_links(page):
+      IF NOT resolves(link, page):
+        issues.append(f"{page}: broken link {link}")
+
   REPORT issues
 ```
 
@@ -962,6 +1004,14 @@ UPDATE_STATE(textbook_dir, changeset, plan, results):
     content_hash: sha256(faq_md)
   }
 
+  FOR page IN ["index.md", "about.md"]:
+    state.landing_state[page] = {
+      content_hash: sha256(Read(page)),
+      inputs: {path: sha256(Read(path)) FOR path IN page_inputs(page)},
+      public_symbols: public_names_used_in_code_blocks(page),
+      last_generated: today() IF page refreshed ELSE previous value
+    }
+
   # Append to refresh history
   state.refresh_history.append({
     date: today(),
@@ -970,6 +1020,7 @@ UPDATE_STATE(textbook_dir, changeset, plan, results):
     chapters_updated: [ch for ch in results],
     sections_regenerated: sum(len(r.changed_concepts) for r in results),
     faq_questions_updated: count_updated_faq,
+    landing_pages_updated: [p for p in plan.landing_pages_to_refresh if updated(p)],
     tokens_used: estimated_tokens
   })
 

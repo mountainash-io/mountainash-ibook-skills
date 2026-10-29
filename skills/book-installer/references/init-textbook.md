@@ -13,7 +13,7 @@ Copy only the site runtime templates actually needed. **Exclude `docs/course-des
 
 The site carries the package's license, not a documentation-specific one. Resolve it from the package before Step 3: the SPDX `license` in `pyproject.toml` (or the `LICENSE` heading) gives `LICENSE_NAME`/`LICENSE_URL`, and the copyright line in `NOTICE` or `LICENSE` gives `COPYRIGHT_HOLDER` and `YEAR`. Ask only when the package declares no license. Do not copy `docs/img/license.png` (a CC BY-NC-SA badge) into a Mountainash site.
 
-Navigation holds the home, about, overview, chapters, confirmed appendices, license and contact pages. Do not add Learning Graph or MicroSims sections, and do not copy `docs/sims/index.md`; a built MicroSim is reached from the chapter that embeds it.
+Navigation holds the home, about, chapters, confirmed appendices, license and contact pages. Do not add Learning Graph or MicroSims sections, and do not copy `docs/sims/index.md`; a built MicroSim is reached from the chapter that embeds it.
 
 Populate and link FAQ/glossary appendices only after inclusion is confirmed; do not add links to absent placeholder pages. The initial scaffold is not a completed book. Prefer Mermaid, do not add a graph viewer or quizzes in this workflow, and do not require interactive elements.
 
