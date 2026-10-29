@@ -181,7 +181,7 @@ The home page is the package's landing page, and the one page that has to set th
 2. **Scene.** Two short paragraphs. First the everyday problem, told as the situation readers recognise (how it starts simple and then sprawls). Then what the package does about it, in plain terms. Name only what most users need; never internals.
 3. **Who it's for.** One card per audience, up front, using Material grid cards (`<div class="grid cards" markdown>`). Draw the audiences and benefits from the package profile's facets (`docs-site/profile/facets/*.json`): each facet's `summary` and `documentation_plan`, and the `broader-hype` facet's before/after and "for free" points. Rename audiences to how readers describe themselves, skip internal-only audiences such as maintainers, and end each card with a link to the chapter that audience needs first. Check every claim against the source; the pitch comes from concrete benefits, not adjectives.
 4. **See it work.** One short, runnable usage example of the public API that exercises the core use case end to end, including any input file the reader would write. Run it, show its real output in comments, and close with one sentence on what it showed. Follow the `## Code examples` rules in the chapter-content-generator skill.
-5. **Where to go next.** The first chapter a new user should read, the package overview and About.
+5. **Where to go next.** The first chapter a new user should read, what it assumes the reader already knows, and About. Do not publish or link a separate package overview page: the home page, About and the chapter list already cover scope, audience and ecosystem.
 
 Put version or migration notices at the bottom as an admonition, not above the scene. Apply the humanizer pass from the chapter-content-generator skill: sentence-case headings, no dashes, no bold inline-header lists, no puffery. Card titles are the one place bold labels belong.
 
@@ -226,8 +226,8 @@ twitter:image: /img/cover.png
 
 ## Where to go next
 
-- {{FIRST_CHAPTER_POINTER}}
-- The [package overview](course-description.md) covers scope and ecosystem context.
+- {{FIRST_CHAPTER_POINTER_AND_PREREQUISITES}}
+- The [chapter list](chapters/index.md) shows everything the documentation covers.
 - [About](about.md) has authorship, the license and the link to the code repository.
 
 !!! note "{{VERSION_NOTICE_TITLE_IF_ANY}}"

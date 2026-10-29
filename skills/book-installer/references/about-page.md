@@ -5,7 +5,7 @@ description: Generates the about.md page for package documentation, explaining w
 
 # About page generator
 
-This guide generates `docs/about.md` for package documentation. After the home page, About is the second page that sets the scene. The home page says what the package does and who it is for. About says why it exists and how its authors think about the problem. It must not read like a chapter, and it must not repeat the chapter list.
+This guide generates `docs/about.md` for package documentation. After the home page, About is the second page that sets the scene. The home page says what the package does and who it is for. About says why it exists and how its authors think about the problem. It must not read like a chapter, and it must not repeat the chapter list. Together with the home page it replaces a separate package overview page; do not publish one.
 
 ## What this guide creates
 
