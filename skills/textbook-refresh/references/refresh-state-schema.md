@@ -49,6 +49,16 @@ that changes between refreshes: content hashes, tool versions, and history.
     "content_hash": "sha256:<hex>"
   },
 
+  "landing_state": {
+    "index.md": {
+      "content_hash": "sha256:<hex>",
+      "inputs": {"<repo-relative path>": "sha256:<hex>"},
+      "public_symbols": ["<public name>"],
+      "last_generated": "YYYY-MM-DD"
+    },
+    "about.md": { "...": "same shape" }
+  },
+
   "refresh_history": [
     {
       "date": "YYYY-MM-DD",
@@ -57,6 +67,7 @@ that changes between refreshes: content hashes, tool versions, and history.
       "chapters_updated": ["<chapter-dir-name>"],
       "sections_regenerated": <int>,
       "faq_questions_updated": <int>,
+      "landing_pages_updated": ["index.md"],
       "learning_graph_nodes_updated": <int>,
       "tokens_used": <int>
     }
@@ -109,6 +120,17 @@ Keyed by chapter directory name (e.g. `01-foundation-concepts`).
 | `question_count` | int | Number of FAQ questions |
 | `content_hash` | string | SHA-256 of faq.md |
 
+### landing_state
+
+Keyed by page path relative to the site's `docs/` directory (`index.md`, `about.md`).
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `content_hash` | string | SHA-256 of the page, used to detect manual edits |
+| `inputs` | object | Repository-relative path to SHA-256 for each source the page was written from: the profile facets (home), the README, design or principles documents (About), the package license file |
+| `public_symbols` | string[] | Public names imported or called in the page's code blocks |
+| `last_generated` | string | ISO date the page was last generated or refreshed |
+
 ### refresh_history
 
 Append-only log of past refreshes.
@@ -121,6 +143,7 @@ Append-only log of past refreshes.
 | `chapters_updated` | string[] | Which chapters were touched |
 | `sections_regenerated` | int | Number of concept sections regenerated |
 | `faq_questions_updated` | int | Number of FAQ entries refreshed |
+| `landing_pages_updated` | string[] | Home or About pages refreshed |
 | `learning_graph_nodes_updated` | int | Number of learning graph nodes modified |
 | `tokens_used` | int | Approximate token usage |
 
@@ -134,6 +157,7 @@ Append-only log of past refreshes.
 | Source baseline commit | `learning-graph.json` metadata + `refresh-state.json` baseline | Duplicated for convenience; graph is authoritative |
 | Profile directory path | `learning-graph.json` metadata | `docs-site/profile`, relative to source root `R`; provenance, never an output redirect |
 | Chapter content hashes | `refresh-state.json` chapter_state | Ephemeral; changes every refresh |
+| Home and About page hashes and inputs | `refresh-state.json` landing_state | Ephemeral; staleness and manual-edit detection |
 | Manual edit detection | `refresh-state.json` chapter_state | Ephemeral; operational concern |
 | Refresh audit log | `refresh-state.json` refresh_history | Ephemeral; append-only |
 | Tool versions | `refresh-state.json` baseline | Ephemeral; version-mismatch detection |
