@@ -19,6 +19,8 @@ Follow ISO 11179 guidance: precise, concise, distinct, non-circular definitions.
 
 Use one `# Glossary` heading and consistent term headings, sorted alphabetically. Keep API spellings intact. Disambiguate identical labels using context rather than dropping entries. Define abbreviations, avoid undefined specialist vocabulary and link related terms where useful. Match the audiences/depths in the brief, not an assumed school grade.
 
+Write in the documentation register defined by `chapter-content-generator`: package users and maintainers looking up a term, not students. Terms are the public vocabulary a reader meets: public classes, functions, parameters and domain concepts. Do not add entries for private names (leading underscore), internal helpers or modules; if a chapter explains an internal mechanism a reader must understand, define the observable concept instead. An example in an entry follows the `## Code examples` rules in `chapter-content-generator` and is run before publishing. Apply the `## Plain prose` pass to every definition: no dashes, no puffery, no filler.
+
 Every entry should link to the real chapter or section containing its primary explanation. Section anchors are allowed after verification against the built page; use a chapter link when the heading is not stable. Reuse explanations through links rather than duplicating entire chapters. For existing paired-marker entries, retain IDs and concept associations so targeted refresh remains possible.
 
 ## Verification and refresh

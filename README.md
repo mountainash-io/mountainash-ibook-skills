@@ -2,7 +2,7 @@
 
 Mountainash's documentation toolchain, forked from [Dan McCreary's iBook skills](https://github.com/dmccreary/ibook-skills). Maintained at [mountainash-io/mountainash-ibook-skills](https://github.com/mountainash-io/mountainash-ibook-skills).
 
-The Mountainash workflow produces chapters and confirmed FAQ/glossary appendices from package profiles, a confirmed editorial brief, an internal learning graph, and a user-approved chapter plan. Graphs are internal; quizzes are not part of this workflow. Every upstream skill remains available.
+The Mountainash workflow produces chapters, home and About pages, and confirmed FAQ/glossary appendices from package profiles, a confirmed editorial brief, an internal learning graph, and a user-approved chapter plan. Graphs are internal; quizzes are not part of this workflow. Every upstream skill remains available.
 
 Deterministic Python tools are distributed separately as `mountainash-ibook-tools` (`ibook`), using Python 3.12 and pinned Git revisions through `uvx`. Skills perform the interviews and generation; publishing builds prepared files only.
 
